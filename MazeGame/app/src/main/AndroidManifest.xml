@@ -9,4 +9,6 @@
 
     </application>
 
+    <uses-feature android:glEsVersion="0x00030000" android:required="true" />
+
 </manifest>
