@@ -14,10 +14,19 @@ public class Triangle {
     private final int mProgram;
 
     private final String vertexShaderCode =
-            "attribute vec4 vPosition;" +
-                    "void main() {" +
-                    "  gl_Position = vPosition;" +
-                    "}";
+
+            // This matrix member variable provides a hook to manipulate
+            // the coordinates of objects that use this vertex shader.
+            "uniform mat4 uMVPMatrix;   \n" +
+
+                    "attribute vec4 vPosition;  \n" +
+            "void main(){               \n" +
+                    // The matrix must be included as part of gl_Position
+                    // Note that the uMVPMatrix factor *must be first* in order
+                    // for the matrix multiplication product to be correct.
+                    " gl_Position = uMVPMatrix * vPosition; \n" +
+
+                    "}  \n";
 
     private final String fragmentShaderCode =
             "precision mediump float;" +
