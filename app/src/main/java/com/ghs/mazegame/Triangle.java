@@ -20,7 +20,7 @@ public class Triangle {
             "uniform mat4 uMVPMatrix;   \n" +
 
                     "attribute vec4 vPosition;  \n" +
-            "void main(){               \n" +
+                    "void main(){               \n" +
                     // The matrix must be included as part of gl_Position
                     // Note that the uMVPMatrix factor *must be first* in order
                     // for the matrix multiplication product to be correct.
