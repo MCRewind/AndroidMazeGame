@@ -77,4 +77,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // create a projection matrix from device screen geometry
         Matrix.frustumM(mProjMatrix, 0, -ratio, ratio, -1, 1, 3, 7);
     }
+
+
 }
