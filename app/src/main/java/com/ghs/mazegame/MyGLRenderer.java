@@ -3,7 +3,9 @@ package com.ghs.mazegame;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
+import android.util.Log;
 
+import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -15,13 +17,17 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private Triangle mTriangle;
     private Square   mSquare;
     private int muMVPMatrixHandle;
-    private float[] mVMatrix;
-    private float[] mProjMatrix;
-    private float[] mMVPMatrix;
+    private float[] mVMatrix = new float[16];
+    private float[] mProjMatrix= new float[16];
+    private float[] mMVPMatrix= new float[16];
     private int mProgram;
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+        Log.d(this.getClass().toString(),"made it thus far-2");
+
+        //EGL10.EGL_RENDERABLE_TYPE = 4;
+
         // Set the background frame color
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -32,15 +38,17 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         mProgram = GLES20.glCreateProgram();
 
-        muMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
+
 
         // Create a camera view matrix
         Matrix.setLookAtM(mVMatrix, 0, 0, 0, -3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
 
         // initialize a triangle
-        mTriangle = new Triangle();
+        mTriangle = new Triangle(mProgram);
         // initialize a square
-        mSquare = new Square();
+        //mSquare = new Square();
+
+        muMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
     }
 
     public static int loadShader(int type, String shaderCode){

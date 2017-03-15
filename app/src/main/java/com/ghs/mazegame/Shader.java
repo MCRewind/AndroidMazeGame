@@ -1,11 +1,13 @@
 package com.ghs.mazegame;
 
 import android.opengl.GLES20;
+import android.renderscript.Matrix4f;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +15,7 @@ import java.util.Map;
 /**
  * Created by cmeyer3887 on 3/7/2017.
  */
+
 public class Shader {
 
     private String name;
@@ -50,14 +53,13 @@ public class Shader {
         GLES20.glShaderSource(vs, vert);
         GLES20.glCompileShader(vs);
         IntBuffer buffer = IntBuffer.allocate(1);
-        if(GLES20.glGetShaderInfoLog(vs).equals 1)
+        if(GLES20.glGetShaderInfoLog(vs).equals(1)) {
             throw new RuntimeException("Failed to compile shader! " + GLES20.glGetShaderInfoLog(vs));
+        }
 
-        fs = glCreateShader(GL_FRAGMENT_SHADER);
+        fs = GLES20.glCreateShader(GLES20.GL_FRAGMENT_SHADER);
         GLES20.glShaderSource(fs, frag);
         GLES20.glCompileShader(fs);
-        if(glGetShaderi(fs, GLES20.GL_COMPILE_STATUS) != 1)
-            throw new RuntimeException("Failed to compile shader! " + GLES20.glGetShaderInfoLog(fs));
 
         GLES20.glAttachShader(program, vs);
         GLES20.glAttachShader(program, fs);
@@ -72,7 +74,7 @@ public class Shader {
     public int getLocation(String name) {
         if(uniforms.containsKey(name))
             return uniforms.get(name);
-        int location = glGetUniformLocation(program, name);
+        int location = GLES20.glGetUniformLocation(program, name);
         uniforms.put(name, location);
         if(location != -1)
             return location;
@@ -82,33 +84,33 @@ public class Shader {
 
     public void setUniform1i(String name, int value) {
         enable();
-        glUniform1i(getLocation(name), value);
+        GLES20.glUniform1i(getLocation(name), value);
         disable();
     }
 
     public void setUniform1f(String name, float value) {
         enable();
-        glUniform1f(getLocation(name), value);
+        GLES20.glUniform1f(getLocation(name), value);
         disable();
     }
 
     public void setUniform2f(String name, float x, float y) {
         enable();
-        glUniform2f(getLocation(name), x, y);
+        GLES20.glUniform2f(getLocation(name), x, y);
         disable();
     }
 
-    public void setUniform3f(String name, Vector3f vector) {
+    public void setUniform3f(String name, int x, int y, int z) {
         enable();
-        glUniform3f(getLocation(name), vector.x, vector.y, vector.z);
+        GLES20.glUniform3f(getLocation(name), x, y, z);
         disable();
     }
 
     public void setUniformMat4f(String name, Matrix4f matrix) {
         enable();
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
-        matrix.get(buffer);
-        glUniformMatrix4fv(getLocation(name), false, buffer);
+        FloatBuffer buffer = FloatBuffer.allocate(16);
+        buffer.put(matrix.getArray()).flip();
+        GLES20.glUniformMatrix4fv(getLocation(name), 16,  false, buffer);
         disable();
     }
 
@@ -118,11 +120,11 @@ public class Shader {
 
     public void enable() {
         enabled = true;
-        glUseProgram(program);
+        GLES20.glUseProgram(program);
     }
 
     public void disable() {
         enabled = false;
-        glUseProgram(0);
+        GLES20.glUseProgram(0);
     }
 }
