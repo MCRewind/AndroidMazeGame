@@ -3,7 +3,12 @@ package com.ghs.mazegame;
 import android.net.Uri;
 import android.opengl.GLES20;
 
+import com.ghs.util.FileUtils;
+
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Shader {
 
@@ -23,40 +28,18 @@ public class Shader {
     private static int program;
 
     public static int positionHandle;
-
+ 
     public static int colorHandle;
 
-    private String readFile(Uri uri){
-        StringBuilder builder;
-        try (BufferedReader reader = null) {
-            builder = new StringBuilder();
-            try {
-                reader = new BufferedReader(new InputStreamReader(getContentResolver().openInputStream(uri)));
-                String line = "";
-
-                while ((line = reader.readLine()) != null) {
-                    builder.append(line);
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (reader != null) {
-                    try {
-                        reader.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-        return builder.toString();
-    }
-
     public static void makeProgram() {
-        int vertexShader   = loadShader(GLES20.GL_VERTEX_SHADER, vertCode);
-
-        int fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER, fragCode);
+        int vertexShader = 0;
+        int fragmentShader = 0;
+        try {
+            vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, FileUtils.getFileContents(new File("shaders/vertex.glsl")));
+            fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER, FileUtils.getFileContents(new File("shaders/fragment.glsl")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         program = GLES20.glCreateProgram();
 
