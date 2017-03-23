@@ -6,16 +6,30 @@ import com.ghs.engine.util.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Shader {
 
-    private static int program;
+    private String name;
+    private int program, vs, fs;
+    public static int VERT_ATTRIB = 0, TEX_COORD_ATTRIB = 1;
+    boolean enabled;
+    Map<String, Integer> uniforms;
 
     public static int positionHandle;
  
     public static int colorHandle;
 
-    public static void makeProgram() {
+    public Shader(String vertPath, String fragPath) {
+        name = new File(new File(vertPath).getParent()).getName();
+        uniforms = new HashMap<>();
+        String vert = FileUtils.getFileContents(new File("vertPath"));
+        String frag = FileUtils.getFileContents(new File("fragPath"));
+       // create(vert, frag);
+    }
+
+    public void makeProgram() {
         int vertexShader = 0;
         int fragmentShader = 0;
         try {
