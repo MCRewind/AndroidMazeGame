@@ -1,29 +1,13 @@
-package com.ghs.mazegame;
+package com.ghs.engine.components;
 
-import android.net.Uri;
 import android.opengl.GLES20;
 
-import com.ghs.util.FileUtils;
+import com.ghs.engine.util.FileUtils;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class Shader {
-
-    private final static String vertCode =
-            "attribute vec4 a_pos;"+
-                    "void main(){"+
-                    "gl_Position = a_pos;" +
-                    "}";
-
-    private final static String fragCode =
-            "precision mediump float;" +
-                    "uniform vec4 u_color;" +
-                    "void main(){" +
-                    "gl_FragColor = u_color;" +
-                    "}";
 
     private static int program;
 

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 
+import com.ghs.engine.components.Renderer;
+
 public class MainActivity extends Activity {
 
     //private GLSurfaceView surface;

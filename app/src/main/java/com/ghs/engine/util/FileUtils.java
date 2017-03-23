@@ -1,4 +1,4 @@
-package com.ghs.util;
+package com.ghs.engine.util;
 
 import java.io.BufferedReader;
 import java.io.File;

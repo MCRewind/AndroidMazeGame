@@ -1,7 +1,9 @@
-package com.ghs.mazegame;
+package com.ghs.engine.components;
 
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
+
+import com.ghs.engine.components.Shader;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
