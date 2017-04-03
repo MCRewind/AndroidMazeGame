@@ -5,6 +5,7 @@ import android.opengl.GLES20;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.nio.Buffer
 
 import static android.opengl.GLES20.GL_ARRAY_BUFFER;
 import static android.opengl.GLES20.GL_ELEMENT_ARRAY_BUFFER;
@@ -32,15 +33,15 @@ public class VAO {
     private void init(float[] vertices, int[] indices, int[] texCoords) {
         vbo = GLES20.glGenBuffers();
         GLES20.glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        GLES20.glBufferData(GL_ARRAY_BUFFER, createFloatBuffer(vertices), GL_STATIC_DRAW);
+        //GLES20.glBufferData(GL_ARRAY_BUFFER, createFloatBuffer(vertices), GL_STATIC_DRAW);
 
         ibo = GLES20.glGenBuffers();
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-        GLES20.glBufferData(GL_ELEMENT_ARRAY_BUFFER, createIntBuffer(indices), GL_STATIC_DRAW);
+        //GLES20.glBufferData(GL_ELEMENT_ARRAY_BUFFER, createIntBuffer(indices), GL_STATIC_DRAW);
 
         tcbo = GLES20.glGenBuffers();
         glBindBuffer(GL_ARRAY_BUFFER, tcbo);
-        GLES20.glBufferData(GL_ARRAY_BUFFER, createIntBuffer(texCoords), GL_STATIC_DRAW);
+        //GLES20.glBufferData(GL_ARRAY_BUFFER, createIntBuffer(texCoords), GL_STATIC_DRAW);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);

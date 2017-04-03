@@ -24,20 +24,20 @@ public class Shader {
     public Shader(String vertPath, String fragPath) {
         name = new File(new File(vertPath).getParent()).getName();
         uniforms = new HashMap<>();
-        String vert = FileUtils.getFileContents(new File("vertPath"));
-        String frag = FileUtils.getFileContents(new File("fragPath"));
-       // create(vert, frag);
-    }
-
-    public void makeProgram() {
-        int vertexShader = 0;
-        int fragmentShader = 0;
         try {
-            vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, FileUtils.getFileContents(new File("shaders/vertex.glsl")));
-            fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER, FileUtils.getFileContents(new File("shaders/fragment.glsl")));
+            String vert = FileUtils.getFileContents(new File(vertPath));
+            String frag = FileUtils.getFileContents(new File(fragPath));
+            makeProgram(vert, frag);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void makeProgram(String vertSource, String fragSource) {
+        int vertexShader = 0;
+        int fragmentShader = 0;
+        vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, vertSource);
+        fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER, fragSource);
 
         program = GLES20.glCreateProgram();
 
