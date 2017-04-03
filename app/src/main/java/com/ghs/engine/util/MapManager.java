@@ -1,4 +1,4 @@
-package com.gnarly.engine.utils;
+package com.ghs.engine.util;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,7 +9,9 @@ import java.io.ObjectOutputStream;
 
 import com.gnarly.engine.display.Camera;
 import com.gnarly.game.objects.Item;
+import com.ghs.mazegame.objects.Item;
 import com.gnarly.game.objects.Tile;
+import com.ghs.mazegame.objects.Tile;
 
 public class MapManager {
 	

@@ -1,4 +1,4 @@
-package com.gnarly.game.panels;
+package com.ghs.mazegame.panels;
 
 public class GenericPanel {
 

@@ -1,10 +1,9 @@
-package com.gnarly.game.objects;
+package com.ghs.mazegame.objects;
 
-import com.gnarly.engine.components.Shader;
+import com.ghs.engine.components.Shader;
 import com.gnarly.engine.components.Texture;
 import com.gnarly.engine.display.Camera;
 import com.gnarly.engine.display.Window;
-import com.gnarly.engine.utils.Library;
 
 public class UIButton extends UIImage {
 

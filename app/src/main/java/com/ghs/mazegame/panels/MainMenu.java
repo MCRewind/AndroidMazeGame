@@ -1,11 +1,11 @@
-package com.gnarly.game.panels;
+package com.ghs.mazegame.panels;
 
 import com.gnarly.engine.display.Camera;
 import com.gnarly.engine.display.Window;
-import com.gnarly.engine.utils.Library;
-import com.gnarly.game.objects.LoaderButton;
-import com.gnarly.game.objects.UIButton;
-import com.gnarly.game.objects.UIImage;
+import com.ghs.engine.util.Library;
+import com.ghs.mazegame.objects.LoaderButton;
+import com.ghs.mazegame.objects.UIButton;
+import com.ghs.mazegame.objects.UIImage;
 
 public class MainMenu extends GenericPanel {
 	

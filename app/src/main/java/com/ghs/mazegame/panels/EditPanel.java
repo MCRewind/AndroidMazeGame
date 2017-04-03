@@ -1,4 +1,4 @@
-package com.gnarly.game.panels;
+package com.ghs.mazegame.panels;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
@@ -9,15 +9,15 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 
 import com.gnarly.engine.display.Camera;
 import com.gnarly.engine.display.Window;
-import com.gnarly.engine.utils.Library;
-import com.gnarly.engine.utils.MapManager;
-import com.gnarly.game.objects.Item;
-import com.gnarly.game.objects.LoaderButton;
-import com.gnarly.game.objects.Selected;
-import com.gnarly.game.objects.SelectorButton;
-import com.gnarly.game.objects.Tile;
-import com.gnarly.game.objects.UIButton;
-import com.gnarly.game.objects.UIImage;
+import com.ghs.engine.util.Library;
+import com.ghs.engine.util.MapManager;
+import com.ghs.mazegame.objects.Item;
+import com.ghs.mazegame.objects.LoaderButton;
+import com.ghs.mazegame.objects.Selected;
+import com.ghs.mazegame.objects.SelectorButton;
+import com.ghs.mazegame.objects.Tile;
+import com.ghs.mazegame.objects.UIButton;
+import com.ghs.mazegame.objects.UIImage;
 
 public class EditPanel extends GenericPanel {
 

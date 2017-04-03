@@ -1,4 +1,4 @@
-package com.gnarly.game.panels;
+package com.ghs.mazegame.panels;
 
 import org.joml.Vector3f;
 
@@ -6,14 +6,14 @@ import com.gnarly.engine.components.Animation;
 import com.gnarly.engine.display.Camera;
 import com.gnarly.engine.display.Window;
 import com.gnarly.engine.utils.Hitbox;
-import com.gnarly.engine.utils.Library;
-import com.gnarly.engine.utils.MapManager;
-import com.gnarly.game.objects.LoaderButton;
-import com.gnarly.game.objects.Player;
-import com.gnarly.game.objects.Tile;
-import com.gnarly.game.objects.UIButton;
-import com.gnarly.game.objects.UIImage;
-import com.sun.java.swing.plaf.windows.resources.windows;
+
+import com.ghs.engine.util.Library;
+import com.ghs.engine.util.MapManager;
+import com.ghs.mazegame.objects.LoaderButton;
+import com.ghs.mazegame.objects.Player;
+import com.ghs.mazegame.objects.Tile;
+import com.ghs.mazegame.objects.UIButton;
+import com.ghs.mazegame.objects.UIImage;
 
 public class PlayPanel extends GenericPanel {
 

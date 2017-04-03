@@ -1,9 +1,10 @@
-package com.gnarly.engine.utils;
+package com.ghs.engine.util;
 
 import java.io.File;
 import java.util.ArrayList;
 
 import com.gnarly.engine.components.Shader;
+import com.ghs.engine.components.Shader;
 import com.gnarly.engine.components.Texture;
 
 public class Library {

@@ -1,12 +1,13 @@
-package com.gnarly.game.objects;
+package com.ghs.mazegame.objects;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-import com.gnarly.engine.components.Shader;
+import com.ghs.engine.components.Shader;
 import com.gnarly.engine.components.Texture;
-import com.gnarly.engine.components.VAO;
+import com.ghs.engine.components.VAO;
 import com.gnarly.engine.display.Camera;
+
 
 public class UIImage {
 

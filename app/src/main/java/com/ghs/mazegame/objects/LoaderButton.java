@@ -1,11 +1,12 @@
-package com.gnarly.game.objects;
+package com.ghs.mazegame.objects;
 
-import com.gnarly.engine.components.Shader;
+import com.ghs.engine.components.Shader;
 import com.gnarly.engine.components.Texture;
 import com.gnarly.engine.display.Camera;
 import com.gnarly.engine.display.Window;
 import com.gnarly.game.Main;
 
+import com.ghs.engine.components.Shader;
 public class LoaderButton extends UIButton {
 	
 	// This class is bad

@@ -1,4 +1,4 @@
-package com.gnarly.game.objects;
+package com.ghs.mazegame.objects;
 
 public class Selected {
 
