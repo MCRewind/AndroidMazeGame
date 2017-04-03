@@ -16,8 +16,13 @@ public class Renderer implements GLSurfaceView.Renderer {
 
     private FloatBuffer vertBuffer;
 
+    private Shader shader;
+
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
-        Shader.makeProgram();
+
+        shader = new Shader("src/main/shaders/vertex.glsl", "src/main/shaders/fragment.glsl");
+
+
         GLES20.glEnableVertexAttribArray(Shader.positionHandle);
 
         float[] verts =
