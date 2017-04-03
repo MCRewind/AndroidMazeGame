@@ -13,6 +13,7 @@ public class MainActivity extends Activity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         /*
 
         surface = new GLSurfaceView(this);

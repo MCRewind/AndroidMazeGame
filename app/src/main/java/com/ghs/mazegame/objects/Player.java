@@ -8,6 +8,7 @@ package com.ghs.mazegame.objects;
         import android.renderscript.Matrix4f;
         import com.ghs.engine.math.Vector3f;
 
+        import com.ghs.mazegame.MyGLSurfaceView;
         import com.gnarly.engine.components.Animation;
         import com.gnarly.engine.components.Texture;
         import com.ghs.engine.components.VAO;
@@ -17,8 +18,6 @@ package com.ghs.mazegame.objects;
         import com.gnarly.engine.display.Window;
         import com.ghs.engine.util.Chain;
 
-        import 	android.renderscript.Matrix4f;
-
 
 public class Player {
 
@@ -26,13 +25,13 @@ public class Player {
     private float rightBound = 0, bottomBound = 0;
     private Hitbox hitbox;
     private Camera camera;
-    private Window window;
+    private MyGLSurfaceView window;
     private VAO vao;
     private Animation texture;
     private Shader shader;
     private Chain items;
 
-    public Player(Window window, Camera camera, Texture texture, Shader shader, float x, float y, float width, float height, float rightBound, float bottomBound) {
+    public Player(MyGLSurfaceView window, Camera camera, Texture texture, Shader shader, float x, float y, float width, float height, float rightBound, float bottomBound) {
         this.texture = new Animation(texture);
         this.shader = shader;
         this.camera = camera;
@@ -64,7 +63,7 @@ public class Player {
         vao = new VAO(vertices, indices, texCoords);
     }
 
-    public Player(Window window, Camera camera, Animation animation, Shader shader, float x, float y, float width, float height, float rightBound, float bottomBound) {
+    public Player(MyGLSurfaceView window, Camera camera, Animation animation, Shader shader, float x, float y, float width, float height, float rightBound, float bottomBound) {
         this.texture = animation;
         this.shader = shader;
         this.camera = camera;

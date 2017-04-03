@@ -1,6 +1,5 @@
 package com.ghs.engine.util;
 
-//import org.joml.Vector3f;
 import com.ghs.engine.math.Vector3f;
 
 public class Hitbox {

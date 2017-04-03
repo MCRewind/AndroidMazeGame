@@ -11,7 +11,6 @@ import android.view.MotionEvent;
 public class MyGLSurfaceView extends GLSurfaceView {
 
     private Renderer myRenderer;
-
     public MyGLSurfaceView(Context context) {
         super(context);
         // Create an OpenGL ES 2.0 context.
@@ -45,6 +44,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
                     //mMyRenderer.handleDpadCenter();
                     Log.d("Keydown",KeyEvent.keyCodeToString(keyCode));
                 }});
+
 
 
             //return true;

@@ -8,9 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import com.gnarly.engine.display.Camera;
-import com.gnarly.game.objects.Item;
 import com.ghs.mazegame.objects.Item;
-import com.gnarly.game.objects.Tile;
 import com.ghs.mazegame.objects.Tile;
 
 public class MapManager {

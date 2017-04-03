@@ -1,11 +1,12 @@
 package com.ghs.mazegame.panels;
 
-import org.joml.Vector3f;
+import com.ghs.engine.math.Vector3f;
 
+import com.ghs.mazegame.MyGLSurfaceView;
 import com.gnarly.engine.components.Animation;
 import com.gnarly.engine.display.Camera;
 import com.gnarly.engine.display.Window;
-import com.gnarly.engine.utils.Hitbox;
+import com.ghs.engine.util.Hitbox;
 
 import com.ghs.engine.util.Library;
 import com.ghs.engine.util.MapManager;
@@ -24,7 +25,7 @@ public class PlayPanel extends GenericPanel {
 	private Tile[][] map;
 	private Tile[][] backMap;
 	private Player player;
-	private Window window;
+	private MyGLSurfaceView window;
 	private UIImage hud, pauseMenu;
 	private UIButton pauseButton;
 	private LoaderButton homeButton;
@@ -32,7 +33,7 @@ public class PlayPanel extends GenericPanel {
 	
 	private boolean paused = false;
 	
-	public PlayPanel(Camera camera, Window window, Library library) {
+	public PlayPanel(Camera camera, MyGLSurfaceView window, Library library) {
 		this.camera = camera;
 		this.library = library;
 		this.window = window;
