@@ -1,4 +1,4 @@
-package com.gnarly.engine.components;
+package com.ghs.mazegame.engine.components;
 
 import com.gnarly.engine.utils.Library;
 
