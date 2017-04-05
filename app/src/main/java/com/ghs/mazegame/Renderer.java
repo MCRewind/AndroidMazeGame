@@ -19,12 +19,14 @@ public class Renderer implements GLSurfaceView.Renderer {
 
     private Resources resources;
 
+    private Shader shader;
+
     public Renderer(Resources resources) {
         this.resources = resources;
     }
 
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
-        Shader.makeProgram(resources, R.raw.vert, R.raw.frag);
+        shader = new Shader(resources, R.raw.vert, R.raw.frag);
         GLES20.glEnableVertexAttribArray(Shader.VERT_ATTRIB);
 
         float[] verts =

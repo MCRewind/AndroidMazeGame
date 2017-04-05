@@ -3,7 +3,6 @@ package com.ghs.mazegame.engine.component;
 import android.content.res.Resources;
 import android.opengl.GLES20;
 import android.renderscript.Matrix4f;
-import android.util.Log;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
@@ -60,11 +59,12 @@ public class Shader {
         GLES20.glUseProgram(program);
     }
 
-    private static int loadShader(int type, String shaderText) {
+    private int loadShader(int type, String shaderText) {
         int shader = GLES20.glCreateShader(type);
         GLES20.glShaderSource(shader, shaderText);
         GLES20.glCompileShader(shader);
         return shader;
+    }
 
 
     public int getLocation(String name) {
