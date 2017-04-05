@@ -8,10 +8,10 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 
-public class MyGLSurfaceView extends GLSurfaceView {
+public class Surface extends GLSurfaceView {
 
     private Renderer myRenderer;
-    public MyGLSurfaceView(Context context) {
+    public Surface(Context context) {
         super(context);
         // Create an OpenGL ES 2.0 context.
         //setEGLContextClientVersion(2);

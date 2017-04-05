@@ -1,4 +1,4 @@
-package com.ghs.mazegame.engine.component;
+package com.ghs.mazegame.engine.components;
 
 import android.content.res.Resources;
 import android.opengl.GLES20;
