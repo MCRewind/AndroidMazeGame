@@ -3,6 +3,10 @@ package com.ghs.mazegame;
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.util.Log;
+
+import java.io.FileInputStream;
+import java.util.Scanner;
 
 public class MainActivity extends Activity {
 
@@ -13,7 +17,7 @@ public class MainActivity extends Activity {
 
         surface = new GLSurfaceView(this);
         surface.setEGLContextClientVersion(2);
-        surface.setRenderer(new Renderer());
+        surface.setRenderer(new Renderer(surface.getResources()));
 
         setContentView(surface);
     }

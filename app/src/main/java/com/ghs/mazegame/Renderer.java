@@ -1,7 +1,10 @@
 package com.ghs.mazegame;
 
+import android.content.res.Resources;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
+
+import com.ghs.mazegame.engine.component.Shader;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -14,16 +17,25 @@ public class Renderer implements GLSurfaceView.Renderer {
 
     private FloatBuffer vertBuffer;
 
+    private Resources resources;
+
+    public Renderer(Resources resources) {
+        this.resources = resources;
+    }
+
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
-        Shader.makeProgram();
-        GLES20.glEnableVertexAttribArray(Shader.positionHandle);
+        Shader.makeProgram(resources, R.raw.vert, R.raw.frag);
+        GLES20.glEnableVertexAttribArray(Shader.VERT_ATTRIB);
 
         float[] verts =
-                {
-                        0.0f, 1.0f, 0.0f,
-                        0.0f, 0.0f, 0.0f,
-                        1.0f, 1.0f, 0.0f
-                };
+            {
+                -0.5f, 0.5f, 0.0f,
+                -0.5f, -0.5f, 0.0f,
+                0.5f, 0.5f, 0.0f,
+                0.5f, 0.5f, 0.0f,
+                -0.5f, -0.5f, 0.0f,
+                0.5f, -0.5f, 0.0f
+            };
 
         vertBuffer = makeFloatBuffer(verts);
     }
@@ -36,10 +48,9 @@ public class Renderer implements GLSurfaceView.Renderer {
         GLES20.glClearColor(0f, 0f, 0f, 1f);
         GLES20.glUniform4f(Shader.colorHandle, 1.0f, 0.0f, 0.0f, 1.0f);
 
-        GLES20.glVertexAttribPointer(Shader.positionHandle,3,
-                GLES20.GL_FLOAT, false, 0, vertBuffer);
+        GLES20.glVertexAttribPointer(Shader.VERT_ATTRIB, 3, GLES20.GL_FLOAT, false, 0, vertBuffer);
 
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 3);
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 6);
 
     }//end on drawFrame
 
