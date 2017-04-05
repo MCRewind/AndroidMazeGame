@@ -1,10 +1,14 @@
-package com.ghs.mazegame;
+package com.ghs.engine.components;
 
 import android.content.res.Resources;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 
+<<<<<<< HEAD:app/src/main/java/com/ghs/mazegame/Renderer.java
 import com.ghs.mazegame.engine.component.Shader;
+=======
+import com.ghs.engine.components.Shader;
+>>>>>>> 34f61c032e6fe69fd7077833566b46f1e0746ffb:app/src/main/java/com/ghs/engine/components/Renderer.java
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -17,6 +21,7 @@ public class Renderer implements GLSurfaceView.Renderer {
 
     private FloatBuffer vertBuffer;
 
+<<<<<<< HEAD:app/src/main/java/com/ghs/mazegame/Renderer.java
     private Resources resources;
 
     private Shader shader;
@@ -28,6 +33,16 @@ public class Renderer implements GLSurfaceView.Renderer {
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
         shader = new Shader(resources, R.raw.vert, R.raw.frag);
         GLES20.glEnableVertexAttribArray(Shader.VERT_ATTRIB);
+=======
+    private Shader shader;
+
+    public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
+
+        shader = new Shader("src/main/shaders/vertex.glsl", "src/main/shaders/fragment.glsl");
+
+
+        GLES20.glEnableVertexAttribArray(Shader.positionHandle);
+>>>>>>> 34f61c032e6fe69fd7077833566b46f1e0746ffb:app/src/main/java/com/ghs/engine/components/Renderer.java
 
         float[] verts =
             {
