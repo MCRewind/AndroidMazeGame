@@ -65,6 +65,7 @@ public class Shader {
         GLES20.glShaderSource(shader, shaderText);
         GLES20.glCompileShader(shader);
         return shader;
+    }
 
 
     public int getLocation(String name) {

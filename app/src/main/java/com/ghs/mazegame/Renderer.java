@@ -19,25 +19,26 @@ public class Renderer implements GLSurfaceView.Renderer {
 
     private Resources resources;
 
+    private Shader shader;
+
     public Renderer(Resources resources) {
         this.resources = resources;
     }
 
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
-        Shader.makeProgram(resources, R.raw.vert, R.raw.frag);
+        shader = new Shader(resources, R.raw.vert, R.raw.frag);
         GLES20.glEnableVertexAttribArray(Shader.VERT_ATTRIB);
 
-        float[] verts =
-            {
-                -0.5f, 0.5f, 0.0f,
-                -0.5f, -0.5f, 0.0f,
-                0.5f, 0.5f, 0.0f,
-                0.5f, 0.5f, 0.0f,
-                -0.5f, -0.5f, 0.0f,
-                0.5f, -0.5f, 0.0f
-            };
+        float[] verts = {
+            -0.5f, 0.5f, 0.0f,
+            -0.5f, -0.5f, 0.0f,
+            0.5f, 0.5f, 0.0f,
+            0.5f, 0.5f, 0.0f,
+            -0.5f, -0.5f, 0.0f,
+            0.5f, -0.5f, 0.0f
+        };
 
-        vertBuffer = makeFloatBuffer(verts);
+        vertBuffer = toFloatBuffer(verts);
     }
 
     public void onSurfaceChanged(GL10 gl, int wid, int hig) {
@@ -52,16 +53,11 @@ public class Renderer implements GLSurfaceView.Renderer {
 
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 6);
 
-    }//end on drawFrame
+    }
 
-    public FloatBuffer makeFloatBuffer(float[] array)
-    {
-        //maybe my missing key:
-        FloatBuffer floatBuff= ByteBuffer.allocateDirect(array.length * 4).
-                order(ByteOrder.nativeOrder()).asFloatBuffer();
-
+    public FloatBuffer toFloatBuffer(float[] array) {
+        FloatBuffer floatBuff= ByteBuffer.allocateDirect(array.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
         floatBuff.put(array).position(0);
-
         return floatBuff;
     };
 }
