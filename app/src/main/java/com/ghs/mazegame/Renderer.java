@@ -4,7 +4,7 @@ import android.content.res.Resources;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 
-import com.ghs.mazegame.engine.components.Shader;
+import com.ghs.mazegame.engine.component.Shader;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
