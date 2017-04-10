@@ -1,9 +1,8 @@
-package com.ghs.mazegame.engine.component;
+package com.ghs.mazegame.engine.components;
 
 import android.content.res.Resources;
 import android.opengl.GLES20;
 import android.renderscript.Matrix4f;
-import android.util.Log;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
