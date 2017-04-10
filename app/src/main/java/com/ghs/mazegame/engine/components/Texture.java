@@ -1,8 +1,8 @@
 package com.ghs.mazegame.engine.components;
 
-import static org.lwjgl.opengl.GL11.*;
 
-import java.awt.image.BufferedImage;
+
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -11,14 +11,15 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
+import android.opengl.GLUtils;
 
 import com.ghs.mazegame.R;
 
-import javax.imageio.ImageIO;
 
-import GL
 
-import org.lwjgl.BufferUtils;
+
+
+
 
 public class Texture {
 
@@ -28,6 +29,7 @@ public class Texture {
 	public Texture(Resources resources, int identifier) {
 		try {
 			//File file = new File(fileName);
+			/*
 			name = file.getName();
 			Bitmap bi = BitmapFactory.decodeResource(resources, identifier);
 			width = bi.getWidth();
@@ -48,9 +50,41 @@ public class Texture {
 				}
 			}
 			pixels.flip();
-			
-			id = glGenTextures();
-			
+*/
+			final int[] textureHandle = new int[1];
+
+			GLES20.glGenTextures(1, textureHandle, 0);
+
+			//id = glGenTextures();
+
+			if (textureHandle[0] != 0)
+			{
+				final BitmapFactory.Options options = new BitmapFactory.Options();
+				options.inScaled = false;   // No pre-scaling
+
+				// Read in the resource
+				final Bitmap bitmap = BitmapFactory.decodeResource(resources, identifier, options);
+
+				// Bind to the texture in OpenGL
+				GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureHandle[0]);
+
+				// Set filtering
+				GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST);
+				GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_NEAREST);
+
+				// Load the bitmap into the bound texture.
+				GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
+
+				// Recycle the bitmap, since its data has been loaded into OpenGL.
+				bitmap.recycle();
+			}
+
+			if (textureHandle[0] == 0)
+			{
+				throw new RuntimeException("Error loading texture.");
+			}
+
+			/*
 			bind();
 
 			GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST);
@@ -59,7 +93,8 @@ public class Texture {
 			GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA, width, height, 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, pixels);
 		
 			unbind();
-		} catch(IOException e) {
+			*/
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
