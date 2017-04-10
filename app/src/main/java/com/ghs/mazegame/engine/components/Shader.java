@@ -1,9 +1,8 @@
-package com.ghs.mazegame.engine.component;
+package com.ghs.mazegame.engine.components;
 
 import android.content.res.Resources;
 import android.opengl.GLES20;
 import android.renderscript.Matrix4f;
-import android.util.Log;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
@@ -16,6 +15,8 @@ public class Shader {
     private static int program;
 
     public static int VERT_ATTRIB = 0;
+
+    public static int TEX_COORD_ATTRIB = 0;
 
     public static int colorHandle;
 
@@ -52,6 +53,7 @@ public class Shader {
         GLES20.glAttachShader(program, fragmentShader);
 
         GLES20.glBindAttribLocation(program, VERT_ATTRIB, "vertices");
+        GLES20.glBindAttribLocation(program, TEX_COORD_ATTRIB, "textCoords");
 
         GLES20.glLinkProgram(program);
 
