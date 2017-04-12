@@ -2,7 +2,7 @@ package com.ghs.mazegame.engine.math;
 
 public class Vector3f {
 
-    public float x, y, z;
+    public float x = 0, y = 0, z = 0;
 
     public Vector3f() {
         x = 0;
