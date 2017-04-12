@@ -28,29 +28,6 @@ public class Texture {
 	
 	public Texture(Resources resources, int identifier) {
 		try {
-			//File file = new File(fileName);
-			/*
-			name = file.getName();
-			Bitmap bi = BitmapFactory.decodeResource(resources, identifier);
-			width = bi.getWidth();
-			height = bi.getHeight();
-			
-			int[] pixelsRaw = new int[width * height];
-			pixelsRaw = bi.getRGB(0, 0, width, height, null, 0, width);
-			
-			//ByteBuffer pixels = BufferUtils.createByteBuffer(width * height * 4);
-			ByteBuffer pixels = bi.getPixels(0, 0, width, height, null, 0, width);
-			for (int i = 0; i < height; i++) {
-				for (int j = 0; j < width; j++) {
-					int pixel = pixelsRaw[i * width + j];
-					pixels.put((byte)((pixel >> 16) & 0xFF)); //RED
-					pixels.put((byte)((pixel >>  8) & 0xFF)); //GREEN
-					pixels.put((byte)((pixel      ) & 0xFF)); //BLUE
-					pixels.put((byte)((pixel >> 24) & 0xFF)); //ALPHA
-				}
-			}
-			pixels.flip();
-*/
 			final int[] textureHandle = new int[1];
 
 			GLES20.glGenTextures(1, textureHandle, 0);
