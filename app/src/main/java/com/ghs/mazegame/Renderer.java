@@ -5,21 +5,21 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 
 import com.ghs.mazegame.engine.components.Shader;
-
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
+import com.ghs.mazegame.engine.components.VAO;
+import com.ghs.mazegame.engine.display.Camera;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 public class Renderer implements GLSurfaceView.Renderer {
 
-    private FloatBuffer vertBuffer;
-
     private Resources resources;
 
     private Shader shader;
+
+    private VAO vao;
+
+    private Camera camera;
 
     public Renderer(Resources resources) {
         this.resources = resources;
@@ -27,18 +27,18 @@ public class Renderer implements GLSurfaceView.Renderer {
 
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
         shader = new Shader(resources, R.raw.vert, R.raw.frag);
-        GLES20.glEnableVertexAttribArray(Shader.VERT_ATTRIB);
 
-        float[] verts = {
-            -0.5f, 0.5f, 0.0f,
-            -0.5f, -0.5f, 0.0f,
-            0.5f, 0.5f, 0.0f,
-            0.5f, 0.5f, 0.0f,
-            -0.5f, -0.5f, 0.0f,
-            0.5f, -0.5f, 0.0f
+        float[] vertices = {
+            -50f, 50f, 0.0f,
+            -50f, -50f, 0.0f,
+            50f, 50f, 0.0f,
+            50f, 50f, 0.0f,
+            -50f, -50f, 0.0f,
+            50f, -50f, 0.0f
         };
 
-        vertBuffer = toFloatBuffer(verts);
+        vao = new VAO(vertices);
+        camera = new Camera(100, 100);
     }
 
     public void onSurfaceChanged(GL10 gl, int wid, int hig) {
@@ -49,15 +49,10 @@ public class Renderer implements GLSurfaceView.Renderer {
         GLES20.glClearColor(0f, 0f, 0f, 1f);
         GLES20.glUniform4f(Shader.colorHandle, 1.0f, 0.0f, 0.0f, 1.0f);
 
-        GLES20.glVertexAttribPointer(Shader.VERT_ATTRIB, 3, GLES20.GL_FLOAT, false, 0, vertBuffer);
+        shader.setUniformMat4f("projection", camera.getProjection());
 
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 6);
-
+        shader.enable();
+        vao.render();
+        shader.disable();
     }
-
-    public FloatBuffer toFloatBuffer(float[] array) {
-        FloatBuffer floatBuff= ByteBuffer.allocateDirect(array.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
-        floatBuff.put(array).position(0);
-        return floatBuff;
-    };
 }

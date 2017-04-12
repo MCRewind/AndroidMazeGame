@@ -66,7 +66,6 @@ public class Shader {
         return shader;
     }
 
-
     public int getLocation(String name) {
         if(uniforms.containsKey(name))
             return uniforms.get(name);
@@ -80,9 +79,7 @@ public class Shader {
 
     public void setUniformMat4f(String name, Matrix4f matrix) {
         enable();
-        FloatBuffer buffer = ByteBuffer.allocateDirect(16).asFloatBuffer();
-        buffer.put(matrix.getArray());
-        GLES20.glUniformMatrix4fv(getLocation(name), 16, false, buffer);
+        GLES20.glUniformMatrix4fv(getLocation(name), 1, false, matrix.getArray(), 0);
         disable();
     }
 
