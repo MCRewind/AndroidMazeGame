@@ -6,30 +6,56 @@ import android.opengl.GLSurfaceView;
 
 import com.ghs.mazegame.engine.components.Shader;
 import com.ghs.mazegame.engine.components.VAO;
+<<<<<<< HEAD
+import com.ghs.mazegame.engine.display.Camera;
+=======
 
 import java.nio.FloatBuffer;
+>>>>>>> e2c9be26e16a1b837b9f5e28300b5dca83da518a
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 public class Renderer implements GLSurfaceView.Renderer {
 
+<<<<<<< HEAD
+=======
     private float width = 0.5f, height = 0.5f;
 
     private FloatBuffer vertBuffer;
 
+>>>>>>> e2c9be26e16a1b837b9f5e28300b5dca83da518a
     private Resources resources;
 
     private Shader shader;
 
     private VAO vao;
 
+<<<<<<< HEAD
+    private Camera camera;
+
+=======
+>>>>>>> e2c9be26e16a1b837b9f5e28300b5dca83da518a
     public Renderer(Resources resources) {
         this.resources = resources;
     }
 
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
         shader = new Shader(resources, R.raw.vert, R.raw.frag);
+<<<<<<< HEAD
+
+        float[] vertices = {
+            -50f, 50f, 0.0f,
+            -50f, -50f, 0.0f,
+            50f, 50f, 0.0f,
+            50f, 50f, 0.0f,
+            -50f, -50f, 0.0f,
+            50f, -50f, 0.0f
+        };
+
+        vao = new VAO(vertices);
+        camera = new Camera(100, 100);
+=======
         GLES20.glEnableVertexAttribArray(Shader.VERT_ATTRIB);
 
         float[] vertices = new float[] {
@@ -49,6 +75,7 @@ public class Renderer implements GLSurfaceView.Renderer {
                 1, 0
         };
         vao = new VAO(vertices, indices, texCoords);
+>>>>>>> e2c9be26e16a1b837b9f5e28300b5dca83da518a
     }
 
     public void onSurfaceChanged(GL10 gl, int wid, int hig) {
@@ -59,6 +86,14 @@ public class Renderer implements GLSurfaceView.Renderer {
         GLES20.glClearColor(0f, 0f, 0f, 1f);
         GLES20.glUniform4f(Shader.colorHandle, 1.0f, 0.0f, 0.0f, 1.0f);
 
+<<<<<<< HEAD
+        shader.setUniformMat4f("projection", camera.getProjection());
+
+        shader.enable();
         vao.render();
+        shader.disable();
+=======
+        vao.render();
+>>>>>>> e2c9be26e16a1b837b9f5e28300b5dca83da518a
     }
 }

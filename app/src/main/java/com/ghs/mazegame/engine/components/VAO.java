@@ -2,6 +2,22 @@ package com.ghs.mazegame.engine.components;
 
 import android.opengl.GLES20;
 
+<<<<<<< HEAD
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
+
+public class VAO {
+
+    private FloatBuffer buffer;
+
+    public VAO(float[] vertices) {
+        init(vertices);
+    }
+
+    private void init(float[] vertices) {
+        buffer = toFloatBuffer(vertices);
+=======
 import com.ghs.mazegame.Renderer;
 
 import java.nio.ByteBuffer;
@@ -51,10 +67,19 @@ public class VAO {
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
+>>>>>>> e2c9be26e16a1b837b9f5e28300b5dca83da518a
     }
 
     public void render() {
         GLES20.glEnableVertexAttribArray(Shader.VERT_ATTRIB);
+<<<<<<< HEAD
+        GLES20.glVertexAttribPointer(Shader.VERT_ATTRIB, 3, GLES20.GL_FLOAT, false, 0, buffer);
+
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 6);
+        GLES20.glDisableVertexAttribArray(Shader.VERT_ATTRIB);
+    }
+
+=======
         GLES20.glEnableVertexAttribArray(Shader.TEX_COORD_ATTRIB);
 
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -80,10 +105,15 @@ public class VAO {
         return buffer;
     };
 
+>>>>>>> e2c9be26e16a1b837b9f5e28300b5dca83da518a
     public FloatBuffer toFloatBuffer(float[] array) {
         FloatBuffer buffer = ByteBuffer.allocateDirect(array.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
         buffer.put(array).position(0);
         return buffer;
     };
+<<<<<<< HEAD
+}
+=======
 
 }
+>>>>>>> e2c9be26e16a1b837b9f5e28300b5dca83da518a
