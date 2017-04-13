@@ -33,7 +33,7 @@ public class VAO {
     }
 
     private void init(float[] vertices, int[] indices, int[] texCoords) {
-        IntBuffer buffers = ByteBuffer.allocateDirect(3).asIntBuffer();
+        IntBuffer buffers = ByteBuffer.allocateDirect(12).asIntBuffer();
         GLES20.glGenBuffers(3, buffers);
 
         vbo = buffers.get(0);
