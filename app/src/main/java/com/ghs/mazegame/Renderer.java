@@ -24,20 +24,28 @@ public class Renderer implements GLSurfaceView.Renderer {
 
     private FloatBuffer vertBuffer;
 
+<<<<<<< HEAD
+=======
+>>>>>>> e2c9be26e16a1b837b9f5e28300b5dca83da518a
+>>>>>>> 8b1c2fbfb6c1455e31805f333058242da36d7ed0
     private Resources resources;
 
     private Shader shader;
 
     private VAO vao;
 
+<<<<<<< HEAD
     private Camera camera;
 
+=======
+>>>>>>> e2c9be26e16a1b837b9f5e28300b5dca83da518a
     public Renderer(Resources resources) {
         this.resources = resources;
     }
 
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
         shader = new Shader(resources, R.raw.vert, R.raw.frag);
+<<<<<<< HEAD
 
         float[] vertices = {
             -50f, 50f, 0.0f,
@@ -50,6 +58,10 @@ public class Renderer implements GLSurfaceView.Renderer {
 
         vao = new VAO(vertices);
         camera = new Camera(100, 100);
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 8b1c2fbfb6c1455e31805f333058242da36d7ed0
         GLES20.glEnableVertexAttribArray(Shader.VERT_ATTRIB);
 
         float[] vertices = new float[] {
@@ -69,6 +81,10 @@ public class Renderer implements GLSurfaceView.Renderer {
                 1, 0
         };
         vao = new VAO(vertices, indices, texCoords);
+<<<<<<< HEAD
+=======
+>>>>>>> e2c9be26e16a1b837b9f5e28300b5dca83da518a
+>>>>>>> 8b1c2fbfb6c1455e31805f333058242da36d7ed0
     }
 
     public void onSurfaceChanged(GL10 gl, int wid, int hig) {
@@ -79,10 +95,14 @@ public class Renderer implements GLSurfaceView.Renderer {
         GLES20.glClearColor(0f, 0f, 0f, 1f);
         GLES20.glUniform4f(Shader.colorHandle, 1.0f, 0.0f, 0.0f, 1.0f);
 
+<<<<<<< HEAD
         shader.setUniformMat4f("projection", camera.getProjection());
 
         shader.enable();
         vao.render();
         shader.disable();
+=======
+        vao.render();
+>>>>>>> e2c9be26e16a1b837b9f5e28300b5dca83da518a
     }
 }
