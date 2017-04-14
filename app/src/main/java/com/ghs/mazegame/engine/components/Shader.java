@@ -16,8 +16,6 @@ public class Shader {
 
     public static int VERT_ATTRIB = 0;
 
-    public static int TEX_COORD_ATTRIB = 0;
-
     public static int colorHandle;
 
     private boolean enabled;
@@ -53,7 +51,6 @@ public class Shader {
         GLES20.glAttachShader(program, fragmentShader);
 
         GLES20.glBindAttribLocation(program, VERT_ATTRIB, "vertices");
-        GLES20.glBindAttribLocation(program, TEX_COORD_ATTRIB, "textCoords");
 
         GLES20.glLinkProgram(program);
 
