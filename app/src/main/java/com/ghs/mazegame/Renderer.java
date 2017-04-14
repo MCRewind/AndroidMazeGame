@@ -29,15 +29,17 @@ public class Renderer implements GLSurfaceView.Renderer {
         shader = new Shader(resources, R.raw.vert, R.raw.frag);
 
         float[] vertices = {
-            -50f, 50f, 0.0f,
-            -50f, -50f, 0.0f,
-            50f, 50f, 0.0f,
-            50f, 50f, 0.0f,
-            -50f, -50f, 0.0f,
-            50f, -50f, 0.0f
+            25, 25, 0,  //TOP LEFT
+            25, 75, 0,  //BOTTOM LEFT
+            75, 75, 0,  //BOTTOM RIGHT
+            75, 25, 0   //TOP RIGHT
+        };
+        int[] indices = {
+            0, 1, 3,
+            1, 2, 3
         };
 
-        vao = new VAO(vertices);
+        vao = new VAO(vertices, indices);
         camera = new Camera(100, 100);
     }
 
