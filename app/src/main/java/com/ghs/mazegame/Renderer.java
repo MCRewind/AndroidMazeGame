@@ -6,12 +6,23 @@ import android.opengl.GLSurfaceView;
 
 import com.ghs.mazegame.engine.components.Shader;
 import com.ghs.mazegame.engine.components.VAO;
+<<<<<<< HEAD
 import com.ghs.mazegame.engine.display.Camera;
+=======
+
+import java.nio.FloatBuffer;
+>>>>>>> e2c9be26e16a1b837b9f5e28300b5dca83da518a
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 public class Renderer implements GLSurfaceView.Renderer {
+
+<<<<<<< HEAD
+=======
+    private float width = 0.5f, height = 0.5f;
+
+    private FloatBuffer vertBuffer;
 
     private Resources resources;
 
@@ -39,6 +50,25 @@ public class Renderer implements GLSurfaceView.Renderer {
 
         vao = new VAO(vertices);
         camera = new Camera(100, 100);
+        GLES20.glEnableVertexAttribArray(Shader.VERT_ATTRIB);
+
+        float[] vertices = new float[] {
+                0.0f,  0.0f,   1.0f, //TOP LEFT
+                0.0f,  height, 1.0f, //BOTTOM LEFT
+                width, height, 1.0f, //BOTTOM RIGHT
+                width, 0.0f,   1.0f  //TOP RIGHT
+        };
+        int[] indices = new int[] {
+                0, 1, 3,
+                1, 2, 3
+        };
+        int[] texCoords = new int[] {
+                0, 0,
+                0, 1,
+                1, 1,
+                1, 0
+        };
+        vao = new VAO(vertices, indices, texCoords);
     }
 
     public void onSurfaceChanged(GL10 gl, int wid, int hig) {
