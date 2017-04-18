@@ -42,6 +42,7 @@ public class VAO {
 
     public void render() {
         GLES20.glEnableVertexAttribArray(Shader.VERT_ATTRIB);
+        GLES20.glEnableVertexAttribArray(Shader.TEX_COORD_ATTRIB);
 
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vbo);
         GLES20.glVertexAttribPointer(Shader.VERT_ATTRIB, 3, GLES20.GL_FLOAT, false, 0, 0);
@@ -56,6 +57,7 @@ public class VAO {
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vbo);
 
         GLES20.glDisableVertexAttribArray(Shader.VERT_ATTRIB);
+        GLES20.glDisableVertexAttribArray(Shader.TEX_COORD_ATTRIB);
     }
 
     public FloatBuffer toFloatBuffer(float[] array) {
