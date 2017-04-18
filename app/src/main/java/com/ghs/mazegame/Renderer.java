@@ -5,6 +5,7 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 
 import com.ghs.mazegame.engine.components.Shader;
+import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.components.VAO;
 import com.ghs.mazegame.engine.display.Camera;
 
@@ -21,12 +22,16 @@ public class Renderer implements GLSurfaceView.Renderer {
 
     private Camera camera;
 
+    private Texture texture;
+
     public Renderer(Resources resources) {
         this.resources = resources;
     }
 
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
         shader = new Shader(resources, R.raw.vert, R.raw.frag);
+
+        texture = new Texture(resources, R.drawable.santic_claws);
 
         float[] vertices = {
             25, 25, 0,  //TOP LEFT
@@ -38,8 +43,13 @@ public class Renderer implements GLSurfaceView.Renderer {
             0, 1, 3,
             1, 2, 3
         };
-
-        vao = new VAO(vertices, indices);
+        float[] texCoords = {
+            0, 0,
+            0, 1,
+            1, 1,
+            1, 0
+        };
+        vao = new VAO(vertices, indices, texCoords);
         camera = new Camera(100, 100);
     }
 
@@ -49,12 +59,13 @@ public class Renderer implements GLSurfaceView.Renderer {
 
     public void onDrawFrame(GL10 gl) {
         GLES20.glClearColor(0f, 0f, 0f, 1f);
-        GLES20.glUniform4f(Shader.colorHandle, 1.0f, 0.0f, 0.0f, 1.0f);
 
         shader.setUniformMat4f("projection", camera.getProjection());
 
+        texture.bind();
         shader.enable();
         vao.render();
         shader.disable();
+        texture.unbind();
     }
 }

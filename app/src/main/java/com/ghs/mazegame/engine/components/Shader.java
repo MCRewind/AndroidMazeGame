@@ -14,9 +14,7 @@ public class Shader {
 
     private static int program;
 
-    public static int VERT_ATTRIB = 0;
-
-    public static int colorHandle;
+    public static int VERT_ATTRIB = 0, TEX_COORD_ATTRIB = 1;
 
     private boolean enabled;
 
@@ -51,10 +49,9 @@ public class Shader {
         GLES20.glAttachShader(program, fragmentShader);
 
         GLES20.glBindAttribLocation(program, VERT_ATTRIB, "vertices");
+        GLES20.glBindAttribLocation(program, TEX_COORD_ATTRIB, "itexCoords");
 
         GLES20.glLinkProgram(program);
-
-        colorHandle = GLES20.glGetUniformLocation(program, "color");
 
         GLES20.glUseProgram(program);
     }

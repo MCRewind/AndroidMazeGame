@@ -1,7 +1,11 @@
-attribute vec4 vertices;
+attribute vec3 vertices;
+attribute vec2 itexCoords;
+
+varying vec2 texCoords;
 
 uniform mat4 projection;
 
 void main() {
-    gl_Position = projection * vertices;
+    texCoords = itexCoords;
+    gl_Position = projection * vec4(vertices, 1);
 }
