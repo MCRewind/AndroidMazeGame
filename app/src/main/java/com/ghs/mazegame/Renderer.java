@@ -8,6 +8,7 @@ import com.ghs.mazegame.engine.components.Shader;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.components.VAO;
 import com.ghs.mazegame.engine.display.Camera;
+import com.ghs.mazegame.objects.UIImage;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -24,6 +25,8 @@ public class Renderer implements GLSurfaceView.Renderer {
 
     private Texture texture;
 
+    UIImage testImage;
+
     public Renderer(Resources resources) {
         this.resources = resources;
     }
@@ -33,24 +36,9 @@ public class Renderer implements GLSurfaceView.Renderer {
 
         texture = new Texture(resources, R.drawable.santic_claws);
 
-        float[] vertices = {
-            25, 25, 0,  //TOP LEFT
-            25, 75, 0,  //BOTTOM LEFT
-            75, 75, 0,  //BOTTOM RIGHT
-            75, 25, 0   //TOP RIGHT
-        };
-        int[] indices = {
-            0, 1, 3,
-            1, 2, 3
-        };
-        float[] texCoords = {
-            0, 0,
-            0, 1,
-            1, 1,
-            1, 0
-        };
-        vao = new VAO(vertices, indices, texCoords);
         camera = new Camera(100, 100);
+
+        testImage = new UIImage(camera, texture, shader, 0, 0, 75, 75);
     }
 
     public void onSurfaceChanged(GL10 gl, int wid, int hig) {
@@ -60,12 +48,6 @@ public class Renderer implements GLSurfaceView.Renderer {
     public void onDrawFrame(GL10 gl) {
         GLES20.glClearColor(0f, 0f, 0f, 1f);
 
-        shader.setUniformMat4f("projection", camera.getProjection());
-
-        texture.bind();
-        shader.enable();
-        vao.render();
-        shader.disable();
-        texture.unbind();
+        testImage.render();
     }
 }
