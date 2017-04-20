@@ -1,5 +1,7 @@
 package com.ghs.mazegame.objects;
 
+import android.renderscript.Matrix4f;
+
 import com.ghs.mazegame.engine.components.Shader;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.components.VAO;
@@ -50,7 +52,9 @@ public class UIImage {
     }
 
     public void render() {
-        shader.setUniformMat4f("projection", camera.getProjection());
+        Matrix4f proj = camera.getProjection();
+        proj.translate(x, y, 0);
+        shader.setUniformMat4f("projection", proj);
 
         texture.bind();
         shader.enable();
@@ -68,7 +72,7 @@ public class UIImage {
     }
 
     public void setPosition(float x, float y) {
-        this.setX(x);
+        this.x = x;
         this.y = y;
     }
 
@@ -108,9 +112,9 @@ public class UIImage {
         this.texture = texture;
     }
 
-    public void translate(float x, float y) {
-        this.setX(this.getX() + x);
-        this.y += y;
+    public void translate(float dx, float dy) {
+        this.x += dx;
+        this.y += dy;
     }
 
 }
