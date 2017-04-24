@@ -5,8 +5,6 @@ import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.view.MotionEvent;
 
-import com.ghs.mazegame.Renderer;
-
 /**
  * Created by cmeyer3887 on 4/24/2017.
  */
@@ -35,8 +33,8 @@ public class Surface extends GLSurfaceView {
 
         }
 
-        camX = (x * com.ghs.mazegame.Renderer.cameraWidth) / getWidth();
-        camY = (y * com.ghs.mazegame.Renderer.cameraHeight) / getHeight();
+        camX = (x * com.ghs.mazegame.game.Renderer.cameraWidth) / getWidth();
+        camY = (y * com.ghs.mazegame.game.Renderer.cameraHeight) / getHeight();
 
         Log.d("position", "X: " + camX +  " Y: " + camY);
 

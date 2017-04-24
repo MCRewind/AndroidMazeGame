@@ -1,4 +1,4 @@
-package com.ghs.mazegame.objects;
+package com.ghs.mazegame.game.objects;
 
 import android.renderscript.Matrix4f;
 
