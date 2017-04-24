@@ -3,6 +3,8 @@ package com.ghs.mazegame.game;
 import android.content.res.Resources;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
+
+import com.ghs.mazegame.engine.UIManager;
 import com.ghs.mazegame.engine.display.Camera;
 import com.ghs.mazegame.game.objects.World;
 
@@ -19,6 +21,7 @@ public class Renderer implements GLSurfaceView.Renderer {
     public static  Resources resources;
     private Camera camera;
     private World world;
+    private UIManager uiManager;
 
     public Renderer(Resources resources) {
         this.resources = resources;
@@ -27,6 +30,7 @@ public class Renderer implements GLSurfaceView.Renderer {
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
         camera = new Camera(cameraWidth, cameraHeight);
         world = new World(camera, 0, 0, 20, 20);
+        uiManager = new UIManager();
         GLES20.glClearColor(0f, 0f, 0f, 1f);
     }
 
@@ -47,5 +51,6 @@ public class Renderer implements GLSurfaceView.Renderer {
 
     public void render() {
         world.render();
+
     }
 }
