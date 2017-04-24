@@ -19,7 +19,19 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class Renderer implements GLSurfaceView.Renderer {
 
+<<<<<<< HEAD
     private final int SCALE = 32;
+=======
+    public static int cameraWidth = 384;
+    public static int cameraHeight = 218;
+    public static int scale = 16;
+
+    private Resources resources;
+
+    private Shader shader;
+
+    private VAO vao;
+>>>>>>> bb8141b46427c88b20b00ed2d66b55956dfbdf71
 
     private Resources resources;
     private Camera camera;
@@ -30,7 +42,18 @@ public class Renderer implements GLSurfaceView.Renderer {
     }
 
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
+<<<<<<< HEAD
         camera = new Camera(384, 216);
+=======
+        shader = new Shader(resources, R.raw.vert, R.raw.frag);
+
+        texture = new Texture(resources, R.drawable.santic_claws);
+
+        camera = new Camera(cameraWidth, cameraHeight);
+
+        testImage = new UIImage(camera, texture, shader, 0, 0, 75, 75);
+
+>>>>>>> bb8141b46427c88b20b00ed2d66b55956dfbdf71
         GLES20.glClearColor(0f, 0f, 0f, 1f);
         initMap();
     }
@@ -42,6 +65,7 @@ public class Renderer implements GLSurfaceView.Renderer {
 
     public void onDrawFrame(GL10 gl) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
+<<<<<<< HEAD
         update();
         render();
     }
@@ -68,5 +92,9 @@ public class Renderer implements GLSurfaceView.Renderer {
                     map[i][j] = new Tile(camera, new Texture(resources, R.drawable.stone_floor), new Shader(resources, R.raw.vert, R.raw.frag), i * SCALE, j  * SCALE, SCALE, SCALE);
             }
         }
+=======
+        testImage.render();
+        //testImage.translate(1, 0);
+>>>>>>> bb8141b46427c88b20b00ed2d66b55956dfbdf71
     }
 }
