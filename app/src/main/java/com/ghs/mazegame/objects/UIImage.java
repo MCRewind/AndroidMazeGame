@@ -7,10 +7,6 @@ import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.components.VAO;
 import com.ghs.mazegame.engine.display.Camera;
 
-/**
- * Created by cmeyer3887 on 4/20/2017.
- */
-
 public class UIImage {
 
     private float x = 0, y = 0;
@@ -33,29 +29,28 @@ public class UIImage {
 
     public void makeVAO() {
         float[] vertices = new float[] {
-                0.0f,  0.0f,   1.0f, //TOP LEFT
-                0.0f,  height, 1.0f, //BOTTOM LEFT
-                width, height, 1.0f, //BOTTOM RIGHT
-                width, 0.0f,   1.0f  //TOP RIGHT
+            0.0f,  0.0f,   1.0f, //TOP LEFT
+            0.0f,  height, 1.0f, //BOTTOM LEFT
+            width, height, 1.0f, //BOTTOM RIGHT
+            width, 0.0f,   1.0f  //TOP RIGHT
         };
         int[] indices = new int[] {
-                0, 1, 3,
-                1, 2, 3
+            0, 1, 3,
+            1, 2, 3
         };
         float[] texCoords = new float[] {
-                0, 0,
-                0, 1,
-                1, 1,
-                1, 0
+            0, 0,
+            0, 1,
+            1, 1,
+            1, 0
         };
         vao = new VAO(vertices, indices, texCoords);
     }
 
     public void render() {
-        Matrix4f proj = camera.getProjection();
+        Matrix4f proj = camera.getUnatransformedProjection();
         proj.translate(x, y, 0);
         shader.setUniformMat4f("projection", proj);
-
         texture.bind();
         shader.enable();
         vao.render();
@@ -116,5 +111,4 @@ public class UIImage {
         this.x += dx;
         this.y += dy;
     }
-
 }
