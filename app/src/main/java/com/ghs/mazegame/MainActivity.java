@@ -5,17 +5,19 @@ import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.ghs.mazegame.engine.display.Surface;
+
 import java.io.FileInputStream;
 import java.util.Scanner;
 
 public class MainActivity extends Activity {
 
-    private GLSurfaceView surface;
+    Surface surface;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        surface = new GLSurfaceView(this);
+        surface = new Surface(this);
         surface.setEGLContextClientVersion(2);
         surface.setRenderer(new Renderer(surface.getResources()));
 
