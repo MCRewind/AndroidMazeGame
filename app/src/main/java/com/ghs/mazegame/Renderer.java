@@ -18,6 +18,10 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class Renderer implements GLSurfaceView.Renderer {
 
+    public static int cameraWidth = 384;
+    public static int cameraHeight = 218;
+    public static int scale = 16;
+
     private Resources resources;
 
     private Shader shader;
@@ -41,7 +45,7 @@ public class Renderer implements GLSurfaceView.Renderer {
 
         texture = new Texture(resources, R.drawable.santic_claws);
 
-        camera = new Camera(100, 100);
+        camera = new Camera(cameraWidth, cameraHeight);
 
         testImage = new UIImage(camera, texture, shader, 0, 0, 75, 75);
 
@@ -56,6 +60,6 @@ public class Renderer implements GLSurfaceView.Renderer {
     public void onDrawFrame(GL10 gl) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
         testImage.render();
-        testImage.translate(1, 0);
+        //testImage.translate(1, 0);
     }
 }
