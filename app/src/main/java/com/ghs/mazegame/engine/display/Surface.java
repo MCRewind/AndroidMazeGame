@@ -19,14 +19,15 @@ public class Surface extends GLSurfaceView {
     public boolean onTouchEvent(MotionEvent e) {
         float x = e.getX();
         float y = e.getY();
-        switch(e.getAction()){
-            case MotionEvent.ACTION_DOWN:
-
-            case MotionEvent.ACTION_UP:
-
+        if(e.getAction() == MotionEvent.ACTION_UP) {
+            camX = -1;
+            camY = -1;
         }
-        camX = (x * com.ghs.mazegame.game.Renderer.cameraWidth) / getWidth();
-        camY = (y * com.ghs.mazegame.game.Renderer.cameraHeight) / getHeight();
+        else {
+            camX = (x * com.ghs.mazegame.game.Renderer.cameraWidth) / getWidth();
+            camY = (y * com.ghs.mazegame.game.Renderer.cameraHeight) / getHeight();
+        }
+        Log.e("kek", "X: " + camX + ", Y: " + camY);
         return true;
     }
 

@@ -7,7 +7,7 @@ import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.components.VAO;
 import com.ghs.mazegame.engine.display.Camera;
 
-public class UIImage {
+public class UIImage extends UIObject {
 
     private float x = 0, y = 0;
     private float width = 0, height = 0;
@@ -55,7 +55,7 @@ public class UIImage {
     }
 
     public boolean contains(float x, float y) {
-        if ((x > this.x && x < this.x + this.width) && (y > this.y && y < this.y + this.height)) {
+        if ((x >= this.x && x < this.x + this.width) && (y >= this.y && y < this.y + this.height)) {
             return true;
         } else {
             return false;
