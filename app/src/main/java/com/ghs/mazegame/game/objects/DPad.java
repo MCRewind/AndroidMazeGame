@@ -12,6 +12,7 @@ public class DPad extends UIObject {
 
     private int dir = 0;
     private UIImage[] directions;
+    private UIImage center;
 
     public DPad(Camera camera, float x, float y, float width, float height) {
         directions = new UIImage[8];
@@ -23,6 +24,7 @@ public class DPad extends UIObject {
         directions[5] = new UIImage(camera, new Texture(R.drawable.d_downleft),  new Shader(R.raw.defaultvs, R.raw.defaultfs), x,                    y + 2 * height / 3.0f, width / 3.0f, height / 3.0f);
         directions[6] = new UIImage(camera, new Texture(R.drawable.d_down),      new Shader(R.raw.defaultvs, R.raw.defaultfs), x + width / 3.0f,     y + 2 * height / 3.0f, width / 3.0f, height / 3.0f);
         directions[7] = new UIImage(camera, new Texture(R.drawable.d_downright), new Shader(R.raw.defaultvs, R.raw.defaultfs), x + 2 * width / 3.0f, y + 2 * height / 3.0f, width / 3.0f, height / 3.0f);
+        center = new UIImage(camera, new Texture(R.drawable.d_center), new Shader(R.raw.defaultvs, R.raw.defaultfs), x + width / 3.0f, y + height / 3.0f, width / 3.0f, height / 3.0f);
     }
 
     public void update() {
