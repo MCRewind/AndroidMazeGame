@@ -24,15 +24,11 @@ public class UIImage {
         this.y = y;
         this.width = width;
         this.height = height;
-        makeVAO();
-    }
-
-    public void makeVAO() {
         float[] vertices = new float[] {
-            0.0f,  0.0f,   1.0f, //TOP LEFT
-            0.0f,  height, 1.0f, //BOTTOM LEFT
-            width, height, 1.0f, //BOTTOM RIGHT
-            width, 0.0f,   1.0f  //TOP RIGHT
+            0.0f,  0.0f,   0.0f, //TOP LEFT
+            0.0f,  height, 0.0f, //BOTTOM LEFT
+            width, height, 0.0f, //BOTTOM RIGHT
+            width, 0.0f,   0.0f  //TOP RIGHT
         };
         int[] indices = new int[] {
             0, 1, 3,
@@ -58,17 +54,12 @@ public class UIImage {
         texture.unbind();
     }
 
-    public boolean within(int x, int y) {
-        if ((x > this.x && x < this.x+this.width) && (y > this.y && y < this.y+this.height)) {
+    public boolean contains(float x, float y) {
+        if ((x > this.x && x < this.x + this.width) && (y > this.y && y < this.y + this.height)) {
             return true;
         } else {
             return false;
         }
-    }
-
-    public void setPosition(float x, float y) {
-        this.x = x;
-        this.y = y;
     }
 
     public float getX() {
@@ -110,5 +101,10 @@ public class UIImage {
     public void translate(float dx, float dy) {
         this.x += dx;
         this.y += dy;
+    }
+
+    public void setPosition(float x, float y) {
+        this.x = x;
+        this.y = y;
     }
 }
