@@ -7,12 +7,15 @@ import android.opengl.GLES20;
 import android.opengl.GLUtils;
 import android.util.Log;
 
+import com.ghs.mazegame.game.Renderer;
+
 public class Texture {
 
     private String name;
     private int id, width, height;
 
-    public Texture(Resources resources, int identifier) {
+    public Texture(int identifier) {
+        Resources resources = Renderer.resources;
         try {
             final int[] textureHandle = new int[1];
 

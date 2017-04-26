@@ -4,6 +4,8 @@ import android.content.res.Resources;
 import android.opengl.GLES20;
 import android.renderscript.Matrix4f;
 
+import com.ghs.mazegame.game.Renderer;
+
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.HashMap;
@@ -20,12 +22,13 @@ public class Shader {
 
     private Map<String, Integer> uniforms;
 
-    public Shader(Resources resources, int vertId, int fragId) {
+    public Shader(int vertId, int fragId) {
         uniforms = new HashMap<>();
-        makeProgram(resources, vertId, fragId);
+        makeProgram(vertId, fragId);
     }
 
-    private void makeProgram(Resources resources, int vertId, int fragId) {
+    private void makeProgram(int vertId, int fragId) {
+        Resources resources = Renderer.resources;
 
         Scanner vert = new Scanner(resources.openRawResource(vertId));
         Scanner frag = new Scanner(resources.openRawResource(fragId));
