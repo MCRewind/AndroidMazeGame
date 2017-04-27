@@ -23,18 +23,19 @@ public class Map {
     public Map(Camera camera, float x, float y, int width, int height) {
         this.camera = camera;
         map = new com.ghs.mazegame.game.objects.Tile[width][height];
+        Shader shader = new Shader(R.raw.defaultvs, R.raw.defaultfs);
         for (int i = 0; i < map.length; ++i) {
             for (int j = 0; j < map[0].length; ++j) {
                 if(i == 0 || j== 0 || i == map.length - 1 || j == map[0].length - 1)
-                    map[i][j] = new com.ghs.mazegame.game.objects.Tile(camera, new Texture(R.drawable.brick_wall), new Shader(R.raw.defaultvs, R.raw.defaultfs), i * SCALE, j  * SCALE, SCALE, SCALE, true);
+                    map[i][j] = new com.ghs.mazegame.game.objects.Tile(camera, new Texture(R.drawable.brick_wall), shader, i * SCALE, j  * SCALE, SCALE, SCALE, true);
                 else
-                    map[i][j] = new com.ghs.mazegame.game.objects.Tile(camera, new Texture(R.drawable.stone_floor), new Shader(R.raw.defaultvs, R.raw.defaultfs), i * SCALE, j  * SCALE, SCALE, SCALE, false);
+                    map[i][j] = new com.ghs.mazegame.game.objects.Tile(camera, new Texture(R.drawable.stone_floor), shader, i * SCALE, j  * SCALE, SCALE, SCALE, false);
             }
         }
         this.width = width;
         this.height = height;
         rWidth = (int) Math.ceil((camera.getX() + camera.getWidth()) / SCALE) + 1;
-        rHeight = (int) Math.ceil((camera.getY() + camera.getHeight()) / SCALE) + 1;
+        rHeight = (int) Math.ceil((camera.getY() + camera.getHeight()) / SCALE);
     }
 
     public void render() {
@@ -42,8 +43,8 @@ public class Map {
         int maxX = minX + rWidth;
         int minY = (int) (camera.getY() / SCALE);
         int maxY = minY + rHeight;
-        for (int i = minX; i < maxX; ++i)
-            for (int j = minY; j < maxY; ++j)
+        for (int i = Math.max(minX, 0); i <= maxX && i < map.length; i++)
+            for (int j = Math.max(minY, 0); j <= maxY && j < map[0].length; j++)
                 map[i][j].render();
     }
 

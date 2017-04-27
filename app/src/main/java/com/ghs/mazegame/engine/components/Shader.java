@@ -3,6 +3,7 @@ package com.ghs.mazegame.engine.components;
 import android.content.res.Resources;
 import android.opengl.GLES20;
 import android.renderscript.Matrix4f;
+import android.util.Log;
 
 import com.ghs.mazegame.game.Renderer;
 
@@ -14,11 +15,9 @@ import java.util.Scanner;
 
 public class Shader {
 
-    private static int program;
+    private int program;
 
     public static int VERT_ATTRIB = 0, TEX_COORD_ATTRIB = 1;
-
-    private boolean enabled;
 
     private Map<String, Integer> uniforms;
 
@@ -77,6 +76,12 @@ public class Shader {
             throw new RuntimeException("Could not find uniform: " + name);
     }
 
+    public void setUniform4f(String name, float x, float y, float z, float w) {
+        enable();
+        GLES20.glUniform4f(getLocation(name), x, y, z, w);
+        disable();
+    }
+
     public void setUniformMat4f(String name, Matrix4f matrix) {
         enable();
         GLES20.glUniformMatrix4fv(getLocation(name), 1, false, matrix.getArray(), 0);
@@ -84,12 +89,10 @@ public class Shader {
     }
 
     public void enable() {
-        enabled = true;
         GLES20.glUseProgram(program);
     }
 
     public void disable() {
-        enabled = false;
         GLES20.glUseProgram(0);
     }
 }

@@ -9,6 +9,7 @@ import com.ghs.mazegame.engine.components.Shader;
 import com.ghs.mazegame.engine.components.Texture;
 
 import com.ghs.mazegame.engine.display.Camera;
+import com.ghs.mazegame.engine.math.Vector3f;
 import com.ghs.mazegame.game.objects.DPad;
 import com.ghs.mazegame.game.objects.Player;
 import com.ghs.mazegame.game.objects.Map;
@@ -38,7 +39,7 @@ public class Renderer implements GLSurfaceView.Renderer {
         camera = new Camera(cameraWidth, cameraHeight);
 
         map = new Map(camera, 0, 0, 20, 20);
-        dpad = new DPad(camera, SCALE / 2, cameraHeight - SCALE * 2, SCALE * 1.5f, SCALE * 1.5f);
+        dpad = new DPad(camera, SCALE / 2, cameraHeight - SCALE * 2, SCALE * 1.5f + 2, SCALE * 1.5f + 2);
         player = new Player(camera, new Texture(R.drawable.samby), new Shader(R.raw.defaultvs, R.raw.defaultfs), SCALE, SCALE, SCALE, SCALE, map.getRightBound(), map.getBottomBound());
 
         GLES20.glClearColor(0f, 0f, 0f, 1f);
@@ -73,18 +74,7 @@ public class Renderer implements GLSurfaceView.Renderer {
 
     private void updatePlayer() {
         float speed = 1.0f;
-        float dx = 0;
-        float dy = 0;
-        int dir = dpad.getDir();
-        if(dir == 1 || dir == 4 || dir == 6)
-            dx = -speed;
-        else if(dir == 3 || dir == 5 || dir == 8)
-            dx = speed;
-        if(dir == 1 || dir == 2 || dir == 3)
-            dy = -speed;
-        else if(dir == 6 || dir == 7 || dir == 8)
-            dy = speed;
-        player.translate(dx, dy);
+        player.translate(dpad.getDir().mul(speed, new Vector3f()));
         player.update();
         map.checkPlayerCollision(player);
     }

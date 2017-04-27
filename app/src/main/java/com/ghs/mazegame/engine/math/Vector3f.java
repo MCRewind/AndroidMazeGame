@@ -64,6 +64,13 @@ public class Vector3f {
         return target;
     }
 
+    public Vector3f mul(float scalar, Vector3f target) {
+        target.x = x * scalar;
+        target.y = y * scalar;
+        target.z = z * scalar;
+        return target;
+    }
+
     public float lengthSquared() {
         return x * x + y * y + z * z;
     }

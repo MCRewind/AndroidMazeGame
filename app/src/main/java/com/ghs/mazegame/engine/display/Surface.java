@@ -27,7 +27,6 @@ public class Surface extends GLSurfaceView {
             camX = (x * com.ghs.mazegame.game.Renderer.cameraWidth) / getWidth();
             camY = (y * com.ghs.mazegame.game.Renderer.cameraHeight) / getHeight();
         }
-        Log.e("kek", "X: " + camX + ", Y: " + camY);
         return true;
     }
 

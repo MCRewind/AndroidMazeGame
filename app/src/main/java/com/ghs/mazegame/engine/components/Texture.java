@@ -33,9 +33,6 @@ public class Texture {
                 width = bitmap.getWidth();
                 height = bitmap.getHeight();
 
-                Log.e("WH", "W: " + width + " H: " + height);
-
-
                 // Bind to the texture in OpenGL
                 GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, id);
 
@@ -49,19 +46,8 @@ public class Texture {
                 // Recycle the bitmap, since its data has been loaded into OpenGL.
                 bitmap.recycle();
             }
-
-            if (id == 0) {
+            if (id == 0)
                 throw new RuntimeException("Error loading texture.");
-            }
-
-			/*
-			bind();
-			GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST);
-			GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_NEAREST);
-			GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA, width, height, 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, pixels);
-
-			unbind();
-			*/
         } catch(Exception e) {
             e.printStackTrace();
         }
