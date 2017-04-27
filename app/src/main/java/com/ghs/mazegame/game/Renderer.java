@@ -39,7 +39,7 @@ public class Renderer implements GLSurfaceView.Renderer {
         camera = new Camera(cameraWidth, cameraHeight);
 
         map = new Map(camera, 0, 0, 20, 20);
-        dpad = new DPad(camera, SCALE / 2, cameraHeight - SCALE * 2, SCALE * 1.5f + 2, SCALE * 1.5f + 2);
+        dpad = new DPad(camera, SCALE * 0.5f, cameraHeight - SCALE * 2.5f, SCALE * 2, SCALE * 2);
         player = new Player(camera, new Texture(R.drawable.samby), new Shader(R.raw.defaultvs, R.raw.defaultfs), SCALE, SCALE, SCALE, SCALE, map.getRightBound(), map.getBottomBound());
 
         GLES20.glClearColor(0f, 0f, 0f, 1f);

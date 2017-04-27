@@ -40,16 +40,22 @@ public class DPad extends UIObject {
     }
 
     public void update() {
-        selected = 0;
+        selected = -1;
         for (int i = 0; i < directions.length; i++)
             if (directions[i].contains(camX, camY))
                 selected = i + 1;
-        if (selected != 0) {
+        if(center.contains(camX, camY))
+            selected = 0;
+        if (selected != -1) {
             float vecX = camX - (x + width / 2);
             float vecY = camY - (y + height / 2);
             float length = (float) Math.sqrt(vecX * vecX + vecY * vecY);
             dir.x = vecX / length;
             dir.y = vecY / length;
+            if(selected == 0) {
+                dir.x *= 0.5f;
+                dir.y *= 0.5f;
+            }
         }
         else {
             dir.x = 0;
