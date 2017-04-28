@@ -64,6 +64,13 @@ public class Vector3f {
         return target;
     }
 
+    public Vector3f mul(float scalar) {
+        x *= scalar;
+        y *= scalar;
+        z *= scalar;
+        return this;
+    }
+
     public Vector3f mul(float scalar, Vector3f target) {
         target.x = x * scalar;
         target.y = y * scalar;

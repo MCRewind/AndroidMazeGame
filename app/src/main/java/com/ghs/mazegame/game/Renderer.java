@@ -13,6 +13,8 @@ import com.ghs.mazegame.engine.math.Vector3f;
 import com.ghs.mazegame.game.objects.DPad;
 import com.ghs.mazegame.game.objects.Player;
 import com.ghs.mazegame.game.objects.Map;
+import com.ghs.mazegame.game.panels.Panel;
+import com.ghs.mazegame.game.panels.PlayPanel;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -24,7 +26,12 @@ public class Renderer implements GLSurfaceView.Renderer {
     public static int cameraWidth = 192;
     public static int cameraHeight = 108;
 
+    public static float time;
+
     public static Resources resources;
+
+    private float pastTime, curTime;
+
     private Camera camera;
 
     private Map map;
@@ -39,7 +46,7 @@ public class Renderer implements GLSurfaceView.Renderer {
         camera = new Camera(cameraWidth, cameraHeight);
 
         map = new Map(camera, 0, 0, 20, 20);
-        dpad = new DPad(camera, SCALE * 0.5f, cameraHeight - SCALE * 2.5f, SCALE * 2, SCALE * 2);
+        dpad = new DPad(camera, SCALE * 0.75f, cameraHeight - SCALE * 2.75f, SCALE * 2 + 1, SCALE * 2 + 1);
         player = new Player(camera, new Texture(R.drawable.samby), new Shader(R.raw.defaultvs, R.raw.defaultfs), SCALE, SCALE, SCALE, SCALE, map.getRightBound(), map.getBottomBound());
 
         GLES20.glClearColor(0f, 0f, 0f, 1f);
@@ -47,6 +54,7 @@ public class Renderer implements GLSurfaceView.Renderer {
 
         GLES20.glEnable(GLES20.GL_BLEND);
         GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
+        pastTime = System.nanoTime() / 1000000f;
     }
 
     public void onSurfaceChanged(GL10 gl, int width, int height) {
@@ -55,6 +63,9 @@ public class Renderer implements GLSurfaceView.Renderer {
 
 
     public void onDrawFrame(GL10 gl) {
+        curTime = System.nanoTime() / 1000000f;
+        time = (curTime - pastTime) / 1000f;
+        pastTime = curTime;
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
         update();
         render();
@@ -73,8 +84,8 @@ public class Renderer implements GLSurfaceView.Renderer {
     }
 
     private void updatePlayer() {
-        float speed = 1.0f;
-        player.translate(dpad.getDir().mul(speed, new Vector3f()));
+        float speed = SCALE * 3;
+        player.translate(dpad.getDir().mul(speed, new Vector3f()).mul(time));
         player.update();
         map.checkPlayerCollision(player);
     }

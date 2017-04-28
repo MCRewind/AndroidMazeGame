@@ -3,6 +3,7 @@ package com.ghs.mazegame.game;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.ghs.mazegame.engine.display.Surface;
@@ -20,10 +21,10 @@ public class MainActivity extends Activity {
 
         setContentView(surface);
 
-        FullScreencall();
+        fullScreenCall();
     }
 
-    public void FullScreencall() {
+    public void fullScreenCall() {
         if(Build.VERSION.SDK_INT < 19){
             View v = this.getWindow().getDecorView();
             v.setSystemUiVisibility(View.GONE);

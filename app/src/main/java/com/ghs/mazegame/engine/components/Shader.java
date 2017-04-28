@@ -3,12 +3,9 @@ package com.ghs.mazegame.engine.components;
 import android.content.res.Resources;
 import android.opengl.GLES20;
 import android.renderscript.Matrix4f;
-import android.util.Log;
 
 import com.ghs.mazegame.game.Renderer;
 
-import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
