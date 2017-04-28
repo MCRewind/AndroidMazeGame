@@ -7,6 +7,7 @@ import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.components.VAO;
 import com.ghs.mazegame.engine.display.Camera;
 import com.ghs.mazegame.engine.utils.Hitbox;
+import com.ghs.mazegame.game.Renderer;
 
 public class Tile {
 
@@ -18,14 +19,14 @@ public class Tile {
     private VAO vao;
     private Hitbox hitbox;
 
-    public Tile(Camera camera, Texture texture, Shader shader, float x, float y, float width, float height, boolean solid) {
+    public Tile(Camera camera, Texture texture, Shader shader, float x, float y, boolean solid) {
         this.camera = camera;
         this.texture = texture;
         this.shader = shader;
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
+        this.width = Renderer.SCALE;
+        this.height = Renderer.SCALE;
         this.solid = solid;
         hitbox = new Hitbox(x, y, width, height);
         float[] vertices = new float[] {
@@ -47,15 +48,43 @@ public class Tile {
         vao = new VAO(vertices, indices, texCoords);
     }
 
+    public Tile(Camera camera, float x, float y, float width, float height) {
+        this.camera = camera;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        hitbox = new Hitbox(x, y, width, height);
+        float[] vertices = new float[] {
+            0.0f,  0.0f,   0.9f, //TOP LEFT
+            0.0f,  height, 0.9f, //BOTTOM LEFT
+            width, height, 0.9f, //BOTTOM RIGHT
+            width, 0.0f,   0.9f  //TOP RIGHT
+        };
+        int[] indices = new int[] {
+            0, 1, 3,
+            1, 2, 3
+        };
+        float[] texCoords = new float[] {
+            0, 0,
+            0, 1,
+            1, 1,
+            1, 0
+        };
+        vao = new VAO(vertices, indices, texCoords);
+    }
+
     public void render() {
-        Matrix4f proj = camera.getProjection();
-        proj.translate(x, y, 0);
-        shader.setUniformMat4f("projection", proj);
-        texture.bind();
-        shader.enable();
-        vao.render();
-        shader.disable();
-        texture.unbind();
+        if (texture != null) {
+            Matrix4f proj = camera.getProjection();
+            proj.translate(x, y, 0);
+            shader.setUniformMat4f("projection", proj);
+            texture.bind();
+            shader.enable();
+            vao.render();
+            shader.disable();
+            texture.unbind();
+        }
     }
 
     public Hitbox getHitbox() {
@@ -64,5 +93,10 @@ public class Tile {
 
     public boolean isSolid() {
         return solid;
+    }
+
+    public void setTile(Texture texture, boolean solid) {
+        this.texture = texture;
+        this.solid = solid;
     }
 }

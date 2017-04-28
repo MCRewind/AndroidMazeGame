@@ -19,7 +19,7 @@ public class Player {
     private Texture texture;
     private Shader shader;
 
-    public Player(Camera camera, Texture texture, Shader shader, float x, float y, float width, float height, float rightBound, float bottomBound) {
+    public Player(Camera camera, Texture texture, Shader shader, float x, float y, float width, float height) {
         this.texture = texture;
         this.shader = shader;
         this.camera = camera;
@@ -27,8 +27,8 @@ public class Player {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.rightBound = rightBound;
-        this.bottomBound = bottomBound;
+        this.rightBound = 0;
+        this.bottomBound = 0;
         this.hitbox = new Hitbox(x, y, width, height);
         float[] vertices = new float[] {
             0.0f,  0.0f,   0.5f, //TOP LEFT
