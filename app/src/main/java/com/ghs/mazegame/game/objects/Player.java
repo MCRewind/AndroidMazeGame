@@ -8,8 +8,9 @@ import com.ghs.mazegame.engine.components.VAO;
 import com.ghs.mazegame.engine.display.Camera;
 import com.ghs.mazegame.engine.math.Vector3f;
 import com.ghs.mazegame.engine.utils.Hitbox;
+import com.ghs.mazegame.game.interfaces.GameObject;
 
-public class Player {
+public class Player implements GameObject {
 
     private float x = 0, y = 0, width = 0, height = 0;
     private float rightBound = 0, bottomBound = 0;
@@ -78,10 +79,24 @@ public class Player {
         hitbox.setPosition(x, y);
     }
 
+    public void setPosition(Vector3f position) {
+        x = position.x;
+        y = position.y;
+        hitbox.setPosition(x, y);
+    }
+
     public void translate(float x, float y) {
         this.x += x;
         this.y += y;
         hitbox.setPosition(this.x, this.y);
+    }
+
+    public boolean contains(float x, float y) {
+        if ((x >= this.x && x < this.x + this.width) && (y >= this.y && y < this.y + this.height)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void translate(Vector3f vector) {
@@ -106,5 +121,10 @@ public class Player {
 
     public float getHeight() {
         return height;
+    }
+
+    public void setBounds(Vector3f bounds) {
+        rightBound = bounds.x;
+        bottomBound = bounds.y;
     }
 }

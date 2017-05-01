@@ -5,16 +5,17 @@ import com.ghs.mazegame.engine.components.Shader;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.display.Camera;
 import com.ghs.mazegame.engine.math.Vector3f;
+import com.ghs.mazegame.game.interfaces.GameObject;
 
-import static com.ghs.mazegame.engine.display.Surface.camX;
-import static com.ghs.mazegame.engine.display.Surface.camY;
+import static com.ghs.mazegame.engine.display.Surface.touchX;
+import static com.ghs.mazegame.engine.display.Surface.touchY;
 
-public class DPad extends UIObject {
+public class DPad implements GameObject {
 
     private float x, y, width, height;
     private int selected = 0;
     private Shader shader;
-    private UIImage[] dpad;
+    private Image[] dpad;
     private Vector3f dir;
 
     public DPad(Camera camera, float x, float y, float width, float height) {
@@ -24,26 +25,26 @@ public class DPad extends UIObject {
         this.height = height;
         dir = new Vector3f();
         shader = new Shader(R.raw.defaultvs, R.raw.dpadfs);
-        dpad = new UIImage[9];
-        dpad[0] = new UIImage(camera, new Texture(R.drawable.d_upleft),    shader, x,                    y,                     width / 3.0f, height / 3.0f);
-        dpad[1] = new UIImage(camera, new Texture(R.drawable.d_up),        shader, x + width / 3.0f,     y,                     width / 3.0f, height / 3.0f);
-        dpad[2] = new UIImage(camera, new Texture(R.drawable.d_upright),   shader, x + 2 * width / 3.0f, y,                     width / 3.0f, height / 3.0f);
-        dpad[3] = new UIImage(camera, new Texture(R.drawable.d_left),      shader, x,                    y + height / 3.0f,     width / 3.0f, height / 3.0f);
-        dpad[4] = new UIImage(camera, new Texture(R.drawable.d_center),    shader, x + width / 3.0f,     y + height / 3.0f,     width / 3.0f, height / 3.0f);
-        dpad[5] = new UIImage(camera, new Texture(R.drawable.d_right),     shader, x + 2 * width / 3.0f, y + height / 3.0f,     width / 3.0f, height / 3.0f);
-        dpad[6] = new UIImage(camera, new Texture(R.drawable.d_downleft),  shader, x,                    y + 2 * height / 3.0f, width / 3.0f, height / 3.0f);
-        dpad[7] = new UIImage(camera, new Texture(R.drawable.d_down),      shader, x + width / 3.0f,     y + 2 * height / 3.0f, width / 3.0f, height / 3.0f);
-        dpad[8] = new UIImage(camera, new Texture(R.drawable.d_downright), shader, x + 2 * width / 3.0f, y + 2 * height / 3.0f, width / 3.0f, height / 3.0f);
+        dpad = new Image[9];
+        dpad[0] = new Image(camera, new Texture(R.drawable.d_upleft),    shader, x,                    y,                     width / 3.0f, height / 3.0f);
+        dpad[1] = new Image(camera, new Texture(R.drawable.d_up),        shader, x + width / 3.0f,     y,                     width / 3.0f, height / 3.0f);
+        dpad[2] = new Image(camera, new Texture(R.drawable.d_upright),   shader, x + 2 * width / 3.0f, y,                     width / 3.0f, height / 3.0f);
+        dpad[3] = new Image(camera, new Texture(R.drawable.d_left),      shader, x,                    y + height / 3.0f,     width / 3.0f, height / 3.0f);
+        dpad[4] = new Image(camera, new Texture(R.drawable.d_center),    shader, x + width / 3.0f,     y + height / 3.0f,     width / 3.0f, height / 3.0f);
+        dpad[5] = new Image(camera, new Texture(R.drawable.d_right),     shader, x + 2 * width / 3.0f, y + height / 3.0f,     width / 3.0f, height / 3.0f);
+        dpad[6] = new Image(camera, new Texture(R.drawable.d_downleft),  shader, x,                    y + 2 * height / 3.0f, width / 3.0f, height / 3.0f);
+        dpad[7] = new Image(camera, new Texture(R.drawable.d_down),      shader, x + width / 3.0f,     y + 2 * height / 3.0f, width / 3.0f, height / 3.0f);
+        dpad[8] = new Image(camera, new Texture(R.drawable.d_downright), shader, x + 2 * width / 3.0f, y + 2 * height / 3.0f, width / 3.0f, height / 3.0f);
     }
 
     public void update() {
         selected = -1;
         for (int i = 0; i < dpad.length; i++)
-            if (dpad[i].contains(camX, camY))
+            if (dpad[i].contains(touchX, touchY))
                 selected = i;
         if (selected != -1) {
-            float vecX = camX - (x + width / 2);
-            float vecY = camY - (y + height / 2);
+            float vecX = touchX - (x + width / 2);
+            float vecY = touchY - (y + height / 2);
             float length = (float) Math.sqrt(vecX * vecX + vecY * vecY);
             dir.x = vecX / length;
             dir.y = vecY / length;
@@ -61,10 +62,18 @@ public class DPad extends UIObject {
     public void render() {
         for (int i = 0; i < dpad.length; i++) {
             if (selected == i)
-                shader.setUniform4f("opacity", 0.3f, 0.45f, 0.7f, 0.3f);
+                shader.setUniform4f("opacity", 0.3f, 0.5f, 0.7f, 0.6f);
             else
-                shader.setUniform4f("opacity", 0.4f, 0.4f, 0.4f, 0.15f);
+                shader.setUniform4f("opacity", 0.4f, 0.4f, 0.4f, 0.3f);
             dpad[i].render();
+        }
+    }
+
+    public boolean contains(float x, float y) {
+        if ((x >= this.x && x < this.x + this.width) && (y >= this.y && y < this.y + this.height)) {
+            return true;
+        } else {
+            return false;
         }
     }
 

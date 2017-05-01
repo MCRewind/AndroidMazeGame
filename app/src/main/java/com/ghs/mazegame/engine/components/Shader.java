@@ -73,6 +73,18 @@ public class Shader {
             throw new RuntimeException("Could not find uniform: " + name);
     }
 
+    public void setUniform1i(String name, int x) {
+        enable();
+        GLES20.glUniform1i(getLocation(name), x);
+        disable();
+    }
+
+    public void setUniform2f(String name, float x, float y) {
+        enable();
+        GLES20.glUniform2f(getLocation(name), x, y);
+        disable();
+    }
+
     public void setUniform4f(String name, float x, float y, float z, float w) {
         enable();
         GLES20.glUniform4f(getLocation(name), x, y, z, w);

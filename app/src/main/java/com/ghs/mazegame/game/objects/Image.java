@@ -6,8 +6,11 @@ import com.ghs.mazegame.engine.components.Shader;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.components.VAO;
 import com.ghs.mazegame.engine.display.Camera;
+import com.ghs.mazegame.game.interfaces.GameObject;
 
-public class UIImage extends UIObject {
+import static com.ghs.mazegame.game.Renderer.defaultShader;
+
+public class Image implements GameObject {
 
     private float x = 0, y = 0;
     private float width = 0, height = 0;
@@ -16,9 +19,36 @@ public class UIImage extends UIObject {
     private Texture texture;
     private Shader shader;
 
-    public UIImage(Camera camera, Texture texture, Shader shader, float x, float y, float width, float height) {
+    public Image(Camera camera, Texture texture, Shader shader, float x, float y, float width, float height) {
         this.texture = texture;
         this.shader = shader;
+        this.camera = camera;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        float[] vertices = new float[] {
+            0.0f,  0.0f,   0.0f, //TOP LEFT
+            0.0f,  height, 0.0f, //BOTTOM LEFT
+            width, height, 0.0f, //BOTTOM RIGHT
+            width, 0.0f,   0.0f  //TOP RIGHT
+        };
+        int[] indices = new int[] {
+            0, 1, 3,
+            1, 2, 3
+        };
+        float[] texCoords = new float[] {
+            0, 0,
+            0, 1,
+            1, 1,
+            1, 0
+        };
+        vao = new VAO(vertices, indices, texCoords);
+    }
+
+    public Image(Camera camera, Texture texture, float x, float y, float width, float height) {
+        this.texture = texture;
+        shader = defaultShader;
         this.camera = camera;
         this.x = x;
         this.y = y;

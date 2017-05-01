@@ -4,11 +4,11 @@ import android.content.res.Resources;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 
+import com.ghs.mazegame.R;
+import com.ghs.mazegame.engine.components.Shader;
 import com.ghs.mazegame.engine.display.Camera;
-import com.ghs.mazegame.game.objects.Map;
 import com.ghs.mazegame.game.panels.EditPanel;
-import com.ghs.mazegame.game.panels.Panel;
-import com.ghs.mazegame.game.panels.TestPlayPanel;
+import com.ghs.mazegame.game.panels.PlayTestPanel;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -17,7 +17,7 @@ public class Renderer implements GLSurfaceView.Renderer {
 
     public static final int
         STATE_PLAY = 0,
-        STATE_TEST_PLAY = 1,
+        STATE_PLAY_TEST = 1,
         STATE_EDIT = 2,
         STATE_MENU = 3;
 
@@ -29,12 +29,14 @@ public class Renderer implements GLSurfaceView.Renderer {
     public static float time;
 
     public static Resources resources;
+    public static Shader defaultShader;
 
     private float pastTime, curTime;
 
     private Camera camera;
 
-    private Panel[] panels;
+    private EditPanel edit;
+    private PlayTestPanel playTest;
     private int cur = STATE_EDIT;
 
     public Renderer(Resources resources) {
@@ -42,8 +44,9 @@ public class Renderer implements GLSurfaceView.Renderer {
     }
 
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
-
         camera = new Camera(cameraWidth, cameraHeight);
+
+        defaultShader = new Shader(R.raw.defaultvs, R.raw.defaultfs);
 
         GLES20.glClearColor(0f, 0f, 0f, 1f);
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
@@ -53,9 +56,8 @@ public class Renderer implements GLSurfaceView.Renderer {
         pastTime = System.nanoTime() / 1000000f;
 
 
-        panels = new Panel[4];
-        panels[STATE_TEST_PLAY] = new TestPlayPanel(camera);
-        panels[STATE_EDIT] = new EditPanel(camera);
+        playTest = new PlayTestPanel(camera);
+        edit = new EditPanel(camera);
     }
 
     public void onSurfaceChanged(GL10 gl, int width, int height) {
@@ -70,18 +72,40 @@ public class Renderer implements GLSurfaceView.Renderer {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
         update();
         render();
-        checkState();
     }
 
-    public void update() {
-        panels[cur].update();
+    private void update() {
+        switch(cur) {
+            case STATE_EDIT:
+                updateEdit();
+                break;
+            case STATE_PLAY_TEST:
+                updatePlayTest();
+                break;
+        }
     }
 
-    public void render() {
-        panels[cur].render();
+    private void render() {
+        switch(cur) {
+            case STATE_EDIT:
+                edit.render();
+                break;
+            case STATE_PLAY_TEST:
+                playTest.render();
+                break;
+        }
     }
 
-    public void checkState() {
+    private void updateEdit() {
+        edit.update();
+        int check = edit.checkState();
+        if (check != -1) {
+            playTest.setActive(edit.getMap());
+            cur = check;
+        }
+    }
 
+    private void updatePlayTest() {
+        playTest.update();
     }
 }

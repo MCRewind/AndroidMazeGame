@@ -8,10 +8,10 @@ import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.display.Camera;
 import com.ghs.mazegame.engine.math.Vector3f;
 import com.ghs.mazegame.game.objects.DPad;
-import com.ghs.mazegame.game.objects.Map;
+import com.ghs.mazegame.game.map.Map;
 import com.ghs.mazegame.game.objects.Player;
 
-public class TestPlayPanel implements Panel {
+public class PlayTestPanel {
 
     private Map map;
     private Player player;
@@ -19,10 +19,10 @@ public class TestPlayPanel implements Panel {
 
     private Camera camera;
 
-    public TestPlayPanel(Camera camera) {
+    public PlayTestPanel(Camera camera) {
         this.camera = camera;
         dpad = new DPad(camera, SCALE * 0.75f, cameraHeight - SCALE * 2.75f, SCALE * 2 + 1, SCALE * 2 + 1);
-        player = new Player(camera, new Texture(R.drawable.samby), new Shader(R.raw.defaultvs, R.raw.defaultfs), SCALE, SCALE, SCALE, SCALE);
+        player = new Player(camera, new Texture(R.drawable.samby), new Shader(R.raw.defaultvs, R.raw.defaultfs), 0, 0, SCALE, SCALE);
     }
 
     public void update() {
@@ -39,7 +39,7 @@ public class TestPlayPanel implements Panel {
 
     private void updatePlayer() {
         float speed = SCALE * 3;
-        player.translate(dpad.getDir().mul(speed, new Vector3f()).mul(time));
+        player.translate(dpad.getDir().mul(speed * time, new Vector3f()));
         player.update();
         map.checkPlayerCollision(player);
     }
@@ -62,5 +62,8 @@ public class TestPlayPanel implements Panel {
 
     public void setActive(Map map) {
         this.map = map;
+        map.setState(Map.STATE_PLAY);
+        player.setPosition(map.getStart().mul(SCALE, new Vector3f()));
+        player.setBounds(map.getBounds());
     }
 }
