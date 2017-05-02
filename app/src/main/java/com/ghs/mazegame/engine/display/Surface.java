@@ -19,37 +19,25 @@ public class Surface extends GLSurfaceView {
     private GLSurfaceView surface;
 
     public Surface(Context context) {
-        super(context);
-    }
+                super(context);
+            }
 
-    private final GestureDetector.SimpleOnGestureListener mGestureListener
-            = new GestureDetector.SimpleOnGestureListener() {
-        @Override
-        public boolean onScroll(MotionEvent e1, MotionEvent e2,
-                                float distanceX, float distanceY) {
-            // Scrolling uses math based on the viewport (as opposed to math using pixels).
-/*
-            // Pixel offset is the offset in screen pixels, while viewport offset is the
-            // offset within the current viewport.
-            float viewportOffsetX = distanceX * com.ghs.mazegame.game.Renderer.cameraWidth
-                    / getWidth();
-            float viewportOffsetY = -distanceY * com.ghs.mazegame.game.Renderer.cameraHeight
-                    / getHeight();
-            // Updates the viewport, refreshes the display.
-            setViewportBottomLeft(
-                    mCurrentViewport.left + viewportOffsetX,
-                    mCurrentViewport.bottom + viewportOffsetY);
-
-                    https://developer.android.com/training/gestures/scale.html
-                    https://developer.android.com/training/gestures/multi.html
-                    https://developer.android.com/training/gestures/scroll.html
-                    */
-        Log.d("scroll", "xDis: " + distanceX + " yDis: " + distanceY);
+            private final GestureDetector.SimpleOnGestureListener mGestureListener = new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onScroll(MotionEvent e1, MotionEvent e2,
+                                        float distanceX, float distanceY) {
+            /*
+                https://developer.android.com/training/gestures/scale.html
+                https://developer.android.com/training/gestures/multi.html
+                https://developer.android.com/training/gestures/scroll.html
+            */
+            Log.d("scroll", "xDis: " + distanceX + " yDis: " + distanceY);
             return true;
         }
-    }
+    };
+
     public boolean onTouchEvent(MotionEvent e) {
-        //mGestureListener.
+
         float tx = e.getX();
         float ty = e.getY();
         if(e.getActionIndex() == 0) {

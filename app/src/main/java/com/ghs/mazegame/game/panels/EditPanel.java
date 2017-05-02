@@ -1,15 +1,13 @@
 package com.ghs.mazegame.game.panels;
 
-import android.util.Log;
-
 import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.display.Camera;
 import com.ghs.mazegame.engine.math.Vector3f;
+import com.ghs.mazegame.engine.utils.ObjectManager;
 import com.ghs.mazegame.game.Renderer;
 import com.ghs.mazegame.game.objects.Backplate;
 import com.ghs.mazegame.game.objects.Button;
-import com.ghs.mazegame.game.objects.DPad;
 import com.ghs.mazegame.game.map.Map;
 import com.ghs.mazegame.game.objects.Image;
 import com.ghs.mazegame.game.objects.ToggleButton;
@@ -18,7 +16,6 @@ import static com.ghs.mazegame.engine.display.Surface.swipe;
 import static com.ghs.mazegame.engine.display.Surface.touchX;
 import static com.ghs.mazegame.engine.display.Surface.touchY;
 import static com.ghs.mazegame.game.Renderer.SCALE;
-import static com.ghs.mazegame.game.Renderer.cameraHeight;
 import static com.ghs.mazegame.game.Renderer.time;
 import static com.ghs.mazegame.game.objects.Backplate.makePlate;
 
@@ -38,6 +35,8 @@ public class EditPanel {
     private Button testPlay;
 
     private int curType;
+
+    private ObjectManager objectManager;
 
     public EditPanel(Camera camera) {
         this.camera = camera;
