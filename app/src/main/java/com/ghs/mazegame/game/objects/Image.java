@@ -46,6 +46,11 @@ public class Image implements GameObject {
         vao = new VAO(vertices, indices, texCoords);
     }
 
+    @Override
+    public void update(){
+
+    }
+
     public Image(Camera camera, Texture texture, float x, float y, float width, float height) {
         this.texture = texture;
         shader = defaultShader;
