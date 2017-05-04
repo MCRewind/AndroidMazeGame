@@ -7,6 +7,8 @@ import android.opengl.GLSurfaceView;
 import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Shader;
 import com.ghs.mazegame.engine.display.Camera;
+import com.ghs.mazegame.engine.utils.ObjectGroup;
+import com.ghs.mazegame.engine.utils.ObjectManager;
 import com.ghs.mazegame.game.panels.EditPanel;
 import com.ghs.mazegame.game.panels.PlayTestPanel;
 
@@ -35,6 +37,8 @@ public class Renderer implements GLSurfaceView.Renderer {
 
     private Camera camera;
 
+    private ObjectManager objectManager;
+
     private EditPanel edit;
     private PlayTestPanel playTest;
     private int cur = STATE_EDIT;
@@ -55,6 +59,8 @@ public class Renderer implements GLSurfaceView.Renderer {
         GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
         pastTime = System.nanoTime() / 1000000f;
 
+
+        objectManager = new ObjectManager();
 
         playTest = new PlayTestPanel(camera);
         edit = new EditPanel(camera);
@@ -83,6 +89,7 @@ public class Renderer implements GLSurfaceView.Renderer {
                 updatePlayTest();
                 break;
         }
+        objectManager.update();
     }
 
     private void render() {
@@ -94,6 +101,7 @@ public class Renderer implements GLSurfaceView.Renderer {
                 playTest.render();
                 break;
         }
+        objectManager.render();
     }
 
     private void updateEdit() {
