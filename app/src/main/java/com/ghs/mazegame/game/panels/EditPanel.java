@@ -1,15 +1,13 @@
 package com.ghs.mazegame.game.panels;
 
-import android.util.Log;
-
 import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.display.Camera;
 import com.ghs.mazegame.engine.math.Vector3f;
 import com.ghs.mazegame.game.Renderer;
+import com.ghs.mazegame.game.interfaces.Panel;
 import com.ghs.mazegame.game.objects.Backplate;
 import com.ghs.mazegame.game.objects.Button;
-import com.ghs.mazegame.game.objects.DPad;
 import com.ghs.mazegame.game.map.Map;
 import com.ghs.mazegame.game.objects.Image;
 import com.ghs.mazegame.game.objects.ToggleButton;
@@ -18,11 +16,10 @@ import static com.ghs.mazegame.engine.display.Surface.swipe;
 import static com.ghs.mazegame.engine.display.Surface.touchX;
 import static com.ghs.mazegame.engine.display.Surface.touchY;
 import static com.ghs.mazegame.game.Renderer.SCALE;
-import static com.ghs.mazegame.game.Renderer.cameraHeight;
 import static com.ghs.mazegame.game.Renderer.time;
 import static com.ghs.mazegame.game.objects.Backplate.makePlate;
 
-public class EditPanel {
+public class EditPanel implements Panel {
 
     private final int NUM_BLOCKS = 9;
 
@@ -70,7 +67,7 @@ public class EditPanel {
     }
 
     public void update() {
-        updateCamera();
+        //updateCamera();
         if (!top.contains(touchX, touchY) && !left.contains(touchX, touchY) && !corner.contains(touchX, touchY))
             draw();
         updateToolbar();
@@ -152,5 +149,14 @@ public class EditPanel {
 
     public void setMap(Map map) {
         this.map = map;
+    }
+
+    public void setActive() {
+        map.setState(Map.STATE_EDIT);
+    }
+
+    public void setActive(Map map) {
+        this.map = map;
+        map.setState(Map.STATE_EDIT);
     }
 }

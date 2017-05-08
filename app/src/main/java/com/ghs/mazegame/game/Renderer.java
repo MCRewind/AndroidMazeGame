@@ -7,7 +7,9 @@ import android.opengl.GLSurfaceView;
 import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Shader;
 import com.ghs.mazegame.engine.display.Camera;
+import com.ghs.mazegame.game.interfaces.Panel;
 import com.ghs.mazegame.game.panels.EditPanel;
+import com.ghs.mazegame.game.panels.MainMenu;
 import com.ghs.mazegame.game.panels.PlayTestPanel;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -35,8 +37,7 @@ public class Renderer implements GLSurfaceView.Renderer {
 
     private Camera camera;
 
-    private EditPanel edit;
-    private PlayTestPanel playTest;
+    private Panel[] panels;
     private int cur = STATE_EDIT;
 
     public Renderer(Resources resources) {
@@ -55,9 +56,10 @@ public class Renderer implements GLSurfaceView.Renderer {
         GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
         pastTime = System.nanoTime() / 1000000f;
 
-
-        playTest = new PlayTestPanel(camera);
-        edit = new EditPanel(camera);
+        panels = new Panel[4];
+        panels[STATE_PLAY_TEST] = new PlayTestPanel(camera);
+        panels[STATE_EDIT] = new EditPanel(camera);
+        panels[STATE_MENU] = new MainMenu(camera);
     }
 
     public void onSurfaceChanged(GL10 gl, int width, int height) {
@@ -75,37 +77,19 @@ public class Renderer implements GLSurfaceView.Renderer {
     }
 
     private void update() {
-        switch(cur) {
-            case STATE_EDIT:
-                updateEdit();
-                break;
-            case STATE_PLAY_TEST:
-                updatePlayTest();
-                break;
-        }
+        panels[cur].update();
+        checkState();
     }
 
     private void render() {
-        switch(cur) {
-            case STATE_EDIT:
-                edit.render();
-                break;
-            case STATE_PLAY_TEST:
-                playTest.render();
-                break;
-        }
+        panels[cur].render();
     }
 
-    private void updateEdit() {
-        edit.update();
-        int check = edit.checkState();
-        if (check != -1) {
-            playTest.setActive(edit.getMap());
-            cur = check;
+    private void checkState() {
+        int state = panels[cur].checkState();
+        if(state != -1) {
+            cur = state;
+            panels[cur].setActive();
         }
-    }
-
-    private void updatePlayTest() {
-        playTest.update();
     }
 }

@@ -7,11 +7,12 @@ import com.ghs.mazegame.engine.components.Shader;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.display.Camera;
 import com.ghs.mazegame.engine.math.Vector3f;
+import com.ghs.mazegame.game.interfaces.Panel;
 import com.ghs.mazegame.game.objects.DPad;
 import com.ghs.mazegame.game.map.Map;
 import com.ghs.mazegame.game.objects.Player;
 
-public class PlayTestPanel {
+public class PlayTestPanel implements Panel {
 
     private Map map;
     private Player player;
@@ -59,6 +60,12 @@ public class PlayTestPanel {
         else if(camera.getY() > height * SCALE - camera.getHeight())
             camera.setPosition(camera.getX(), height * SCALE - camera.getHeight(), 0);
     }
+
+    public int checkState() {
+        return -1;
+    }
+
+    public void setActive() {}
 
     public void setActive(Map map) {
         this.map = map;
