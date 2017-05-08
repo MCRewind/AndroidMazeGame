@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceView;
 
 import com.ghs.mazegame.engine.math.Vector3f;
+import com.ghs.mazegame.game.Renderer;
 
 public class Surface extends GLSurfaceView {
 
@@ -26,13 +27,13 @@ public class Surface extends GLSurfaceView {
     private GLSurfaceView surface;
 
     public Surface(Context context) {
-                super(context);
-            }
+        super(context);
+    }
 
-            private final GestureDetector.SimpleOnGestureListener mGestureListener = new GestureDetector.SimpleOnGestureListener() {
-                @Override
-                public boolean onScroll(MotionEvent e1, MotionEvent e2,
-                                        float distanceX, float distanceY) {
+    private final GestureDetector.SimpleOnGestureListener mGestureListener = new GestureDetector.SimpleOnGestureListener() {
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2,
+                                float distanceX, float distanceY) {
             /*
                 https://developer.android.com/training/gestures/scale.html
                 https://developer.android.com/training/gestures/multi.html
@@ -44,63 +45,76 @@ public class Surface extends GLSurfaceView {
     };
 
 
-
     public boolean onTouchEvent(MotionEvent e) {
         int pointerCount = e.getPointerCount();
+        Log.d("h", "hello");
+        Log.d("p", Integer.toString(pointerCount));
 
+        float tx = e.getX();
 
-
-        if(pointerCount == 2){
-            int action = e.getActionMasked();
-            int actionIndex = e.getActionIndex();
-            String actionString;
-            switch (action)
-            {
-                case MotionEvent.ACTION_DOWN:
+        float ty = e.getY();
+        //if(pointerCount == 2){
+        int action = e.getActionMasked();
+        int actionIndex = e.getActionIndex();
+        String actionString;
+        switch (e.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (pointerCount == 2) {
                     GLOBAL_TOUCH_POSITION_X = (int) e.getX(1);
                     GLOBAL_TOUCH_POSITION_Y = (int) e.getY(1);
-                    touchX = e.getX(1);
-                    touchY = e.getY(1);
-                    break;
-                case MotionEvent.ACTION_UP:
+                }
+                touchX = (tx * com.ghs.mazegame.game.Renderer.cameraWidth) / getWidth();
+                touchY = (ty * com.ghs.mazegame.game.Renderer.cameraHeight) / getHeight();
+                break;
+            case MotionEvent.ACTION_UP:
+                if (pointerCount == 2) {
                     GLOBAL_TOUCH_CURRENT_POSITION_X = 0;
                     GLOBAL_TOUCH_CURRENT_POSITION_Y = 0;
-                    touchX = -1;
-                    touchY = -1;
-                    break;
-                case MotionEvent.ACTION_MOVE:
+                }
+                touchX = -1;
+                touchY = -1;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                touchX = (tx * com.ghs.mazegame.game.Renderer.cameraWidth) / getWidth();
+                touchY = (ty * com.ghs.mazegame.game.Renderer.cameraHeight) / getHeight();
+                if (pointerCount == 2) {
                     GLOBAL_TOUCH_CURRENT_POSITION_X = (int) e.getX(1);
                     GLOBAL_TOUCH_CURRENT_POSITION_Y = (int) e.getY(1);
-                    int diffX = GLOBAL_TOUCH_POSITION_X-GLOBAL_TOUCH_CURRENT_POSITION_X;
-                    int diffY = GLOBAL_TOUCH_POSITION_Y-GLOBAL_TOUCH_CURRENT_POSITION_Y;
-                    swipe.x = (float)diffX;
-                    swipe.y = (float)diffY;
-                    break;
-                case MotionEvent.ACTION_POINTER_DOWN:
+                    int diffX = GLOBAL_TOUCH_POSITION_X - GLOBAL_TOUCH_CURRENT_POSITION_X;
+                    int diffY = GLOBAL_TOUCH_POSITION_Y - GLOBAL_TOUCH_CURRENT_POSITION_Y;
+                    Log.d("X", Integer.toString(diffX));
+                    swipe.x = (float) diffX;
+                    swipe.y = (float) diffY;
+                }
+
+
+                break;
+            case MotionEvent.ACTION_POINTER_DOWN:
+                if (pointerCount == 2) {
                     GLOBAL_TOUCH_POSITION_X = (int) e.getX(1);
                     GLOBAL_TOUCH_POSITION_Y = (int) e.getY(1);
-                    break;
-                default:
-                    break;
-            }
-
-            pointerCount = 0;
-        }
-        else {
-            GLOBAL_TOUCH_POSITION_X = 0;
-            GLOBAL_TOUCH_CURRENT_POSITION_X = 0;
-            switch (e.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    touchX = e.getX();
-                    touchY = e.getY();
-                    break;
-                case MotionEvent.ACTION_UP:
-                    touchX = -1;
-                    touchY = -1;
-                    break;
-            }
+                }
+                break;
+            default:
+                break;
         }
 
+        pointerCount = 0;
+        // }
+        //else if (pointerCount == 1){
+//            GLOBAL_TOUCH_POSITION_X = 0;
+//            GLOBAL_TOUCH_CURRENT_POSITION_X = 0;
+//            switch (e.getAction()) {
+//                case MotionEvent.ACTION_DOWN:
+//                    touchX = (tx * com.ghs.mazegame.game.Renderer.cameraWidth) / getWidth();
+//                    touchY = (ty * com.ghs.mazegame.game.Renderer.cameraHeight) / getHeight();
+//                    break;
+//                case MotionEvent.ACTION_UP:
+//                    touchX = -1;
+//                    touchY = -1;
+//                    break;
+//            }
+        // }
 
 
 //        float tx = e.getX();
