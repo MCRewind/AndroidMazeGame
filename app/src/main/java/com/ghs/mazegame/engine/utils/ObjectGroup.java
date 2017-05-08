@@ -29,7 +29,7 @@ public class ObjectGroup {
     }
 
     public void render() {
-        if(renderable) {
+        if (renderable) {
             for (GameObject object : gameObjects)
                 object.render();
         }

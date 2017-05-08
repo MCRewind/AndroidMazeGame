@@ -8,16 +8,16 @@ import com.ghs.mazegame.game.interfaces.GameObject;
 
 public class ObjectManager {
 
-    private ObjectGroup gameObjects = new ObjectGroup("test", true, true);
+    private ObjectGroup objectGroups = new ObjectGroup("test", true, true);
 
     //only update and render active groups of objects
     //setable individually
 
     public void update() {
-        gameObjects.update();
+        objectGroups.update();
     }
 
     public void render() {
-        gameObjects.render();
+        objectGroups.render();
     }
 }

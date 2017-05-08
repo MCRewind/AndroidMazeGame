@@ -21,7 +21,7 @@ import static com.ghs.mazegame.game.objects.Backplate.makePlate;
 
 public class EditPanel {
 
-    private final int NUM_BLOCKS = 9;
+    private final int NUM_BLOCKS = 8;
 
     private int state;
 
@@ -32,7 +32,7 @@ public class EditPanel {
     private Backplate top, left, corner;
     private ToggleButton[] blockSelect;
     private Image[] blockPreview;
-    private Button testPlay;
+    private Button testPlay, leftArrow, rightArrow;
 
     private int curType;
 
@@ -65,6 +65,8 @@ public class EditPanel {
         blockPreview[6] = new Image(camera, new Texture(R.drawable.start_prev),           blockSelect[6].getX() + (blockSelect[6].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim);
         blockPreview[7] = new Image(camera, new Texture(R.drawable.end_prev),             blockSelect[7].getX() + (blockSelect[7].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim);
         testPlay = new Button(camera, new Texture(R.drawable.play_unpressed), new Texture(R.drawable.play_pressed), (corner.getWidth() - SCALE) / 2, (corner.getHeight() - SCALE) / 2, SCALE, SCALE);
+        leftArrow = new Button(camera, new Texture(R.drawable.left_arrow), new Texture(R.drawable.left_arrow_pressed), corner.getWidth() + SCALE / 2, (corner.getHeight() - SCALE) / 2, SCALE / 2, SCALE / 2);
+        rightArrow = new Button(camera, new Texture(R.drawable.right_arrow), new Texture(R.drawable.right_arrow_pressed), camera.getWidth() - SCALE, (top.getHeight() - SCALE / 2) / 2, SCALE / 2, SCALE / 2);
         state = -1;
     }
 
@@ -137,6 +139,8 @@ public class EditPanel {
                 blockPreview[i].render();
         }
         testPlay.render();
+        leftArrow.render();
+        rightArrow.render();
     }
 
     public int checkState() {
