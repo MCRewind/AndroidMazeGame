@@ -8,6 +8,7 @@ import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Shader;
 import com.ghs.mazegame.engine.display.Camera;
 import com.ghs.mazegame.game.interfaces.Panel;
+
 import com.ghs.mazegame.game.panels.EditPanel;
 import com.ghs.mazegame.game.panels.MainMenu;
 import com.ghs.mazegame.game.panels.PlayTestPanel;
@@ -21,7 +22,7 @@ public class Renderer implements GLSurfaceView.Renderer {
         STATE_PLAY = 0,
         STATE_PLAY_TEST = 1,
         STATE_EDIT = 2,
-        STATE_MENU = 3;
+            STATE_MAIN_MENU = 3;
 
     public static final int SCALE = 16;
 
@@ -38,7 +39,7 @@ public class Renderer implements GLSurfaceView.Renderer {
     private Camera camera;
 
     private Panel[] panels;
-    private int cur = STATE_EDIT;
+    private int cur = STATE_MAIN_MENU;
 
     public Renderer(Resources resources) {
         this.resources = resources;
@@ -59,7 +60,7 @@ public class Renderer implements GLSurfaceView.Renderer {
         panels = new Panel[4];
         panels[STATE_PLAY_TEST] = new PlayTestPanel(camera);
         panels[STATE_EDIT] = new EditPanel(camera);
-        panels[STATE_MENU] = new MainMenu(camera);
+        panels[STATE_MAIN_MENU] = new MainMenu(camera);
     }
 
     public void onSurfaceChanged(GL10 gl, int width, int height) {

@@ -1,3 +1,8 @@
 package com.ghs.mazegame.game.interfaces;
 
-public interface GameObject {}
+public interface GameObject {
+
+    void update();
+    void render();
+
+}
