@@ -14,6 +14,7 @@ import static com.ghs.mazegame.game.Renderer.SCALE;
 public class Map {
 
     public static final int
+            NUM_TILES = 9,
             TYPE_EMPTY = 0,
             TYPE_BRICK_WALL = 1,
             TYPE_SQUARE_WALL = 2,
@@ -52,7 +53,7 @@ public class Map {
                 over[i][j] = TYPE_EMPTY;
             }
         }
-        tiles = new Tile[9];
+        tiles = new Tile[NUM_TILES];
         tiles[TYPE_EMPTY] = new Tile(camera);
         tiles[TYPE_BRICK_WALL] = new Tile(camera, new Texture(R.drawable.brick_wall), true, 0.9f);
         tiles[TYPE_SQUARE_WALL] = new Tile(camera, new Texture(R.drawable.square_wall), true, 0.9f);
@@ -71,13 +72,15 @@ public class Map {
         int maxY = minY + rHeight;
         for (int i = Math.max(minX, 0); i <= maxX && i < map.length; i++) {
             for (int j = Math.max(minY, 0); j <= maxY && j < map[0].length; j++) {
-                if (map[i][j] != TYPE_EMPTY || state != STATE_PLAY) {
-                    tiles[map[i][j]].setPosition(i * SCALE, j * SCALE);
-                    tiles[map[i][j]].render();
-                }
-                if (over[i][j] != TYPE_EMPTY) {
-                    tiles[over[i][j]].setPosition(i * SCALE, j * SCALE);
-                    tiles[over[i][j]].render();
+                if (map[i][j] < NUM_TILES) {
+                    if (map[i][j] != TYPE_EMPTY || state != STATE_PLAY) {
+                        tiles[map[i][j]].setPosition(i * SCALE, j * SCALE);
+                        tiles[map[i][j]].render();
+                    }
+                    if (over[i][j] != TYPE_EMPTY) {
+                        tiles[over[i][j]].setPosition(i * SCALE, j * SCALE);
+                        tiles[over[i][j]].render();
+                    }
                 }
             }
         }
@@ -99,17 +102,19 @@ public class Map {
         //Determines the closest tile of the ones the player is on
         for (int i = Math.max(minX, 0); i <= maxX && i < map.length; i++) {
             for (int j = Math.max(minY, 0); j <= maxY && j < map[0].length; j++) {
-                if (tiles[map[i][j]].isSolid()) {
-                    if (closest == null) {
-                        closest = new Hitbox(i * SCALE, j * SCALE, SCALE, SCALE);
-                        current = new Hitbox(i * SCALE, j * SCALE, SCALE, SCALE);
-                        length1 = closest.getCenter().sub(player.getX() + player.getWidth() / 2, player.getY() + player.getHeight() / 2, 0, new Vector3f());
-                    } else {
-                        current.setPosition(i * SCALE, j * SCALE);
-                        Vector3f length2 = current.getCenter().sub(player.getX() + player.getWidth() / 2, player.getY() + player.getHeight() / 2, 0, new Vector3f());
-                        if (length1.lengthSquared() > length2.lengthSquared()) {
-                            closest.setPosition(current.getX(), current.getY());
-                            length1 = length2;
+                if (map[i][j] < NUM_TILES) {
+                    if (tiles[map[i][j]].isSolid()) {
+                        if (closest == null) {
+                            closest = new Hitbox(i * SCALE, j * SCALE, SCALE, SCALE);
+                            current = new Hitbox(i * SCALE, j * SCALE, SCALE, SCALE);
+                            length1 = closest.getCenter().sub(player.getX() + player.getWidth() / 2, player.getY() + player.getHeight() / 2, 0, new Vector3f());
+                        } else {
+                            current.setPosition(i * SCALE, j * SCALE);
+                            Vector3f length2 = current.getCenter().sub(player.getX() + player.getWidth() / 2, player.getY() + player.getHeight() / 2, 0, new Vector3f());
+                            if (length1.lengthSquared() > length2.lengthSquared()) {
+                                closest.setPosition(current.getX(), current.getY());
+                                length1 = length2;
+                            }
                         }
                     }
                 }
