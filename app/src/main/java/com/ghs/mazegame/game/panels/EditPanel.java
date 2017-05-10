@@ -80,7 +80,7 @@ public class EditPanel implements Panel {
     }
 
     public void update() {
-        //updateCamera();
+        updateCamera();
         if (!top.contains(touchX, touchY) && !left.contains(touchX, touchY) && !corner.contains(touchX, touchY))
             draw();
         updateToolbar();
