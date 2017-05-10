@@ -14,7 +14,7 @@ import static com.ghs.mazegame.game.Renderer.SCALE;
 public class Map {
 
     public static final int
-            NUM_TILES = 9,
+            NUM_TILES = 17,
             TYPE_EMPTY = 0,
             TYPE_BRICK_WALL = 1,
             TYPE_SQUARE_WALL = 2,
@@ -23,7 +23,15 @@ public class Map {
             TYPE_LIMESTONE_FLOOR = 5,
             TYPE_WOOD_FLOOR = 6,
             TYPE_START = 7,
-            TYPE_END = 8;
+            TYPE_END = 8,
+            TYPE_BRICK_WALL_BLUE = 9,
+            TYPE_BRICK_WALL_CYAN = 10,
+            TYPE_BRICK_WALL_GREEN = 11,
+            TYPE_BRICK_WALL_MAGENTA = 12,
+            TYPE_BRICK_WALL_ORANGE = 13,
+            TYPE_BRICK_WALL_PURPLE = 14,
+            TYPE_BRICK_WALL_RED = 15,
+            TYPE_BRICK_WALL_YELLOW = 16;
 
     public static final boolean
             STATE_EDIT = false,
@@ -63,6 +71,14 @@ public class Map {
         tiles[TYPE_WOOD_FLOOR] = new Tile(camera, new Texture(R.drawable.wood_floor), false, 0.9f);
         tiles[TYPE_START] = new Tile(camera, new Texture(R.drawable.start), false, 0.8f);
         tiles[TYPE_END] = new Tile(camera, new Texture(R.drawable.end), false, 0.8f);
+        tiles[TYPE_BRICK_WALL_BLUE] = new Tile(camera, new Texture(R.drawable.brick_wall_blue), true, 0.9f);
+        tiles[TYPE_BRICK_WALL_CYAN] = new Tile(camera, new Texture(R.drawable.brick_wall_cyan), true, 0.9f);
+        tiles[TYPE_BRICK_WALL_GREEN] = new Tile(camera, new Texture(R.drawable.brick_wall_green), true, 0.9f);
+        tiles[TYPE_BRICK_WALL_MAGENTA] = new Tile(camera, new Texture(R.drawable.brick_wall_magenta), true, 0.9f);
+        tiles[TYPE_BRICK_WALL_ORANGE] = new Tile(camera, new Texture(R.drawable.brick_wall_orange), true, 0.9f);
+        tiles[TYPE_BRICK_WALL_PURPLE] = new Tile(camera, new Texture(R.drawable.brick_wall_purple), true, 0.9f);
+        tiles[TYPE_BRICK_WALL_RED] = new Tile(camera, new Texture(R.drawable.brick_wall_red), true, 0.9f);
+        tiles[TYPE_BRICK_WALL_YELLOW] = new Tile(camera, new Texture(R.drawable.brick_wall_yellow), true, 0.9f);
     }
 
     public void render() {
