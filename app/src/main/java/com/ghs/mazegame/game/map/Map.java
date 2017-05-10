@@ -3,6 +3,7 @@ package com.ghs.mazegame.game.map;
 import android.util.Log;
 
 import com.ghs.mazegame.R;
+import com.ghs.mazegame.engine.components.Shader;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.math.Vector3f;
 import com.ghs.mazegame.engine.utils.Hitbox;
