@@ -89,8 +89,8 @@ public class Renderer implements GLSurfaceView.Renderer {
     private void checkState() {
         int state = panels[cur].checkState();
         if(state != -1) {
+            panels[state].setActive(panels[cur].getMap());
             cur = state;
-            panels[cur].setActive();
         }
     }
 }

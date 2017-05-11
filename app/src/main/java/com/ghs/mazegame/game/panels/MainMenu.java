@@ -42,4 +42,8 @@ public class MainMenu implements Panel {
     }
 
     public void setActive(Map map) {}
+
+    public Map getMap() {
+        return background;
+    }
 }

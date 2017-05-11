@@ -73,4 +73,8 @@ public class PlayTestPanel implements Panel {
         player.setPosition(map.getStart().mul(SCALE, new Vector3f()));
         player.setBounds(map.getBounds());
     }
+
+    public Map getMap() {
+        return map;
+    }
 }
