@@ -198,4 +198,12 @@ public class Map {
     public void setState(boolean state) {
         this.state = state;
     }
+
+    public void setMap(int[][] map, int xOffset, int yOffset) {
+        int width = Math.min(this.width, map.length);
+        int height = Math.min(this.height, map[0].length);
+        for (int i = xOffset; i < width; i++)
+            for (int j = yOffset; j < height; j++)
+                this.map[i][j] = map[i][j];
+    }
 }

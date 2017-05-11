@@ -65,12 +65,14 @@ public class PlayTestPanel implements Panel {
         return -1;
     }
 
-    public void setActive() {}
-
     public void setActive(Map map) {
         this.map = map;
         map.setState(Map.STATE_PLAY);
         player.setPosition(map.getStart().mul(SCALE, new Vector3f()));
         player.setBounds(map.getBounds());
+    }
+
+    public Map getMap() {
+        return map;
     }
 }
