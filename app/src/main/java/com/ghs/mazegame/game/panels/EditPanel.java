@@ -88,6 +88,8 @@ public class EditPanel implements Panel {
 
     private void updateCamera() {
         Vector3f dir = new Vector3f(swipe);
+        swipe.x = 0;
+        swipe.y = 0;
         if(dir.x != 0 || dir.y != 0) {
             int width = map.getWidth();
             int height = map.getHeight();
