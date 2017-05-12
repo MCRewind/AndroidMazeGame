@@ -87,12 +87,13 @@ public class EditPanel implements Panel {
     }
 
     private void updateCamera() {
-        float speed = SCALE * 3;
         Vector3f dir = new Vector3f(swipe);
+        swipe.x = 0;
+        swipe.y = 0;
         if(dir.x != 0 || dir.y != 0) {
             int width = map.getWidth();
             int height = map.getHeight();
-            camera.translate(dir.mul(time * speed, new Vector3f()));
+            camera.translate(dir);
             if (camera.getWidth() - left.getWidth() > map.getWidth() * SCALE)
                 camera.setPosition(-left.getWidth(), camera.getY(), 0);
             else {
