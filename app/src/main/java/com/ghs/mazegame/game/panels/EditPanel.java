@@ -113,6 +113,7 @@ public class EditPanel implements Panel {
     }
 
     private void updateToolbar() {
+        leftArrow.update();
         if (leftArrow.getState() == Button.STATE_RELEASED) {
             if (typeIter == 1) {
                 typeIter = numPages;
@@ -142,7 +143,6 @@ public class EditPanel implements Panel {
         testPlay.update();
         if(testPlay.getState() == Button.STATE_RELEASED && map.getStart().x != -1)
             state = Renderer.STATE_PLAY_TEST;
-        leftArrow.update();
     }
 
     private void draw() {
