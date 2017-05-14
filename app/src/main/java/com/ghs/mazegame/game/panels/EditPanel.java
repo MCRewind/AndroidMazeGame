@@ -44,10 +44,10 @@ public class EditPanel implements Panel {
         this.camera = camera;
         this.map = new Map(camera, 20, 20);
         map.setState(Map.STATE_EDIT);
-        curType = Map.TYPE_BRICK_WALL;
+        curType = Map.types.get("TYPE_BRICK_WALL");
         for (int i = 0; i < map.getWidth(); ++i)
             for (int j = 0; j < map.getHeight(); ++j)
-                map.setTile(Map.TYPE_EMPTY, i, j);
+                map.setTile(Map.types.get("TYPE_EMPTY"), i, j);
         corner = new Backplate(camera, 0, 0, SCALE * 2, (int) (SCALE * 1.5f), 2);
         top = new Backplate(camera, SCALE * 2, 0, camera.getWidth() - SCALE * 2, (int) (SCALE * 1.5f), 2);
         left = new Backplate(camera, 0, SCALE * 1.5f, SCALE * 2, (int) (camera.getHeight() - SCALE * 1.5f), 2);
