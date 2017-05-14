@@ -15,7 +15,7 @@ import static com.ghs.mazegame.game.Renderer.SCALE;
 public class Map {
 
     public static final int
-            NUM_TILES = 17,
+            NUM_TILES = 19,
             TYPE_EMPTY = 0,
             TYPE_BRICK_WALL = 1,
             TYPE_SQUARE_WALL = 2,
@@ -32,7 +32,9 @@ public class Map {
             TYPE_BRICK_WALL_ORANGE = 13,
             TYPE_BRICK_WALL_PURPLE = 14,
             TYPE_BRICK_WALL_RED = 15,
-            TYPE_BRICK_WALL_YELLOW = 16;
+            TYPE_BRICK_WALL_YELLOW = 16,
+            TYPE_TRUE_TILE = 17,
+            TYPE_FALSE_TILE = 18;
 
     public static final boolean
             STATE_EDIT = false,
@@ -80,6 +82,8 @@ public class Map {
         tiles[TYPE_BRICK_WALL_PURPLE] = new Tile(camera, new Texture(R.drawable.brick_wall_purple), true, 0.9f);
         tiles[TYPE_BRICK_WALL_RED] = new Tile(camera, new Texture(R.drawable.brick_wall_red), true, 0.9f);
         tiles[TYPE_BRICK_WALL_YELLOW] = new Tile(camera, new Texture(R.drawable.brick_wall_yellow), true, 0.9f);
+        tiles[TYPE_TRUE_TILE] = new Tile(camera, new Texture(R.drawable.true_tile), false, 0.9f);
+        tiles[TYPE_FALSE_TILE] = new Tile(camera, new Texture(R.drawable.false_tile), false, 0.9f);
     }
 
     public void render() {
@@ -120,6 +124,8 @@ public class Map {
         for (int i = Math.max(minX, 0); i <= maxX && i < map.length; i++) {
             for (int j = Math.max(minY, 0); j <= maxY && j < map[0].length; j++) {
                 if (map[i][j] < NUM_TILES) {
+                    //tiles[map[i][j]].setTexture(new Texture(R.drawable.brick_wall_green));
+                    map[i][j] = TYPE_TRUE_TILE;
                     if (tiles[map[i][j]].isSolid()) {
                         if (closest == null) {
                             closest = new Hitbox(i * SCALE, j * SCALE, SCALE, SCALE);
@@ -145,6 +151,10 @@ public class Map {
                 checkPlayerCollision(player);
             }
         }
+    }
+
+    public void overHandle(float x, float y) {
+
     }
 
     public void setTile(int type, int x, int y) {

@@ -101,12 +101,12 @@ public class Tile {
         texture.unbind();
     }
 
-    public boolean isSolid() {
-        return solid;
+    public void setTexture(Texture texture) {
+        this.texture = texture;
     }
 
-    public void onOver() {
-
+    public boolean isSolid() {
+        return solid;
     }
 
     public void setPosition(float x, float y) {
