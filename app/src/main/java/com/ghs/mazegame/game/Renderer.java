@@ -22,7 +22,7 @@ public class Renderer implements GLSurfaceView.Renderer {
         STATE_PLAY = 0,
         STATE_PLAY_TEST = 1,
         STATE_EDIT = 2,
-            STATE_MAIN_MENU = 3;
+        STATE_MAIN_MENU = 3;
 
     public static final int SCALE = 16;
 

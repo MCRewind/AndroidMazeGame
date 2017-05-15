@@ -8,7 +8,9 @@ import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.math.Vector3f;
 import com.ghs.mazegame.engine.utils.Hitbox;
 import com.ghs.mazegame.engine.display.Camera;
+import com.ghs.mazegame.game.Renderer;
 import com.ghs.mazegame.game.objects.Player;
+import com.ghs.mazegame.game.panels.EditPanel;
 
 import java.util.HashMap;
 
@@ -22,7 +24,8 @@ public class Map {
 
     public static final boolean
             STATE_EDIT = false,
-            STATE_PLAY = true;
+            STATE_PLAY = true,
+            TILE_PAINT = false;
 
     private int width, height, rWidth, rHeight;
 
@@ -132,7 +135,9 @@ public class Map {
         for (int i = Math.max(minX, 0); i <= maxX && i < map.length; i++) {
             for (int j = Math.max(minY, 0); j <= maxY && j < map[0].length; j++) {
                 if (map[i][j] < NUM_TILES) {
-                    map[i][j] = types.get("TYPE_TRUE_TILE");
+                    if (TILE_PAINT)
+                        map[i][j] = types.get("TYPE_TRUE_TILE");
+                    overHandle(over[i][j]);
                     if (tiles[map[i][j]].isSolid()) {
                         if (closest == null) {
                             closest = new Hitbox(i * SCALE, j * SCALE, SCALE, SCALE);
@@ -160,9 +165,13 @@ public class Map {
         }
     }
 
-    public void overHandle(float x, float y) {
 
+    public void overHandle(int tile) {
+        if (tile == types.get("TYPE_END")) {
+
+        }
     }
+
 
     public void setTile(int type, int x, int y) {
         if (map.length > 0) {

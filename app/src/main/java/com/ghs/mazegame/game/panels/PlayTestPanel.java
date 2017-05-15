@@ -1,5 +1,7 @@
 package com.ghs.mazegame.game.panels;
 
+import android.util.Log;
+
 import static com.ghs.mazegame.game.Renderer.*;
 
 import com.ghs.mazegame.R;

@@ -142,6 +142,7 @@ public class EditPanel implements Panel {
                 blockSelect[i].setState(ToggleButton.STATE_UNPRESSED);
         }
         testPlay.update();
+        //if play button pressed and start pad present
         if(testPlay.getState() == Button.STATE_RELEASED && map.getStart().x != -1)
             state = Renderer.STATE_PLAY_TEST;
     }
