@@ -25,7 +25,7 @@ public class Map {
     public static final boolean
             STATE_EDIT = false,
             STATE_PLAY = true,
-            TILE_PAINT = false;
+            TILE_PAINT = true;
 
     private int width, height, rWidth, rHeight;
 
@@ -72,6 +72,7 @@ public class Map {
         tiles[types.get("TYPE_BRICK_WALL_YELLOW")] = new Tile(camera, new Texture(R.drawable.brick_wall_yellow), true, 0.9f);
         tiles[types.get("TYPE_TRUE_TILE")] = new Tile(camera, new Texture(R.drawable.true_tile), false, 0.9f);
         tiles[types.get("TYPE_FALSE_TILE")] = new Tile(camera, new Texture(R.drawable.false_tile), false, 0.9f);
+        tiles[types.get("TYPE_SANDSTONE_WALL")] = new Tile(camera, new Texture(R.drawable.sandstone_wall), true, 0.9f);
     }
 
     private void tileInit() {
@@ -94,6 +95,7 @@ public class Map {
         types.put("TYPE_BRICK_WALL_YELLOW",  16);
         types.put("TYPE_TRUE_TILE",          17);
         types.put("TYPE_FALSE_TILE",         18);
+        types.put("TYPE_SANDSTONE_WALL",     19);
         NUM_TILES = types.size();
     }
 
@@ -136,6 +138,7 @@ public class Map {
             for (int j = Math.max(minY, 0); j <= maxY && j < map[0].length; j++) {
                 if (map[i][j] < NUM_TILES) {
                     if (TILE_PAINT)
+                        //map[i][j] = EditPanel.paintType;
                         map[i][j] = types.get("TYPE_TRUE_TILE");
                     overHandle(over[i][j]);
                     if (tiles[map[i][j]].isSolid()) {

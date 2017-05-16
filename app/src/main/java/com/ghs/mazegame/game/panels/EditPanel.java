@@ -22,7 +22,7 @@ import static com.ghs.mazegame.game.objects.Backplate.makePlate;
 
 public class EditPanel implements Panel {
 
-    private final int NUM_BLOCKS = 16, NUM_TOGGLES = 8;
+    private final int NUM_BLOCKS = 24, NUM_TOGGLES = 8;
 
     private int state;
 
@@ -36,6 +36,8 @@ public class EditPanel implements Panel {
     private Button testPlay, leftArrow, rightArrow;
 
     private int curType, typeIter = 1, numPages;
+
+    public static int paintType = 1;
 
     private ObjectManager objectManager;
 
@@ -73,6 +75,14 @@ public class EditPanel implements Panel {
         blockPreview[13] = new Image(camera, new Texture(R.drawable.brick_wall_purple_prev),  blockSelect[5].getX() + (blockSelect[5].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim);
         blockPreview[14] = new Image(camera, new Texture(R.drawable.brick_wall_red_prev),     blockSelect[6].getX() + (blockSelect[6].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim);
         blockPreview[15] = new Image(camera, new Texture(R.drawable.brick_wall_yellow_prev),  blockSelect[7].getX() + (blockSelect[7].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim);
+        blockPreview[16] = new Image(camera, new Texture(R.drawable.sandstone_wall_prev),     blockSelect[0].getX() + (blockSelect[0].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim);
+        blockPreview[17] = new Image(camera, new Texture(R.drawable.sandstone_wall_prev),     blockSelect[1].getX() + (blockSelect[1].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim);
+        blockPreview[18] = new Image(camera, new Texture(R.drawable.sandstone_wall_prev),     blockSelect[2].getX() + (blockSelect[2].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim);
+        blockPreview[19] = new Image(camera, new Texture(R.drawable.sandstone_wall_prev),     blockSelect[3].getX() + (blockSelect[3].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim);
+        blockPreview[20] = new Image(camera, new Texture(R.drawable.sandstone_wall_prev),     blockSelect[4].getX() + (blockSelect[4].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim);
+        blockPreview[21] = new Image(camera, new Texture(R.drawable.sandstone_wall_prev),     blockSelect[5].getX() + (blockSelect[5].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim);
+        blockPreview[22] = new Image(camera, new Texture(R.drawable.sandstone_wall_prev),     blockSelect[6].getX() + (blockSelect[6].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim);
+        blockPreview[23] = new Image(camera, new Texture(R.drawable.sandstone_wall_prev),     blockSelect[7].getX() + (blockSelect[7].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim);
         testPlay = new Button(camera, new Texture(R.drawable.play_unpressed), new Texture(R.drawable.play_pressed), (corner.getWidth() - SCALE) / 2, (corner.getHeight() - SCALE) / 2, SCALE, SCALE);
         leftArrow = new Button(camera, new Texture(R.drawable.left_arrow), new Texture(R.drawable.left_arrow_down), corner.getWidth() + SCALE / 3, (corner.getHeight() - SCALE / 2) / 2, SCALE / 2, SCALE / 2);
         rightArrow = new Button(camera, new Texture(R.drawable.right_arrow), new Texture(R.drawable.right_arrow_down), camera.getWidth() - ((SCALE / 8) * 7), (top.getHeight() - SCALE / 2) / 2, SCALE / 2, SCALE / 2);
@@ -144,6 +154,7 @@ public class EditPanel implements Panel {
         testPlay.update();
         //if play button pressed and start pad present
         if(testPlay.getState() == Button.STATE_RELEASED && map.getStart().x != -1) {
+            paintType = curType;
             curType = -1;
             state = Renderer.STATE_PLAY_TEST;
         }
