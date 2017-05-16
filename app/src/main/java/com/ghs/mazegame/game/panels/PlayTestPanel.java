@@ -1,5 +1,7 @@
 package com.ghs.mazegame.game.panels;
 
+import android.util.Log;
+
 import static com.ghs.mazegame.game.Renderer.*;
 
 import com.ghs.mazegame.R;
@@ -47,6 +49,7 @@ public class PlayTestPanel implements Panel {
 
     private void updateCamera() {
         int width = map.getWidth();
+        Log.d("kek", "shrelk");
         int height = map.getHeight();
         //Sets the camera position putting the player in the center
         camera.setPosition(player.getX() + (player.getWidth() - camera.getWidth()) / 2, player.getY() + (player.getHeight() - camera.getHeight()) / 2, 0);

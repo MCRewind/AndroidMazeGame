@@ -42,7 +42,7 @@ public class EditPanel implements Panel {
     public EditPanel(Camera camera) {
         numPages = NUM_BLOCKS/NUM_TOGGLES;
         this.camera = camera;
-        this.map = new Map(camera, 20, 20);
+        this.map = new Map(camera, 0, 0, 20, 20);
         map.setState(Map.STATE_EDIT);
         curType = Map.TYPE_BRICK_WALL;
         for (int i = 0; i < map.getWidth(); ++i)

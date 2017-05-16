@@ -39,6 +39,7 @@ public class Map {
             STATE_PLAY = true;
 
     private int width, height, rWidth, rHeight;
+    private float x, y;
 
     private boolean state;
 
@@ -48,8 +49,10 @@ public class Map {
     private int[][] over;
     private Tile[] tiles;
 
-    public Map(Camera camera, int width, int height) {
+    public Map(Camera camera, float x, float y, int width, int height) {
         this.camera = camera;
+        this.x = x;
+        this.y = y;
         map = new int[width][height];
         over = new int[width][height];
         this.width = width;
@@ -83,19 +86,19 @@ public class Map {
     }
 
     public void render() {
-        int minX = (int) (camera.getX() / SCALE);
+        int minX = (int) ((camera.getX() - x) / SCALE);
         int maxX = minX + rWidth;
-        int minY = (int) (camera.getY() / SCALE);
+        int minY = (int) ((camera.getY() - y) / SCALE);
         int maxY = minY + rHeight;
         for (int i = Math.max(minX, 0); i <= maxX && i < map.length; i++) {
             for (int j = Math.max(minY, 0); j <= maxY && j < map[0].length; j++) {
                 if (map[i][j] < NUM_TILES) {
                     if (map[i][j] != TYPE_EMPTY || state != STATE_PLAY) {
-                        tiles[map[i][j]].setPosition(i * SCALE, j * SCALE);
+                        tiles[map[i][j]].setPosition(i * SCALE + x, j * SCALE + y);
                         tiles[map[i][j]].render();
                     }
                     if (over[i][j] != TYPE_EMPTY) {
-                        tiles[over[i][j]].setPosition(i * SCALE, j * SCALE);
+                        tiles[over[i][j]].setPosition(i * SCALE + x, j * SCALE + y);
                         tiles[over[i][j]].render();
                     }
                 }

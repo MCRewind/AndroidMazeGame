@@ -19,13 +19,6 @@ public class Surface extends GLSurfaceView {
     public static float touchY = -1;
     public static Vector3f swipe = new Vector3f();
 
-    int GLOBAL_TOUCH_POSITION_X = 0;
-    int GLOBAL_TOUCH_CURRENT_POSITION_X = 0;
-    int GLOBAL_TOUCH_POSITION_Y = 0;
-    int GLOBAL_TOUCH_CURRENT_POSITION_Y = 0;
-
-    private float[] x = {-1, -1}, y = {-1, -1}, x2 = {-1, -1}, y2 = {-1, -1};
-
     private GLSurfaceView surface;
 
     public Surface(Context context) {
@@ -34,8 +27,14 @@ public class Surface extends GLSurfaceView {
 
 
     public boolean onTouchEvent(MotionEvent e) {
-        touchX = e.getX() * cameraWidth / getWidth();
-        touchY = e.getY() * cameraHeight / getHeight();
+        if(e.getActionMasked() == MotionEvent.ACTION_UP) {
+            touchX = -1;
+            touchY = -1;
+        }
+        else {
+            touchX = e.getX() * cameraWidth / getWidth();
+            touchY = e.getY() * cameraHeight / getHeight();
+        }
         return true;
     }
 }
