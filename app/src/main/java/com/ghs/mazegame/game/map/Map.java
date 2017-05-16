@@ -168,7 +168,8 @@ public class Map {
 
     public void overHandle(int tile) {
         if (tile == types.get("TYPE_END")) {
-
+            state = STATE_EDIT;
+            Renderer.cur = Renderer.STATE_EDIT;
         }
     }
 

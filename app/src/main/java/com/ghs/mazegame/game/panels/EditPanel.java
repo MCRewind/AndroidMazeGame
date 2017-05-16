@@ -44,7 +44,7 @@ public class EditPanel implements Panel {
         this.camera = camera;
         this.map = new Map(camera, 20, 20);
         map.setState(Map.STATE_EDIT);
-        curType = Map.types.get("TYPE_BRICK_WALL");
+        curType = -1;
         for (int i = 0; i < map.getWidth(); ++i)
             for (int j = 0; j < map.getHeight(); ++j)
                 map.setTile(Map.types.get("TYPE_EMPTY"), i, j);
@@ -81,7 +81,7 @@ public class EditPanel implements Panel {
 
     public void update() {
         updateCamera();
-        if (!top.contains(touchX, touchY) && !left.contains(touchX, touchY) && !corner.contains(touchX, touchY))
+        if (!top.contains(touchX, touchY) && !left.contains(touchX, touchY) && !corner.contains(touchX, touchY) && curType != -1)
             draw();
         updateToolbar();
     }
@@ -143,8 +143,10 @@ public class EditPanel implements Panel {
         }
         testPlay.update();
         //if play button pressed and start pad present
-        if(testPlay.getState() == Button.STATE_RELEASED && map.getStart().x != -1)
+        if(testPlay.getState() == Button.STATE_RELEASED && map.getStart().x != -1) {
+            curType = -1;
             state = Renderer.STATE_PLAY_TEST;
+        }
     }
 
     private void draw() {
