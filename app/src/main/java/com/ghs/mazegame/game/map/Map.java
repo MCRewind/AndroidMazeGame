@@ -18,14 +18,14 @@ import static com.ghs.mazegame.game.Renderer.SCALE;
 
 public class Map {
 
-    public static int NUM_TILES = 19;
+    public static int NUM_TILES = 22;
 
     public static final HashMap<String, Integer> types = new HashMap<>();
 
     public static final boolean
             STATE_EDIT = false,
             STATE_PLAY = true,
-            TILE_PAINT = true;
+            TILE_PAINT = false;
 
     private int width, height, rWidth, rHeight;
 
@@ -73,6 +73,8 @@ public class Map {
         tiles[types.get("TYPE_TRUE_TILE")] = new Tile(camera, new Texture(R.drawable.true_tile), false, 0.9f);
         tiles[types.get("TYPE_FALSE_TILE")] = new Tile(camera, new Texture(R.drawable.false_tile), false, 0.9f);
         tiles[types.get("TYPE_SANDSTONE_WALL")] = new Tile(camera, new Texture(R.drawable.sandstone_wall), true, 0.9f);
+        tiles[types.get("TYPE_SANDSTONE_FLOOR")] = new Tile(camera, new Texture(R.drawable.sandstone_floor), false, 0.9f);
+        tiles[types.get("TYPE_STONE_KEY_WALL")] = new Tile(camera, new Texture(R.drawable.stone_key_wall), true, 0.9f);
     }
 
     private void tileInit() {
@@ -96,6 +98,8 @@ public class Map {
         types.put("TYPE_TRUE_TILE",          17);
         types.put("TYPE_FALSE_TILE",         18);
         types.put("TYPE_SANDSTONE_WALL",     19);
+        types.put("TYPE_SANDSTONE_FLOOR",    20);
+        types.put("TYPE_STONE_KEY_WALL",     21);
         NUM_TILES = types.size();
     }
 
@@ -187,7 +191,8 @@ public class Map {
                                 over[i][j] = types.get("TYPE_EMPTY");
                         }
                     }
-                    if (map[x][y] < types.get("TYPE_STONE_FLOOR") || map[x][y] > types.get("TYPE_WOOD_FLOOR"))
+
+                    if (tiles[map[x][y]].isSolid() == true && map[x][y] != types.get("TYPE_EMPTY"))
                         map[x][y] = types.get("TYPE_STONE_FLOOR");
                     over[x][y] = type;
                 } else {
