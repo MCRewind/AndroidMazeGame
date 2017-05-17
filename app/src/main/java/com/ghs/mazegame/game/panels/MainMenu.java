@@ -5,6 +5,7 @@ import android.util.Log;
 import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.display.Camera;
+import com.ghs.mazegame.game.Renderer;
 import com.ghs.mazegame.game.interfaces.Panel;
 import com.ghs.mazegame.game.map.Map;
 import com.ghs.mazegame.game.objects.Button;
@@ -18,7 +19,7 @@ public class MainMenu implements Panel {
 
     private final int HOR_VIEWS = 2;
 
-    private final float SPEED = 30;
+    private final float SPEED = 10;
 
     private int state = -1;
 
@@ -27,12 +28,16 @@ public class MainMenu implements Panel {
     private Camera camera;
 
     private Button[] dir;
+    private Button[] actions;
     private Map[] backgrounds;
     private Rectangle[] colors;
 
     public MainMenu(Camera camera) {
         this.camera = camera;
-        backgrounds = new Map[2];
+        actions = new Button[HOR_VIEWS];
+        actions[0] = new Button(camera, new Texture(R.drawable.menu_play_button), new Texture(R.drawable.menu_play_button_pressed), (cameraWidth - 49f) / 2f, (cameraHeight - 27f) / 2f, 49f, 27f, 0.6f, false);
+        actions[1] = new Button(camera, new Texture(R.drawable.menu_edit_button), new Texture(R.drawable.menu_edit_button_pressed), cameraWidth + (cameraWidth - 49f) / 2f, (cameraHeight - 27f) / 2f, 49f, 27f, 0.6f, false);
+        backgrounds = new Map[HOR_VIEWS];
         for (int i = 0; i < backgrounds.length; i++)
             backgrounds[i] = new Map(camera, cameraWidth * i, 0, (int) Math.ceil((float) cameraWidth / (float) SCALE), (int) Math.ceil((float) cameraHeight / (float) SCALE) * 2);
         backgrounds[0].setState(Map.STATE_EDIT);
@@ -40,24 +45,24 @@ public class MainMenu implements Panel {
         int[][] map = new int[][] {
             {1, 1, 1, 1, 1, 1, 1},
             {1, 4, 4, 4, 4, 4, 4},
-            {1, 4, 1, 1, 1, 1, 4},
+            {1, 4, 2, 3, 3, 2, 4},
             {1, 4, 4, 4, 4, 4, 4},
-            {1, 5, 1, 1, 1, 1, 1},
-            {1, 5, 1, 1, 1, 1, 1},
-            {1, 5, 5, 5, 5, 5, 1},
-            {1, 6, 1, 1, 1, 5, 1},
+            {1, 5, 3, 3, 3, 3, 3},
+            {1, 5, 3, 3, 3, 3, 3},
+            {1, 5, 5, 5, 5, 5, 3},
+            {1, 6, 2, 1, 2, 5, 3},
             {1, 6, 1, 1, 1, 5, 5},
-            {1, 6, 1, 1, 1, 1, 5},
-            {1, 6, 1, 1, 1, 1, 5},
+            {1, 6, 1, 1, 1, 2, 5},
+            {1, 6, 2, 1, 1, 2, 5},
             {1, 6, 6, 6, 6, 6, 5},
         };
         backgrounds[0].setMap(map, 0, 0);
-        colors = new Rectangle[2];
+        colors = new Rectangle[HOR_VIEWS];
         colors[0] = new Rectangle(camera, 0, 0, camera.getWidth(), camera.getHeight(), 0.6f, 0, 0.15f, 0.5f);
         colors[1] = new Rectangle(camera, cameraWidth, 0, camera.getWidth(), camera.getHeight(), 0, 0.5f, 0.5f, 0.5f);
         dir = new Button[2];
-        dir[0] = new Button(camera, new Texture(R.drawable.left_menu_arrow), new Texture(R.drawable.left_menu_arrow_pressed), 0, 0, SCALE * 2, cameraHeight);
-        dir[1] = new Button(camera, new Texture(R.drawable.right_menu_arrow), new Texture(R.drawable.right_menu_arrow_pressed), camera.getWidth() - SCALE * 2, 0, SCALE * 2, cameraHeight);
+        dir[0] = new Button(camera, new Texture(R.drawable.left_menu_arrow), new Texture(R.drawable.left_menu_arrow_pressed), 0, 0, SCALE * 2, cameraHeight, 0.1f, true);
+        dir[1] = new Button(camera, new Texture(R.drawable.right_menu_arrow), new Texture(R.drawable.right_menu_arrow_pressed), camera.getWidth() - SCALE * 2, 0, SCALE * 2, cameraHeight, 0.1f, true);
     }
 
     public void update() {
@@ -83,13 +88,18 @@ public class MainMenu implements Panel {
         }
         else
             additional = -1;
+        actions[cur].update();
+        if(actions[1].getState() == Button.STATE_RELEASED)
+            state = Renderer.STATE_EDIT;
     }
 
     public void render() {
         backgrounds[cur].render();
+        actions[cur].render();
         colors[cur].render();
         if(additional != -1) {
             backgrounds[additional].render();
+            actions[additional].render();
             colors[additional].render();
         }
         dir[0].render();
