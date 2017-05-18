@@ -63,9 +63,9 @@ public class DPad implements GameObject {
     public void render() {
         for (int i = 0; i < dpad.length; i++) {
             if (selected == i)
-                shader.setUniform4f("opacity", 0.3f, 0.5f, 0.7f, 0.6f);
+                shader.setUniform4f("color", 0.3f, 0.5f, 0.7f, 0.6f);
             else
-                shader.setUniform4f("opacity", 0.4f, 0.4f, 0.4f, 0.3f);
+                shader.setUniform4f("color", 0.4f, 0.4f, 0.4f, 0.3f);
             dpad[i].render();
         }
     }

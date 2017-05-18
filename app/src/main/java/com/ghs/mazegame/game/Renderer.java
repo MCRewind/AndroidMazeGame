@@ -51,6 +51,7 @@ public class Renderer implements GLSurfaceView.Renderer {
         defaultShader = new Shader(R.raw.defaultvs, R.raw.defaultfs);
 
         GLES20.glClearColor(0f, 0f, 0f, 1f);
+
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 
         GLES20.glEnable(GLES20.GL_BLEND);
@@ -88,9 +89,32 @@ public class Renderer implements GLSurfaceView.Renderer {
 
     private void checkState() {
         int state = panels[cur].checkState();
+<<<<<<< HEAD
         if(state != -1) {
             panels[state].setActive(panels[cur].getMap());
             cur = state;
         }
+=======
+        switch(state) {
+            case STATE_EDIT:
+                if(cur == STATE_MAIN_MENU) {
+                    EditPanel edit = (EditPanel) panels[STATE_EDIT];
+                    edit.setActive();
+                }
+                else if(cur == STATE_PLAY_TEST){
+                    EditPanel edit = (EditPanel) panels[STATE_EDIT];
+                    PlayTestPanel play = (PlayTestPanel) panels[STATE_PLAY_TEST];
+                    edit.setActive(play.getMap());
+                }
+                break;
+            case STATE_PLAY_TEST:
+                PlayTestPanel play = (PlayTestPanel) panels[STATE_PLAY_TEST];
+                EditPanel edit = (EditPanel) panels[STATE_EDIT];
+                play.setActive(edit.getMap());
+                break;
+        };
+        if(state != -1)
+            cur = state;
+>>>>>>> sam
     }
 }

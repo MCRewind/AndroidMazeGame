@@ -10,10 +10,4 @@ public interface Panel {
     public void render();
 
     public int checkState();
-
-    public void setActive();
-
-    public void setActive(Map map);
-
-    public Map getMap();
 }

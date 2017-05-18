@@ -1,7 +1,5 @@
 package com.ghs.mazegame.game.panels;
 
-import android.util.Log;
-
 import static com.ghs.mazegame.game.Renderer.*;
 
 import com.ghs.mazegame.R;
@@ -24,7 +22,7 @@ public class PlayTestPanel implements Panel {
 
     public PlayTestPanel(Camera camera) {
         this.camera = camera;
-        dpad = new DPad(camera, SCALE * 0.2f, cameraHeight - SCALE * 3.3f, SCALE * 3, SCALE * 3);
+        dpad = new DPad(camera, SCALE * 0.25f, cameraHeight - SCALE * 3.25f, SCALE * 3, SCALE * 3);
         player = new Player(camera, new Texture(R.drawable.samby), new Shader(R.raw.defaultvs, R.raw.defaultfs), 0, 0, SCALE, SCALE);
     }
 
@@ -66,8 +64,6 @@ public class PlayTestPanel implements Panel {
     public int checkState() {
         return -1;
     }
-
-    public void setActive() {}
 
     public void setActive(Map map) {
         this.map = map;
