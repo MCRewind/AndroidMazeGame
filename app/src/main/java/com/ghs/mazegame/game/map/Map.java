@@ -28,6 +28,7 @@ public class Map {
             TILE_PAINT = false;
 
     private int width, height, rWidth, rHeight;
+    private float x, y;
 
     private boolean state;
 
@@ -37,8 +38,10 @@ public class Map {
     private int[][] over;
     private Tile[] tiles;
 
-    public Map(Camera camera, int width, int height) {
+    public Map(Camera camera, float x, float y, int width, int height) {
         this.camera = camera;
+        this.x = x;
+        this.y = y;
         map = new int[width][height];
         over = new int[width][height];
         this.width = width;
@@ -53,28 +56,28 @@ public class Map {
             }
         }
         tiles = new Tile[NUM_TILES];
-        tiles[types.get("TYPE_EMPTY")] = new Tile(camera);
-        tiles[types.get("TYPE_BRICK_WALL")] = new Tile(camera, new Texture(R.drawable.brick_wall), true, 0.9f);
-        tiles[types.get("TYPE_SQUARE_WALL")] = new Tile(camera, new Texture(R.drawable.square_wall), true, 0.9f);
-        tiles[types.get("TYPE_S_WALL")] = new Tile(camera, new Texture(R.drawable.s_wall), true, 0.9f);
-        tiles[types.get("TYPE_STONE_FLOOR")] = new Tile(camera, new Texture(R.drawable.stone_floor), false, 0.9f);
-        tiles[types.get("TYPE_LIMESTONE_FLOOR")] = new Tile(camera, new Texture(R.drawable.limestone_floor), false, 0.9f);
-        tiles[types.get("TYPE_WOOD_FLOOR")] = new Tile(camera, new Texture(R.drawable.wood_floor), false, 0.9f);
-        tiles[types.get("TYPE_START")] = new Tile(camera, new Texture(R.drawable.start), false, 0.8f);
-        tiles[types.get("TYPE_END")] = new Tile(camera, new Texture(R.drawable.end), false, 0.8f);
-        tiles[types.get("TYPE_BRICK_WALL_BLUE")] = new Tile(camera, new Texture(R.drawable.brick_wall_blue), true, 0.9f);
-        tiles[types.get("TYPE_BRICK_WALL_CYAN")] = new Tile(camera, new Texture(R.drawable.brick_wall_cyan), true, 0.9f);
-        tiles[types.get("TYPE_BRICK_WALL_GREEN")] = new Tile(camera, new Texture(R.drawable.brick_wall_green), true, 0.9f);
+        tiles[types.get("TYPE_EMPTY")]              = new Tile(camera);
+        tiles[types.get("TYPE_BRICK_WALL")]         = new Tile(camera, new Texture(R.drawable.brick_wall),         true, 0.9f);
+        tiles[types.get("TYPE_SQUARE_WALL")]        = new Tile(camera, new Texture(R.drawable.square_wall),        true, 0.9f);
+        tiles[types.get("TYPE_S_WALL")]             = new Tile(camera, new Texture(R.drawable.s_wall),             true, 0.9f);
+        tiles[types.get("TYPE_STONE_FLOOR")]        = new Tile(camera, new Texture(R.drawable.stone_floor),       false, 0.9f);
+        tiles[types.get("TYPE_LIMESTONE_FLOOR")]    = new Tile(camera, new Texture(R.drawable.limestone_floor),   false, 0.9f);
+        tiles[types.get("TYPE_WOOD_FLOOR")]         = new Tile(camera, new Texture(R.drawable.wood_floor),        false, 0.9f);
+        tiles[types.get("TYPE_START")]              = new Tile(camera, new Texture(R.drawable.start),             false, 0.8f);
+        tiles[types.get("TYPE_END")]                = new Tile(camera, new Texture(R.drawable.end),               false, 0.8f);
+        tiles[types.get("TYPE_BRICK_WALL_BLUE")]    = new Tile(camera, new Texture(R.drawable.brick_wall_blue),    true, 0.9f);
+        tiles[types.get("TYPE_BRICK_WALL_CYAN")]    = new Tile(camera, new Texture(R.drawable.brick_wall_cyan),    true, 0.9f);
+        tiles[types.get("TYPE_BRICK_WALL_GREEN")]   = new Tile(camera, new Texture(R.drawable.brick_wall_green),   true, 0.9f);
         tiles[types.get("TYPE_BRICK_WALL_MAGENTA")] = new Tile(camera, new Texture(R.drawable.brick_wall_magenta), true, 0.9f);
-        tiles[types.get("TYPE_BRICK_WALL_ORANGE")] = new Tile(camera, new Texture(R.drawable.brick_wall_orange), true, 0.9f);
-        tiles[types.get("TYPE_BRICK_WALL_PURPLE")] = new Tile(camera, new Texture(R.drawable.brick_wall_purple), true, 0.9f);
-        tiles[types.get("TYPE_BRICK_WALL_RED")] = new Tile(camera, new Texture(R.drawable.brick_wall_red), true, 0.9f);
-        tiles[types.get("TYPE_BRICK_WALL_YELLOW")] = new Tile(camera, new Texture(R.drawable.brick_wall_yellow), true, 0.9f);
-        tiles[types.get("TYPE_TRUE_TILE")] = new Tile(camera, new Texture(R.drawable.true_tile), false, 0.9f);
-        tiles[types.get("TYPE_FALSE_TILE")] = new Tile(camera, new Texture(R.drawable.false_tile), false, 0.9f);
-        tiles[types.get("TYPE_SANDSTONE_WALL")] = new Tile(camera, new Texture(R.drawable.sandstone_wall), true, 0.9f);
-        tiles[types.get("TYPE_SANDSTONE_FLOOR")] = new Tile(camera, new Texture(R.drawable.sandstone_floor), false, 0.9f);
-        tiles[types.get("TYPE_STONE_KEY_WALL")] = new Tile(camera, new Texture(R.drawable.stone_key_wall), true, 0.9f);
+        tiles[types.get("TYPE_BRICK_WALL_ORANGE")]  = new Tile(camera, new Texture(R.drawable.brick_wall_orange),  true, 0.9f);
+        tiles[types.get("TYPE_BRICK_WALL_PURPLE")]  = new Tile(camera, new Texture(R.drawable.brick_wall_purple),  true, 0.9f);
+        tiles[types.get("TYPE_BRICK_WALL_RED")]     = new Tile(camera, new Texture(R.drawable.brick_wall_red),     true, 0.9f);
+        tiles[types.get("TYPE_BRICK_WALL_YELLOW")]  = new Tile(camera, new Texture(R.drawable.brick_wall_yellow),  true, 0.9f);
+        tiles[types.get("TYPE_TRUE_TILE")]          = new Tile(camera, new Texture(R.drawable.true_tile),         false, 0.9f);
+        tiles[types.get("TYPE_FALSE_TILE")]         = new Tile(camera, new Texture(R.drawable.false_tile),        false, 0.9f);
+        tiles[types.get("TYPE_SANDSTONE_WALL")]     = new Tile(camera, new Texture(R.drawable.sandstone_wall),     true, 0.9f);
+        tiles[types.get("TYPE_SANDSTONE_FLOOR")]    = new Tile(camera, new Texture(R.drawable.sandstone_floor),   false, 0.9f);
+        tiles[types.get("TYPE_STONE_KEY_WALL")]     = new Tile(camera, new Texture(R.drawable.stone_key_wall),     true, 0.9f);
     }
 
     private void tileInit() {
@@ -104,19 +107,19 @@ public class Map {
     }
 
     public void render() {
-        int minX = (int) (camera.getX() / SCALE);
+        int minX = (int) ((camera.getX() - x) / SCALE);
         int maxX = minX + rWidth;
-        int minY = (int) (camera.getY() / SCALE);
+        int minY = (int) ((camera.getY() - y) / SCALE);
         int maxY = minY + rHeight;
         for (int i = Math.max(minX, 0); i <= maxX && i < map.length; i++) {
             for (int j = Math.max(minY, 0); j <= maxY && j < map[0].length; j++) {
                 if (map[i][j] < NUM_TILES) {
                     if (map[i][j] != types.get("TYPE_EMPTY") || state != STATE_PLAY) {
-                        tiles[map[i][j]].setPosition(i * SCALE, j * SCALE);
+                        tiles[map[i][j]].setPosition(i * SCALE + x, j * SCALE + y);
                         tiles[map[i][j]].render();
                     }
                     if (over[i][j] != types.get("TYPE_EMPTY")) {
-                        tiles[over[i][j]].setPosition(i * SCALE, j * SCALE);
+                        tiles[over[i][j]].setPosition(i * SCALE + x, j * SCALE + y);
                         tiles[over[i][j]].render();
                     }
                 }
@@ -180,6 +183,12 @@ public class Map {
         }
     }
 
+    public int getTile(int x, int y, boolean overlay) {
+        if(overlay)
+            return over[x][y];
+        else
+            return map[x][y];
+    }
 
     public void setTile(int type, int x, int y) {
         if (map.length > 0) {
@@ -232,5 +241,13 @@ public class Map {
 
     public void setState(boolean state) {
         this.state = state;
+    }
+
+    public void setMap(int[][] map, int xOffset, int yOffset) {
+        int width = Math.min(this.width, map.length);
+        int height = Math.min(this.height, map[0].length);
+        for (int i = xOffset; i < width; i++)
+            for (int j = yOffset; j < height; j++)
+                this.map[i][j] = map[i][j];
     }
 }

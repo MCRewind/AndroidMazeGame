@@ -16,43 +16,46 @@ import static com.ghs.mazegame.game.Renderer.defaultShader;
 public class Button implements GameObject {
 
     public static int
-        STATE_RELEASED = 0,
-        STATE_UNPRESSED = 1,
-        STATE_PRESSED = 2,
-        STATE_HELD = 3;
+            STATE_RELEASED = 0,
+            STATE_UNPRESSED = 1,
+            STATE_PRESSED = 2,
+            STATE_HELD = 3;
 
     private float x = 0, y = 0, width = 0, height = 0;
+    private boolean independent;
     private int state, texture;
     private Camera camera;
     private VAO vao;
     private Texture[] textures;
     private Shader shader;
 
-    public Button(Camera camera, Texture unpressed, Texture pressed, float x, float y, float width, float height) {
+    public Button(Camera camera, Texture unpressed, Texture pressed, float x, float y, float width, float height, float depth, boolean independent) {
         textures = new Texture[2];
         textures[0] = unpressed;
         textures[1] = pressed;
         shader = defaultShader;
+        state = STATE_UNPRESSED;
         this.camera = camera;
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.independent = independent;
         float[] vertices = new float[] {
-            0.0f,  0.0f,   0.1f, //TOP LEFT
-            0.0f,  height, 0.1f, //BOTTOM LEFT
-            width, height, 0.1f, //BOTTOM RIGHT
-            width, 0.0f,   0.1f  //TOP RIGHT
+                0.0f,  0.0f,   depth, //TOP LEFT
+                0.0f,  height, depth, //BOTTOM LEFT
+                width, height, depth, //BOTTOM RIGHT
+                width, 0.0f,   depth  //TOP RIGHT
         };
         int[] indices = new int[] {
-            0, 1, 3,
-            1, 2, 3
+                0, 1, 3,
+                1, 2, 3
         };
         float[] texCoords = new float[] {
-            0, 0,
-            0, 1,
-            1, 1,
-            1, 0
+                0, 0,
+                0, 1,
+                1, 1,
+                1, 0
         };
         vao = new VAO(vertices, indices, texCoords);
     }
@@ -60,6 +63,10 @@ public class Button implements GameObject {
     public void update() {
         float tx = touchX;
         float ty = touchY;
+        if(!independent) {
+            tx += camera.getX();
+            ty += camera.getY();
+        }
         if ((tx >= x && tx < x + width) && (ty >= y && ty < y + height)) {
             if(state == STATE_PRESSED)
                 state = STATE_HELD;
@@ -79,7 +86,7 @@ public class Button implements GameObject {
     }
 
     public void render() {
-        Matrix4f proj = camera.getUnatransformedProjection();
+        Matrix4f proj = independent ? camera.getUnatransformedProjection() : camera.getProjection();
         proj.translate(x, y, 0);
         shader.setUniformMat4f("projection", proj);
         textures[texture].bind();

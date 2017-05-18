@@ -19,7 +19,7 @@ public class Image implements GameObject {
     private Texture texture;
     private Shader shader;
 
-    public Image(Camera camera, Texture texture, Shader shader, float x, float y, float width, float height) {
+    public Image(Camera camera, Texture texture, Shader shader, float x, float y, float width, float height, float depth) {
         this.texture = texture;
         this.shader = shader;
         this.camera = camera;
@@ -28,30 +28,25 @@ public class Image implements GameObject {
         this.width = width;
         this.height = height;
         float[] vertices = new float[] {
-            0.0f,  0.0f,   0.0f, //TOP LEFT
-            0.0f,  height, 0.0f, //BOTTOM LEFT
-            width, height, 0.0f, //BOTTOM RIGHT
-            width, 0.0f,   0.0f  //TOP RIGHT
+                0.0f,  0.0f,   depth, //TOP LEFT
+                0.0f,  height, depth, //BOTTOM LEFT
+                width, height, depth, //BOTTOM RIGHT
+                width, 0.0f,   depth  //TOP RIGHT
         };
         int[] indices = new int[] {
-            0, 1, 3,
-            1, 2, 3
+                0, 1, 3,
+                1, 2, 3
         };
         float[] texCoords = new float[] {
-            0, 0,
-            0, 1,
-            1, 1,
-            1, 0
+                0, 0,
+                0, 1,
+                1, 1,
+                1, 0
         };
         vao = new VAO(vertices, indices, texCoords);
     }
 
-    @Override
-    public void update(){
-
-    }
-
-    public Image(Camera camera, Texture texture, float x, float y, float width, float height) {
+    public Image(Camera camera, Texture texture, float x, float y, float width, float height, float depth) {
         this.texture = texture;
         shader = defaultShader;
         this.camera = camera;
@@ -60,23 +55,25 @@ public class Image implements GameObject {
         this.width = width;
         this.height = height;
         float[] vertices = new float[] {
-            0.0f,  0.0f,   0.0f, //TOP LEFT
-            0.0f,  height, 0.0f, //BOTTOM LEFT
-            width, height, 0.0f, //BOTTOM RIGHT
-            width, 0.0f,   0.0f  //TOP RIGHT
+                0.0f,  0.0f,   depth, //TOP LEFT
+                0.0f,  height, depth, //BOTTOM LEFT
+                width, height, depth, //BOTTOM RIGHT
+                width, 0.0f,   depth  //TOP RIGHT
         };
         int[] indices = new int[] {
-            0, 1, 3,
-            1, 2, 3
+                0, 1, 3,
+                1, 2, 3
         };
         float[] texCoords = new float[] {
-            0, 0,
-            0, 1,
-            1, 1,
-            1, 0
+                0, 0,
+                0, 1,
+                1, 1,
+                1, 0
         };
         vao = new VAO(vertices, indices, texCoords);
     }
+
+    public void update() {}
 
     public void render() {
         Matrix4f proj = camera.getUnatransformedProjection();

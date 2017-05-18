@@ -67,7 +67,9 @@ public class PlayTestPanel implements Panel {
         return -1;
     }
 
-    public void setActive() {}
+    public void setActive() {
+
+    }
 
     public void setActive(Map map) {
         this.map = map;
