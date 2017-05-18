@@ -1,5 +1,6 @@
 package com.ghs.mazegame.game;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
@@ -41,11 +42,14 @@ public class Renderer implements GLSurfaceView.Renderer {
 
     private Camera camera;
 
+    private Context context;
+
     private Panel[] panels;
     public static int cur = STATE_SPLASH_SCREEN;
 
-    public Renderer(Resources resources) {
+    public Renderer(Resources resources, Context context) {
         this.resources = resources;
+        this.context = context;
     }
 
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
@@ -64,7 +68,7 @@ public class Renderer implements GLSurfaceView.Renderer {
         panels = new Panel[5];
         panels[STATE_SPLASH_SCREEN] = new SplashPanel(camera, 4000, new Texture(R.drawable.splash_screen));
         panels[STATE_PLAY_TEST] = new PlayTestPanel(camera);
-        panels[STATE_EDIT] = new EditPanel(camera);
+        panels[STATE_EDIT] = new EditPanel(camera, context);
         panels[STATE_MAIN_MENU] = new MainMenu(camera);
     }
 
