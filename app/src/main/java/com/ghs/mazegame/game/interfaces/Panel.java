@@ -10,11 +10,14 @@ public interface Panel {
 
     public int checkState();
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     public void setActive();
 
     public void setActive(Map map);
 
+=======
+>>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
 =======
 >>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
 }

@@ -27,6 +27,7 @@ public class Rectangle {
         this.shader = new Shader(R.raw.colorvs, R.raw.colorfs);
         float[] vertices = new float[] {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 0.0f,  0.0f,   0.5f, //TOP LEFT
                 0.0f,  height, 0.5f, //BOTTOM LEFT
                 width, height, 0.5f, //BOTTOM RIGHT
@@ -42,6 +43,8 @@ public class Rectangle {
                 1, 1,
                 1, 0
 =======
+=======
+>>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
             0.0f,  0.0f,   0.5f, //TOP LEFT
             0.0f,  height, 0.5f, //BOTTOM LEFT
             width, height, 0.5f, //BOTTOM RIGHT
@@ -56,6 +59,9 @@ public class Rectangle {
             0, 1,
             1, 1,
             1, 0
+<<<<<<< HEAD
+>>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
+=======
 >>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
         };
         vao = new VAO(vertices, indices, texCoords);
@@ -78,7 +84,11 @@ public class Rectangle {
         this.a = a;
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
 =======
 }
 >>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b

@@ -74,13 +74,19 @@ public class PlayTestPanel implements Panel {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public void setActive() {
 
 =======
+=======
+>>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
     public int checkState() {
         int temp = state;
         state = -1;
         return temp;
+<<<<<<< HEAD
+>>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
+=======
 >>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
     }
 

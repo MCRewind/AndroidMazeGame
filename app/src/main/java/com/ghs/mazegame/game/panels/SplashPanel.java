@@ -5,7 +5,10 @@ import com.ghs.mazegame.engine.display.Camera;
 import com.ghs.mazegame.game.Renderer;
 import com.ghs.mazegame.game.interfaces.Panel;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.ghs.mazegame.game.map.Map;
+=======
+>>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
 =======
 >>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
 import com.ghs.mazegame.game.objects.Image;
@@ -48,6 +51,7 @@ public class SplashPanel implements Panel {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     @Override
     public void setActive() {
 
@@ -57,6 +61,8 @@ public class SplashPanel implements Panel {
 
     }
 
+=======
+>>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
 =======
 >>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
     public void render() {
@@ -70,7 +76,11 @@ public class SplashPanel implements Panel {
         return temp;
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
 =======
 }
 >>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b

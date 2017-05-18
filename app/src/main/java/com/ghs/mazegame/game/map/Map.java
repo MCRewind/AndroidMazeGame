@@ -74,6 +74,7 @@ public class Map {
         }
         tiles = new Tile[NUM_TILES];
 <<<<<<< HEAD
+<<<<<<< HEAD
         tiles[types.get("TYPE_EMPTY")]              = new Tile(camera);
         tiles[types.get("TYPE_BRICK_WALL")]         = new Tile(camera, new Texture(R.drawable.brick_wall),         true, 0.9f);
         tiles[types.get("TYPE_SQUARE_WALL")]        = new Tile(camera, new Texture(R.drawable.square_wall),        true, 0.9f);
@@ -123,6 +124,8 @@ public class Map {
         types.put("TYPE_STONE_KEY_WALL",     21);
         NUM_TILES = types.size();
 =======
+=======
+>>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
         tiles[TYPE_EMPTY]              = new Tile(camera);
         tiles[TYPE_BRICK_WALL]         = new Tile(camera, new Texture(R.drawable.brick_wall),         true,  0.9f);
         tiles[TYPE_SQUARE_WALL]        = new Tile(camera, new Texture(R.drawable.square_wall),        true,  0.9f);
@@ -140,6 +143,9 @@ public class Map {
         tiles[TYPE_BRICK_WALL_BLUE]    = new Tile(camera, new Texture(R.drawable.brick_wall_blue),    true,  0.9f);
         tiles[TYPE_BRICK_WALL_PURPLE]  = new Tile(camera, new Texture(R.drawable.brick_wall_purple),  true,  0.9f);
         tiles[TYPE_BRICK_WALL_MAGENTA] = new Tile(camera, new Texture(R.drawable.brick_wall_magenta), true,  0.9f);
+<<<<<<< HEAD
+>>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
+=======
 >>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
     }
 
@@ -152,11 +158,19 @@ public class Map {
             for (int j = Math.max(minY, 0); j <= maxY && j < map[0].length; j++) {
                 if (map[i][j] < NUM_TILES) {
 <<<<<<< HEAD
+<<<<<<< HEAD
                     if (map[i][j] != types.get("TYPE_EMPTY") || state != STATE_PLAY) {
                         tiles[map[i][j]].setPosition(i * SCALE + x, j * SCALE + y);
                         tiles[map[i][j]].render();
                     }
                     if (over[i][j] != types.get("TYPE_EMPTY")) {
+=======
+                    if (map[i][j] != TYPE_EMPTY || state != STATE_PLAY) {
+                        tiles[map[i][j]].setPosition(i * SCALE + x, j * SCALE + y);
+                        tiles[map[i][j]].render();
+                    }
+                    if (over[i][j] != TYPE_EMPTY) {
+>>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
 =======
                     if (map[i][j] != TYPE_EMPTY || state != STATE_PLAY) {
                         tiles[map[i][j]].setPosition(i * SCALE + x, j * SCALE + y);

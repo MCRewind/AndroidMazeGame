@@ -68,6 +68,7 @@ public class EditPanel implements Panel {
         blockPreview[6] = new Image(camera, new Texture(R.drawable.start_prev),               blockSelect[6].getX() + (blockSelect[6].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
         blockPreview[7] = new Image(camera, new Texture(R.drawable.end_prev),                 blockSelect[7].getX() + (blockSelect[7].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
 <<<<<<< HEAD
+<<<<<<< HEAD
         blockPreview[8] = new Image(camera, new Texture(R.drawable.brick_wall_blue_prev),     blockSelect[0].getX() + (blockSelect[0].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
         blockPreview[9] = new Image(camera, new Texture(R.drawable.brick_wall_cyan_prev),     blockSelect[1].getX() + (blockSelect[1].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
         blockPreview[10] = new Image(camera, new Texture(R.drawable.brick_wall_green_prev),   blockSelect[2].getX() + (blockSelect[2].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
@@ -88,6 +89,8 @@ public class EditPanel implements Panel {
         leftArrow = new Button(camera, new Texture(R.drawable.left_arrow), new Texture(R.drawable.left_arrow_down), corner.getWidth() + SCALE / 3, (corner.getHeight() - SCALE / 2) / 2, SCALE / 2, SCALE / 2, .1f, true);
         rightArrow = new Button(camera, new Texture(R.drawable.right_arrow), new Texture(R.drawable.right_arrow_down), camera.getWidth() - ((SCALE / 8) * 7), (top.getHeight() - SCALE / 2) / 2, SCALE / 2, SCALE / 2, .1f, true);
 =======
+=======
+>>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
         blockPreview[8] = new Image(camera, new Texture(R.drawable.brick_wall_red_prev),      blockSelect[0].getX() + (blockSelect[0].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
         blockPreview[9] = new Image(camera, new Texture(R.drawable.brick_wall_orange_prev),   blockSelect[1].getX() + (blockSelect[1].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
         blockPreview[10] = new Image(camera, new Texture(R.drawable.brick_wall_yellow_prev),  blockSelect[2].getX() + (blockSelect[2].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
@@ -99,6 +102,9 @@ public class EditPanel implements Panel {
         testPlay = new Button(camera, new Texture(R.drawable.play_unpressed), new Texture(R.drawable.play_pressed), (corner.getWidth() - SCALE) / 2, (corner.getHeight() - SCALE) / 2, SCALE, SCALE, 0.1f, true);
         leftArrow = new Button(camera, new Texture(R.drawable.left_arrow), new Texture(R.drawable.left_arrow_down), corner.getWidth() + SCALE / 3, (corner.getHeight() - SCALE / 2) / 2, SCALE / 2, SCALE / 2, 0.1f, true);
         rightArrow = new Button(camera, new Texture(R.drawable.right_arrow), new Texture(R.drawable.right_arrow_down), camera.getWidth() - ((SCALE / 8) * 7), (top.getHeight() - SCALE / 2) / 2, SCALE / 2, SCALE / 2, 0.1f, true);
+<<<<<<< HEAD
+>>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
+=======
 >>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
         state = -1;
     }

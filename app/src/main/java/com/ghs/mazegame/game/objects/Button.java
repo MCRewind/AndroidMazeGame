@@ -43,15 +43,21 @@ public class Button implements GameObject {
         this.independent = independent;
         float[] vertices = new float[] {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 0.0f,  0.0f,   depth, //TOP LEFT
                 0.0f,  height, depth, //BOTTOM LEFT
                 width, height, depth, //BOTTOM RIGHT
                 width, 0.0f,   depth  //TOP RIGHT
 =======
+=======
+>>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
             0.0f,  0.0f,   depth, //TOP LEFT
             0.0f,  height, depth, //BOTTOM LEFT
             width, height, depth, //BOTTOM RIGHT
             width, 0.0f,   depth  //TOP RIGHT
+<<<<<<< HEAD
+>>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
+=======
 >>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
         };
         int[] indices = new int[] {
