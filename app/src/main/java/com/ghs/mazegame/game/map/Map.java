@@ -18,7 +18,7 @@ import static com.ghs.mazegame.game.Renderer.SCALE;
 
 public class Map {
 
-    public static final int NUM_TILES = 19;
+    public static final int NUM_TILES = 25;
 
     public static final int
         TYPE_EMPTY = 0,
@@ -37,7 +37,15 @@ public class Map {
         TYPE_BRICK_WALL_CYAN = 13,
         TYPE_BRICK_WALL_BLUE = 14,
         TYPE_BRICK_WALL_PURPLE = 15,
-        TYPE_BRICK_WALL_MAGENTA = 16;
+        TYPE_BRICK_WALL_MAGENTA = 16,
+        TYPE_SANDSTONE_WALL = 17,
+        TYPE_SANDSTONE_FLOOR = 18,
+        TYPE_STONE_KEY_WALL = 19,
+        TYPE_20 = 20,
+        TYPE_21 = 21,
+        TYPE_22 = 22,
+        TYPE_23 = 23,
+        TYPE_24 = 24;
 
     public static final HashMap<String, Integer> types = new HashMap<>();
 
@@ -90,6 +98,14 @@ public class Map {
         tiles[TYPE_BRICK_WALL_BLUE]    = new Tile(camera, new Texture(R.drawable.brick_wall_blue),    true,  0.9f);
         tiles[TYPE_BRICK_WALL_PURPLE]  = new Tile(camera, new Texture(R.drawable.brick_wall_purple),  true,  0.9f);
         tiles[TYPE_BRICK_WALL_MAGENTA] = new Tile(camera, new Texture(R.drawable.brick_wall_magenta), true,  0.9f);
+        tiles[TYPE_SANDSTONE_WALL]     = new Tile(camera, new Texture(R.drawable.sandstone_wall),     true,  0.9f);
+        tiles[TYPE_SANDSTONE_FLOOR]    = new Tile(camera, new Texture(R.drawable.sandstone_floor),    false, 0.9f);
+        tiles[TYPE_STONE_KEY_WALL]     = new Tile(camera, new Texture(R.drawable.stone_key_wall),     true,  0.9f);
+        tiles[TYPE_20]                 = new Tile(camera, new Texture(R.drawable.true_tile),         false,  0.9f);
+        tiles[TYPE_21]                 = new Tile(camera, new Texture(R.drawable.true_tile),         false,  0.9f);
+        tiles[TYPE_22]                 = new Tile(camera, new Texture(R.drawable.true_tile),         false,  0.9f);
+        tiles[TYPE_23]                 = new Tile(camera, new Texture(R.drawable.true_tile),         false,  0.9f);
+        tiles[TYPE_24]                 = new Tile(camera, new Texture(R.drawable.true_tile),         false,  0.9f);
     }
 
     public void render() {
