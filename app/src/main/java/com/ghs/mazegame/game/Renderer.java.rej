@@ -1,9 +1,0 @@
-diff a/app/src/main/java/com/ghs/mazegame/game/Renderer.java b/app/src/main/java/com/ghs/mazegame/game/Renderer.java	(rejected hunks)
-@@ -39,6 +39,7 @@
-     private Camera camera;
- 
-     private Panel[] panels;
-+    public int cur = STATE_MAIN_MENU;
- 
-     public Renderer(Resources resources) {
-         this.resources = resources;
