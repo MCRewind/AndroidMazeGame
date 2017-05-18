@@ -8,6 +8,8 @@ import android.view.MotionEvent;
 import android.view.SurfaceView;
 
 import com.ghs.mazegame.engine.math.Vector3f;
+import com.ghs.mazegame.game.Renderer;
+
 public class Surface extends GLSurfaceView {
 
     public static float touchX = -1;
@@ -88,6 +90,8 @@ public class Surface extends GLSurfaceView {
             }
         }
         else if(!isPanning && (pointerCount == 1)) {
+//            GLOBAL_TOUCH_POSITION_X = 0;
+//            GLOBAL_TOUCH_CURRENT_POSITION_X = 0;
             switch (e.getActionMasked()) {
                 case MotionEvent.ACTION_POINTER_DOWN:
                 case MotionEvent.ACTION_DOWN:

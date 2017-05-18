@@ -17,11 +17,12 @@ import static com.ghs.mazegame.engine.display.Surface.swipe;
 import static com.ghs.mazegame.engine.display.Surface.touchX;
 import static com.ghs.mazegame.engine.display.Surface.touchY;
 import static com.ghs.mazegame.game.Renderer.SCALE;
+import static com.ghs.mazegame.game.Renderer.time;
 import static com.ghs.mazegame.game.objects.Backplate.makePlate;
 
 public class EditPanel implements Panel {
 
-    private final int NUM_BLOCKS = 16, NUM_TOGGLES = 8;
+    private final int NUM_BLOCKS = 24, NUM_TOGGLES = 8;
 
     private int state;
 
@@ -34,22 +35,21 @@ public class EditPanel implements Panel {
     private Image[] blockPreview;
     private Button testPlay, leftArrow, rightArrow;
 
-    private int curType, curBlocks, numPages;
+    private int curType, typeIter = 1, numPages;
 
     public static int paintType = 1;
 
     private ObjectManager objectManager;
 
     public EditPanel(Camera camera) {
-        numPages = NUM_BLOCKS / NUM_TOGGLES;
-        curBlocks = 0;
+        numPages = NUM_BLOCKS/NUM_TOGGLES;
         this.camera = camera;
         this.map = new Map(camera, 0, 0, 20, 20);
         map.setState(Map.STATE_EDIT);
         curType = -1;
         for (int i = 0; i < map.getWidth(); ++i)
             for (int j = 0; j < map.getHeight(); ++j)
-                map.setTile(Map.TYPE_EMPTY, i, j);
+                map.setTile(Map.types.get("TYPE_EMPTY"), i, j);
         corner = new Backplate(camera, 0, 0, SCALE * 2, (int) (SCALE * 1.5f), 2);
         top = new Backplate(camera, SCALE * 2, 0, camera.getWidth() - SCALE * 2, (int) (SCALE * 1.5f), 2);
         left = new Backplate(camera, 0, SCALE * 1.5f, SCALE * 2, (int) (camera.getHeight() - SCALE * 1.5f), 2);
@@ -67,8 +67,6 @@ public class EditPanel implements Panel {
         blockPreview[5] = new Image(camera, new Texture(R.drawable.wood_floor_prev),          blockSelect[5].getX() + (blockSelect[5].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
         blockPreview[6] = new Image(camera, new Texture(R.drawable.start_prev),               blockSelect[6].getX() + (blockSelect[6].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
         blockPreview[7] = new Image(camera, new Texture(R.drawable.end_prev),                 blockSelect[7].getX() + (blockSelect[7].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-<<<<<<< HEAD
-<<<<<<< HEAD
         blockPreview[8] = new Image(camera, new Texture(R.drawable.brick_wall_blue_prev),     blockSelect[0].getX() + (blockSelect[0].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
         blockPreview[9] = new Image(camera, new Texture(R.drawable.brick_wall_cyan_prev),     blockSelect[1].getX() + (blockSelect[1].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
         blockPreview[10] = new Image(camera, new Texture(R.drawable.brick_wall_green_prev),   blockSelect[2].getX() + (blockSelect[2].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
@@ -88,24 +86,6 @@ public class EditPanel implements Panel {
         testPlay = new Button(camera, new Texture(R.drawable.play_unpressed), new Texture(R.drawable.play_pressed), (corner.getWidth() - SCALE) / 2, (corner.getHeight() - SCALE) / 2, SCALE, SCALE, .1f, true);
         leftArrow = new Button(camera, new Texture(R.drawable.left_arrow), new Texture(R.drawable.left_arrow_down), corner.getWidth() + SCALE / 3, (corner.getHeight() - SCALE / 2) / 2, SCALE / 2, SCALE / 2, .1f, true);
         rightArrow = new Button(camera, new Texture(R.drawable.right_arrow), new Texture(R.drawable.right_arrow_down), camera.getWidth() - ((SCALE / 8) * 7), (top.getHeight() - SCALE / 2) / 2, SCALE / 2, SCALE / 2, .1f, true);
-=======
-=======
->>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
-        blockPreview[8] = new Image(camera, new Texture(R.drawable.brick_wall_red_prev),      blockSelect[0].getX() + (blockSelect[0].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[9] = new Image(camera, new Texture(R.drawable.brick_wall_orange_prev),   blockSelect[1].getX() + (blockSelect[1].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[10] = new Image(camera, new Texture(R.drawable.brick_wall_yellow_prev),  blockSelect[2].getX() + (blockSelect[2].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[11] = new Image(camera, new Texture(R.drawable.brick_wall_green_prev),   blockSelect[3].getX() + (blockSelect[3].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[12] = new Image(camera, new Texture(R.drawable.brick_wall_cyan_prev),    blockSelect[4].getX() + (blockSelect[4].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[13] = new Image(camera, new Texture(R.drawable.brick_wall_blue_prev),    blockSelect[5].getX() + (blockSelect[5].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[14] = new Image(camera, new Texture(R.drawable.brick_wall_purple_prev),  blockSelect[6].getX() + (blockSelect[6].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[15] = new Image(camera, new Texture(R.drawable.brick_wall_magenta_prev), blockSelect[7].getX() + (blockSelect[7].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        testPlay = new Button(camera, new Texture(R.drawable.play_unpressed), new Texture(R.drawable.play_pressed), (corner.getWidth() - SCALE) / 2, (corner.getHeight() - SCALE) / 2, SCALE, SCALE, 0.1f, true);
-        leftArrow = new Button(camera, new Texture(R.drawable.left_arrow), new Texture(R.drawable.left_arrow_down), corner.getWidth() + SCALE / 3, (corner.getHeight() - SCALE / 2) / 2, SCALE / 2, SCALE / 2, 0.1f, true);
-        rightArrow = new Button(camera, new Texture(R.drawable.right_arrow), new Texture(R.drawable.right_arrow_down), camera.getWidth() - ((SCALE / 8) * 7), (top.getHeight() - SCALE / 2) / 2, SCALE / 2, SCALE / 2, 0.1f, true);
-<<<<<<< HEAD
->>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
-=======
->>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
         state = -1;
     }
 
@@ -146,25 +126,31 @@ public class EditPanel implements Panel {
     private void updateToolbar() {
         leftArrow.update();
         if (leftArrow.getState() == Button.STATE_RELEASED) {
-            curBlocks--;
-            if(curBlocks == -1)
-                curBlocks = numPages - 1;
+            if (typeIter == 1) {
+                typeIter = numPages;
+            } else {
+                typeIter--;
+            }
         }
         rightArrow.update();
         if (rightArrow.getState() == Button.STATE_RELEASED) {
-            curBlocks++;
-            if(curBlocks == numPages) {
-                curBlocks = 0;
+            if (typeIter < numPages) {
+                typeIter++;
+            } else {
+                typeIter = 1;
             }
         }
         for (int i = 0; i < NUM_TOGGLES; i++) {
             blockSelect[i].update();
             if(blockSelect[i].getState() == ToggleButton.STATE_PRESSED)
-                curType = curBlocks * NUM_TOGGLES + i + 1;
+                curType = (i + 1)+((typeIter - 1) * NUM_TOGGLES);
         }
-        for (int i = 0; i < NUM_TOGGLES; i++)
-            if(curBlocks * NUM_TOGGLES + i + 1 != curType)
+        for (int i = 0; i < NUM_TOGGLES; i++) {
+            if((i + 1)+((typeIter - 1) * NUM_TOGGLES) == curType)
+                blockSelect[i].setState(ToggleButton.STATE_PRESSED);
+            else
                 blockSelect[i].setState(ToggleButton.STATE_UNPRESSED);
+        }
         testPlay.update();
         //if play button pressed and start pad present
         if(testPlay.getState() == Button.STATE_RELEASED && map.getStart().x != -1) {
@@ -187,10 +173,13 @@ public class EditPanel implements Panel {
         top.render();
         left.render();
         corner.render();
-        for (int i = 0; i < NUM_TOGGLES; i++)
+        for (int i = 0; i < NUM_TOGGLES; i++) {
             blockSelect[i].render();
-        for (int i = curBlocks * NUM_TOGGLES; i < (curBlocks + 1) * NUM_TOGGLES; i++)
-            blockPreview[i].render();
+        }
+        for (int i = (typeIter*NUM_TOGGLES)-NUM_TOGGLES; i < typeIter*NUM_TOGGLES; i++) {
+            if(blockPreview[i] != null)
+                blockPreview[i].render();
+        }
         testPlay.render();
         leftArrow.render();
         rightArrow.render();
