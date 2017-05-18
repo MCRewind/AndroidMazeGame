@@ -115,8 +115,8 @@ public class EditPanel implements Panel {
     private void updateToolbar() {
         for (int i = 0; i < NUM_TOGGLES; i++) {
             blockSelect[i].update();
-            if(blockSelect[i].getState() == ToggleButton.STATE_PRESSED)
-                curType = (i + 1)+((typeIter - 1) * NUM_TOGGLES);
+            if (blockSelect[i].getState() == ToggleButton.STATE_PRESSED)
+                curType = (i + 1) + ((typeIter - 1) * NUM_TOGGLES);
         }
         for (int i = 0; i < NUM_TOGGLES; i++) {
             if((i + 1)+((typeIter - 1) * NUM_TOGGLES) == curType)
@@ -158,9 +158,8 @@ public class EditPanel implements Panel {
         top.render();
         left.render();
         corner.render();
-        for (int i = 0; i < NUM_TOGGLES; i++) {
+        for (int i = 0; i < NUM_TOGGLES; i++)
             blockSelect[i].render();
-        }
         for (int i = (typeIter*NUM_TOGGLES)-NUM_TOGGLES; i < typeIter*NUM_TOGGLES; i++) {
             if(blockPreview[i] != null)
                 blockPreview[i].render();

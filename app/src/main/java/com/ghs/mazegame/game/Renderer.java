@@ -51,6 +51,7 @@ public class Renderer implements GLSurfaceView.Renderer {
         defaultShader = new Shader(R.raw.defaultvs, R.raw.defaultfs);
 
         GLES20.glClearColor(0f, 0f, 0f, 1f);
+
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 
         GLES20.glEnable(GLES20.GL_BLEND);
