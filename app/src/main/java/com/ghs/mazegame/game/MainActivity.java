@@ -17,7 +17,7 @@ public class MainActivity extends Activity {
 
         surface = new Surface(this);
         surface.setEGLContextClientVersion(2);
-        surface.setRenderer(new Renderer(surface.getResources()));
+        surface.setRenderer(new Renderer(surface.getResources(),this));
 
         setContentView(surface);
 

@@ -1,5 +1,7 @@
 package com.ghs.mazegame.game.panels;
 
+import android.content.Context;
+
 import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.display.Camera;
@@ -12,6 +14,15 @@ import com.ghs.mazegame.game.objects.Button;
 import com.ghs.mazegame.game.map.Map;
 import com.ghs.mazegame.game.objects.Image;
 import com.ghs.mazegame.game.objects.ToggleButton;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 
 import static com.ghs.mazegame.engine.display.Surface.swipe;
 import static com.ghs.mazegame.engine.display.Surface.touchX;
@@ -37,9 +48,12 @@ public class EditPanel implements Panel {
 
     private int curType, typeIter = 1, numPages;
 
+    private Context context;
+
     private ObjectManager objectManager;
 
-    public EditPanel(Camera camera) {
+    public EditPanel(Camera camera, Context context) {
+        this.context = context;
         numPages = NUM_BLOCKS/NUM_TOGGLES;
         this.camera = camera;
         this.map = new Map(camera, 20, 20);
@@ -84,6 +98,75 @@ public class EditPanel implements Panel {
         if (!top.contains(touchX, touchY) && !left.contains(touchX, touchY) && !corner.contains(touchX, touchY) && curType != -1)
             draw();
         updateToolbar();
+    }
+
+    public void saveLevel() {
+/*
+for 0-255 numbers.
+
+int i = 200; // your int variable
+byte b = (byte)(i & 0xFF);
+ */
+        String filename = "myfile";
+        File file = new File(context.getFilesDir(), filename);
+
+
+        String string = "Hello world!";
+        FileOutputStream outputStream;
+        int width = map.getWidth();
+        int height = map.getHeight();
+        int size = (int) file.length();
+        byte[] map1 = new byte[width*height];
+        byte[] map2 = new byte[width*height];
+
+        ByteBuffer saveData = ByteBuffer.allocate(2+2*width*height);
+        try {
+            BufferedOutputStream buf = new BufferedOutputStream(new FileOutputStream(file));
+            saveData.put((byte)(width & 0xFF));
+            saveData.put((byte)(height & 0xFF));
+
+            for(int y = 0; y < height; y++){
+                for(int x = 0; x < width; x++){
+                    map1[y*width+x] = (byte)(map.getTile(false,x,y) & 0xFF);
+                    map2[y*width+x] = (byte)(map.getTile(true,x,y) & 0xFF);
+                }
+            }
+            saveData.put(map1);
+            saveData.put(map2);
+
+
+
+            buf.write(saveData.array(), 0, saveData.array().length);
+            buf.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+    }
+    public Map loadFile(){
+        String filename = "myfile";
+        File file = new File(context.getFilesDir(), filename);
+
+
+        int size = (int) file.length();
+        byte[] bytes = new byte[size];
+        try {
+            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+            buf.read(bytes, 0, bytes.length);
+            buf.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private void updateCamera() {

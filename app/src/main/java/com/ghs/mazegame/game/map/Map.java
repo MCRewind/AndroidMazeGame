@@ -196,6 +196,16 @@ public class Map {
         }
     }
 
+    public int getTile(boolean isRequestForTopMap, int x, int y) {
+        if(isRequestForTopMap){
+            return over[x][y];
+        }
+        else
+        {
+            return map[x][y];
+        }
+    }
+
     public Vector3f getStart() {
         Vector3f ret = new Vector3f(-1, -1, 0);
         for (int i = 0; i < width; i++) {
