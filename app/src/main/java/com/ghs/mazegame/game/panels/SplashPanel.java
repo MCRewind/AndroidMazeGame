@@ -4,7 +4,6 @@ import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.display.Camera;
 import com.ghs.mazegame.game.Renderer;
 import com.ghs.mazegame.game.interfaces.Panel;
-import com.ghs.mazegame.game.map.Map;
 import com.ghs.mazegame.game.objects.Image;
 import com.ghs.mazegame.game.objects.Rectangle;
 
@@ -42,15 +41,6 @@ public class SplashPanel implements Panel {
             else
                 fade.setColor(0, 0, 0, 0);
         }
-    }
-
-    @Override
-    public void setActive() {
-
-    }
-
-    public void setActive(Map map) {
-
     }
 
     public void render() {
