@@ -32,20 +32,20 @@ public class Player implements GameObject {
         this.bottomBound = 0;
         this.hitbox = new Hitbox(x, y, width, height);
         float[] vertices = new float[] {
-            0.0f,  0.0f,   0.5f, //TOP LEFT
-            0.0f,  height, 0.5f, //BOTTOM LEFT
-            width, height, 0.5f, //BOTTOM RIGHT
-            width, 0.0f,   0.5f  //TOP RIGHT
+                0.0f,  0.0f,   0.5f, //TOP LEFT
+                0.0f,  height, 0.5f, //BOTTOM LEFT
+                width, height, 0.5f, //BOTTOM RIGHT
+                width, 0.0f,   0.5f  //TOP RIGHT
         };
         int[] indices = new int[] {
-            0, 1, 3,
-            1, 2, 3
+                0, 1, 3,
+                1, 2, 3
         };
         float[] texCoords = new float[] {
-            0, 0,
-            0, 1,
-            1, 1,
-            1, 0
+                0, 0,
+                0, 1,
+                1, 1,
+                1, 0
         };
         vao = new VAO(vertices, indices, texCoords);
     }
@@ -113,6 +113,10 @@ public class Player implements GameObject {
 
     public float getY() {
         return y;
+    }
+
+    public Vector3f getCenter() {
+        return new Vector3f(x, y, 0).add(width / 2, height / 2, 0);
     }
 
     public float getWidth() {

@@ -44,15 +44,6 @@ public class SplashPanel implements Panel {
         }
     }
 
-    @Override
-    public void setActive() {
-
-    }
-
-    public void setActive(Map map) {
-
-    }
-
     public void render() {
         image.render();
         fade.render();

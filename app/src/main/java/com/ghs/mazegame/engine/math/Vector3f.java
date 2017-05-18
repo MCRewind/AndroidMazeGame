@@ -50,6 +50,20 @@ public class Vector3f {
         return target;
     }
 
+    public Vector3f add(float x, float y, float z) {
+        this.x += x;
+        this.y += y;
+        this.z += z;
+        return this;
+    }
+
+    public Vector3f sub(float x, float y, float z) {
+        this.x -= x;
+        this.y -= y;
+        this.z -= z;
+        return this;
+    }
+
     public Vector3f add(float x, float y, float z, Vector3f target) {
         target.x = this.x + x;
         target.y = this.y + y;

@@ -10,8 +10,4 @@ public interface Panel {
 
     public int checkState();
 
-    public void setActive();
-
-    public void setActive(Map map);
-
 }

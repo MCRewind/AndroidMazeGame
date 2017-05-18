@@ -18,7 +18,7 @@ import static com.ghs.mazegame.game.Renderer.SCALE;
 
 public class Map {
 
-    public static int NUM_TILES = 22;
+    public static int NUM_TILES = 20;
 
     public static final HashMap<String, Integer> types = new HashMap<>();
 
@@ -73,8 +73,8 @@ public class Map {
         tiles[types.get("TYPE_BRICK_WALL_PURPLE")]  = new Tile(camera, new Texture(R.drawable.brick_wall_purple),  true, 0.9f);
         tiles[types.get("TYPE_BRICK_WALL_RED")]     = new Tile(camera, new Texture(R.drawable.brick_wall_red),     true, 0.9f);
         tiles[types.get("TYPE_BRICK_WALL_YELLOW")]  = new Tile(camera, new Texture(R.drawable.brick_wall_yellow),  true, 0.9f);
-        tiles[types.get("TYPE_TRUE_TILE")]          = new Tile(camera, new Texture(R.drawable.true_tile),         false, 0.9f);
-        tiles[types.get("TYPE_FALSE_TILE")]         = new Tile(camera, new Texture(R.drawable.false_tile),        false, 0.9f);
+        //tiles[types.get("TYPE_TRUE_TILE")]          = new Tile(camera, new Texture(R.drawable.true_tile),         false, 0.9f);
+        //tiles[types.get("TYPE_FALSE_TILE")]         = new Tile(camera, new Texture(R.drawable.false_tile),        false, 0.9f);
         tiles[types.get("TYPE_SANDSTONE_WALL")]     = new Tile(camera, new Texture(R.drawable.sandstone_wall),     true, 0.9f);
         tiles[types.get("TYPE_SANDSTONE_FLOOR")]    = new Tile(camera, new Texture(R.drawable.sandstone_floor),   false, 0.9f);
         tiles[types.get("TYPE_STONE_KEY_WALL")]     = new Tile(camera, new Texture(R.drawable.stone_key_wall),     true, 0.9f);
@@ -98,11 +98,11 @@ public class Map {
         types.put("TYPE_BRICK_WALL_PURPLE",  14);
         types.put("TYPE_BRICK_WALL_RED",     15);
         types.put("TYPE_BRICK_WALL_YELLOW",  16);
-        types.put("TYPE_TRUE_TILE",          17);
-        types.put("TYPE_FALSE_TILE",         18);
-        types.put("TYPE_SANDSTONE_WALL",     19);
-        types.put("TYPE_SANDSTONE_FLOOR",    20);
-        types.put("TYPE_STONE_KEY_WALL",     21);
+        //types.put("TYPE_TRUE_TILE",          17);
+        //types.put("TYPE_FALSE_TILE",         18);
+        types.put("TYPE_SANDSTONE_WALL",     17);
+        types.put("TYPE_SANDSTONE_FLOOR",    18);
+        types.put("TYPE_STONE_KEY_WALL",     19);
         NUM_TILES = types.size();
     }
 
@@ -146,8 +146,6 @@ public class Map {
                 if (map[i][j] < NUM_TILES) {
                     if (TILE_PAINT)
                         //map[i][j] = EditPanel.paintType;
-                        map[i][j] = types.get("TYPE_TRUE_TILE");
-                    overHandle(over[i][j]);
                     if (tiles[map[i][j]].isSolid()) {
                         if (closest == null) {
                             closest = new Hitbox(i * SCALE, j * SCALE, SCALE, SCALE);
@@ -172,14 +170,6 @@ public class Map {
                 player.translate(playerHitbox.collisionAdjust(closest));
                 checkPlayerCollision(player);
             }
-        }
-    }
-
-
-    public void overHandle(int tile) {
-        if (tile == types.get("TYPE_END")) {
-            state = STATE_EDIT;
-            Renderer.cur = Renderer.STATE_EDIT;
         }
     }
 
