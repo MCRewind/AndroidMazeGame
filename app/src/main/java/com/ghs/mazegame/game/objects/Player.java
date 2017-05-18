@@ -115,10 +115,6 @@ public class Player implements GameObject {
         return y;
     }
 
-    public Vector3f getCenter() {
-        return new Vector3f(x, y, 0).add(width / 2, height / 2, 0);
-    }
-
     public float getWidth() {
         return width;
     }

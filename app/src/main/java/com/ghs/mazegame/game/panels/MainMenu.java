@@ -43,18 +43,18 @@ public class MainMenu implements Panel {
         backgrounds[0].setState(Map.STATE_EDIT);
         backgrounds[1].setState(Map.STATE_EDIT);
         int[][] map = new int[][] {
-            {1, 1, 1, 1, 1, 1, 1},
-            {1, 4, 4, 4, 4, 4, 4},
-            {1, 4, 2, 3, 3, 2, 4},
-            {1, 4, 4, 4, 4, 4, 4},
-            {1, 5, 3, 3, 3, 3, 3},
-            {1, 5, 3, 3, 3, 3, 3},
-            {1, 5, 5, 5, 5, 5, 3},
-            {1, 6, 2, 1, 2, 5, 3},
-            {1, 6, 1, 1, 1, 5, 5},
-            {1, 6, 1, 1, 1, 2, 5},
-            {1, 6, 2, 1, 1, 2, 5},
-            {1, 6, 6, 6, 6, 6, 5},
+                {1, 1, 1, 1, 1, 1, 1},
+                {1, 4, 4, 4, 4, 4, 4},
+                {1, 4, 2, 3, 3, 2, 4},
+                {1, 4, 4, 4, 4, 4, 4},
+                {1, 5, 3, 3, 3, 3, 3},
+                {1, 5, 3, 3, 3, 3, 3},
+                {1, 5, 5, 5, 5, 5, 3},
+                {1, 6, 2, 1, 2, 5, 3},
+                {1, 6, 1, 1, 1, 5, 5},
+                {1, 6, 1, 1, 1, 2, 5},
+                {1, 6, 2, 1, 1, 2, 5},
+                {1, 6, 6, 6, 6, 6, 5},
         };
         backgrounds[0].setMap(map, 0, 0);
         colors = new Rectangle[HOR_VIEWS];
@@ -116,4 +116,10 @@ public class MainMenu implements Panel {
         backgrounds[0].setState(Map.STATE_PLAY);
         backgrounds[1].setState(Map.STATE_EDIT);
     }
+
+    public void setActive(Map map) {
+        backgrounds[0].setState(Map.STATE_PLAY);
+        backgrounds[1].setState(Map.STATE_EDIT);
+    }
+
 }

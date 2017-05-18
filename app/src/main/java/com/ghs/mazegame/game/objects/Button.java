@@ -16,10 +16,10 @@ import static com.ghs.mazegame.game.Renderer.defaultShader;
 public class Button implements GameObject {
 
     public static int
-        STATE_RELEASED = 0,
-        STATE_UNPRESSED = 1,
-        STATE_PRESSED = 2,
-        STATE_HELD = 3;
+            STATE_RELEASED = 0,
+            STATE_UNPRESSED = 1,
+            STATE_PRESSED = 2,
+            STATE_HELD = 3;
 
     private float x = 0, y = 0, width = 0, height = 0;
     private boolean independent;
@@ -42,20 +42,20 @@ public class Button implements GameObject {
         this.height = height;
         this.independent = independent;
         float[] vertices = new float[] {
-            0.0f,  0.0f,   depth, //TOP LEFT
-            0.0f,  height, depth, //BOTTOM LEFT
-            width, height, depth, //BOTTOM RIGHT
-            width, 0.0f,   depth  //TOP RIGHT
+                0.0f,  0.0f,   depth, //TOP LEFT
+                0.0f,  height, depth, //BOTTOM LEFT
+                width, height, depth, //BOTTOM RIGHT
+                width, 0.0f,   depth  //TOP RIGHT
         };
         int[] indices = new int[] {
-            0, 1, 3,
-            1, 2, 3
+                0, 1, 3,
+                1, 2, 3
         };
         float[] texCoords = new float[] {
-            0, 0,
-            0, 1,
-            1, 1,
-            1, 0
+                0, 0,
+                0, 1,
+                1, 1,
+                1, 0
         };
         vao = new VAO(vertices, indices, texCoords);
     }

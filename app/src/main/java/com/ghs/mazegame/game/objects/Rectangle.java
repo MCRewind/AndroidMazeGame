@@ -26,20 +26,20 @@ public class Rectangle {
         this.a = a;
         this.shader = new Shader(R.raw.colorvs, R.raw.colorfs);
         float[] vertices = new float[] {
-            0.0f,  0.0f,   0.5f, //TOP LEFT
-            0.0f,  height, 0.5f, //BOTTOM LEFT
-            width, height, 0.5f, //BOTTOM RIGHT
-            width, 0.0f,   0.5f  //TOP RIGHT
+                0.0f,  0.0f,   0.5f, //TOP LEFT
+                0.0f,  height, 0.5f, //BOTTOM LEFT
+                width, height, 0.5f, //BOTTOM RIGHT
+                width, 0.0f,   0.5f  //TOP RIGHT
         };
         int[] indices = new int[] {
-            0, 1, 3,
-            1, 2, 3
+                0, 1, 3,
+                1, 2, 3
         };
         float[] texCoords = new float[] {
-            0, 0,
-            0, 1,
-            1, 1,
-            1, 0
+                0, 0,
+                0, 1,
+                1, 1,
+                1, 0
         };
         vao = new VAO(vertices, indices, texCoords);
     }
