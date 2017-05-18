@@ -1,7 +1,5 @@
 package com.ghs.mazegame.game.panels;
 
-import android.util.Log;
-
 import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.display.Camera;
@@ -40,7 +38,7 @@ public class MainMenu implements Panel {
         backgrounds = new Map[HOR_VIEWS];
         for (int i = 0; i < backgrounds.length; i++)
             backgrounds[i] = new Map(camera, cameraWidth * i, 0, (int) Math.ceil((float) cameraWidth / (float) SCALE), (int) Math.ceil((float) cameraHeight / (float) SCALE) * 2);
-        backgrounds[0].setState(Map.STATE_EDIT);
+        backgrounds[0].setState(Map.STATE_PLAY);
         backgrounds[1].setState(Map.STATE_EDIT);
         int[][] map = new int[][] {
                 {1, 1, 1, 1, 1, 1, 1},
