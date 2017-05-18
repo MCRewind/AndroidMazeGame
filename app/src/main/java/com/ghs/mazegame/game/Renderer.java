@@ -39,7 +39,7 @@ public class Renderer implements GLSurfaceView.Renderer {
     private Camera camera;
 
     private Panel[] panels;
-    public static int cur = STATE_EDIT;
+    public int cur = STATE_MAIN_MENU;
 
     public Renderer(Resources resources) {
         this.resources = resources;
@@ -89,12 +89,6 @@ public class Renderer implements GLSurfaceView.Renderer {
 
     private void checkState() {
         int state = panels[cur].checkState();
-<<<<<<< HEAD
-        if(state != -1) {
-            panels[state].setActive(panels[cur].getMap());
-            cur = state;
-        }
-=======
         switch(state) {
             case STATE_EDIT:
                 if(cur == STATE_MAIN_MENU) {
@@ -115,6 +109,5 @@ public class Renderer implements GLSurfaceView.Renderer {
         };
         if(state != -1)
             cur = state;
->>>>>>> sam
     }
 }

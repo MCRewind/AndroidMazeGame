@@ -35,8 +35,8 @@ public class MainMenu implements Panel {
     public MainMenu(Camera camera) {
         this.camera = camera;
         actions = new Button[HOR_VIEWS];
-        actions[0] = new Button(camera, new Texture(R.drawable.menu_play_button), new Texture(R.drawable.menu_play_button_pressed), (cameraWidth - 49f) / 2f, (cameraHeight - 27f) / 2f, 49f, 27f, 0.1f, false);
-        actions[1] = new Button(camera, new Texture(R.drawable.menu_edit_button), new Texture(R.drawable.menu_edit_button_pressed), cameraWidth + (cameraWidth - 49f) / 2f, (cameraHeight - 27f) / 2f, 49f, 27f, 0.1f, false);
+        actions[0] = new Button(camera, new Texture(R.drawable.menu_play_button), new Texture(R.drawable.menu_play_button_pressed), cameraWidth / 4, cameraHeight / 4f, cameraWidth / 2f, cameraHeight / 2f, 0.1f, false);
+        actions[1] = new Button(camera, new Texture(R.drawable.menu_edit_button), new Texture(R.drawable.menu_edit_button_pressed), cameraWidth + cameraWidth / 4, cameraHeight / 4f, cameraWidth / 2f, cameraHeight / 2f, 0.1f, false);
         backgrounds = new Map[HOR_VIEWS];
         for (int i = 0; i < backgrounds.length; i++)
             backgrounds[i] = new Map(camera, cameraWidth * i, 0, (int) Math.ceil((float) cameraWidth / (float) SCALE), (int) Math.ceil((float) cameraHeight / (float) SCALE) * 2);
@@ -96,13 +96,11 @@ public class MainMenu implements Panel {
     }
 
     public void render() {
-        backgrounds[cur].render();
-        actions[cur].render();
         colors[cur].render();
+        actions[cur].render();
         if(additional != -1) {
-            backgrounds[additional].render();
-            actions[additional].render();
             colors[additional].render();
+            actions[additional].render();
         }
         dir[0].render();
         dir[1].render();
@@ -118,13 +116,4 @@ public class MainMenu implements Panel {
         backgrounds[0].setState(Map.STATE_PLAY);
         backgrounds[1].setState(Map.STATE_EDIT);
     }
-<<<<<<< HEAD
-
-    public void setActive(Map map) {}
-
-    public Map getMap() {
-        return background;
-    }
-=======
->>>>>>> sam
 }
