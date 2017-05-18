@@ -39,6 +39,7 @@ public class Renderer implements GLSurfaceView.Renderer {
     private Camera camera;
 
     private Panel[] panels;
+    public static int cur = STATE_EDIT;
     public int cur = STATE_MAIN_MENU;
 
     public Renderer(Resources resources) {
