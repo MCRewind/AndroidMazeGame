@@ -1,6 +1,7 @@
 package com.ghs.mazegame.game.panels;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Texture;
@@ -118,15 +119,41 @@ for 0-255 numbers.
 
 int i = 200; // your int variable
 byte b = (byte)(i & 0xFF);
+
+
+
+
+File file = new File("data/data/your package name/test.txt");
+if (!file.exists()) {
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+}
  */
         String filename = "myfile";
         File file = new File(context.getFilesDir(), filename);
+        if(!file.exists()){
+            try {
+                file.createNewFile();
 
 
+                Log.d("FileNotFoundSave","FileNotFoundSave");
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        Log.d("FileFoundSave","FileFoundSave");
         String string = "Hello world!";
         FileOutputStream outputStream;
         int width = map.getWidth();
         int height = map.getHeight();
+
+        Log.d("Width1","Width " + width);
+        Log.d("Height2","Height " + height);
         int size = (int) file.length();
         byte[] map1 = new byte[width*height];
         byte[] map2 = new byte[width*height];
@@ -149,6 +176,7 @@ byte b = (byte)(i & 0xFF);
 
 
             buf.write(saveData.array(), 0, saveData.array().length);
+            //buf.write(saveData.array());
             buf.close();
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
@@ -160,25 +188,56 @@ byte b = (byte)(i & 0xFF);
 
 
     }
-    public Map loadFile(){
+    public void loadFile(){
         String filename = "myfile";
         File file = new File(context.getFilesDir(), filename);
+        if(file.exists()) {
+
+            //Log.d("FileFoundLoad","FileFoundLoad");
+            int size = (int) file.length();
+            byte[] bytes = new byte[size];
 
 
-        int size = (int) file.length();
-        byte[] bytes = new byte[size];
-        try {
-            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
-            buf.read(bytes, 0, bytes.length);
-            buf.close();
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+
+            try {
+                BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+                buf.read(bytes, 0, bytes.length);
+
+                buf.close();
+                int width = bytes[0]& 0xFF;
+                int height = bytes[1]& 0xFF;
+                //Log.d("Width","Width " + width);
+                //Log.d("Height","Height " + height);
+
+                for(int y = 0; y < height; y++){
+                    for(int x = 0; x < width; x++){
+                        //Log.d("setDirectTile0","setDirectTile0 " + (bytes[2+y*width+x]& 0xFF));
+                        map.setDirectTile(false,(bytes[2+y*width+x]& 0xFF),x,y);  // 0 2 4 6 8
+                    }
+                }
+
+                for(int y = 0; y < height; y++){
+                    for(int x = 0; x < width; x++){
+                        //Log.d("setDirectTile1","setDirectTile1 " + (bytes[2+width*height+y*width+x]& 0xFF));
+                        map.setDirectTile(true,(bytes[2+width*height+y*width+x]& 0xFF),x,y);
+                    }
+                }
+
+
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
-        return null;
+        else
+        {
+            Log.wtf("FileNotFound","FileNotFound during load file");
+            return;
+        }
+
     }
 
     private void updateCamera() {
@@ -211,6 +270,7 @@ byte b = (byte)(i & 0xFF);
     private void updateToolbar() {
         leftArrow.update();
         if (leftArrow.getState() == Button.STATE_RELEASED) {
+            saveLevel();
             if (typeIter == 1) {
                 typeIter = numPages;
             } else {
@@ -219,6 +279,7 @@ byte b = (byte)(i & 0xFF);
         }
         rightArrow.update();
         if (rightArrow.getState() == Button.STATE_RELEASED) {
+            loadFile();
             if (typeIter < numPages) {
                 typeIter++;
             } else {

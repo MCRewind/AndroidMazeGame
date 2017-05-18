@@ -190,6 +190,16 @@ public class Map {
             return map[x][y];
     }
 
+    public void setDirectTile(boolean isRequestForTopMap,int type, int x, int y){
+        if(isRequestForTopMap){
+            over[x][y] = type;
+        }
+        else
+        {
+            map[x][y]=type;
+        }
+    }
+
     public void setTile(int type, int x, int y) {
         if (map.length > 0) {
             if ((x >= 0) && (y >= 0) && (x < map[0].length) && (x < map[0].length)) {
