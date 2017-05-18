@@ -7,12 +7,14 @@ import android.opengl.GLSurfaceView;
 
 import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Shader;
+import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.display.Camera;
 import com.ghs.mazegame.game.interfaces.Panel;
 
 import com.ghs.mazegame.game.panels.EditPanel;
 import com.ghs.mazegame.game.panels.MainMenu;
 import com.ghs.mazegame.game.panels.PlayTestPanel;
+import com.ghs.mazegame.game.panels.SplashPanel;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -20,10 +22,11 @@ import javax.microedition.khronos.opengles.GL10;
 public class Renderer implements GLSurfaceView.Renderer {
 
     public static final int
-        STATE_PLAY = 0,
-        STATE_PLAY_TEST = 1,
-        STATE_EDIT = 2,
-        STATE_MAIN_MENU = 3;
+            STATE_SPLASH_SCREEN = 0,
+            STATE_PLAY = 1,
+            STATE_PLAY_TEST = 2,
+            STATE_EDIT = 3,
+            STATE_MAIN_MENU = 4;
 
     public static final int SCALE = 16;
 
@@ -42,7 +45,7 @@ public class Renderer implements GLSurfaceView.Renderer {
     private Context context;
 
     private Panel[] panels;
-    public static int cur = STATE_EDIT;
+    public static int cur = STATE_SPLASH_SCREEN;
 
     public Renderer(Resources resources, Context context) {
         this.resources = resources;
@@ -55,13 +58,15 @@ public class Renderer implements GLSurfaceView.Renderer {
         defaultShader = new Shader(R.raw.defaultvs, R.raw.defaultfs);
 
         GLES20.glClearColor(0f, 0f, 0f, 1f);
+
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 
         GLES20.glEnable(GLES20.GL_BLEND);
         GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
         pastTime = System.nanoTime() / 1000000f;
 
-        panels = new Panel[4];
+        panels = new Panel[5];
+        panels[STATE_SPLASH_SCREEN] = new SplashPanel(camera, 4000, new Texture(R.drawable.splash_screen));
         panels[STATE_PLAY_TEST] = new PlayTestPanel(camera);
         panels[STATE_EDIT] = new EditPanel(camera, context);
         panels[STATE_MAIN_MENU] = new MainMenu(camera);
@@ -92,9 +97,30 @@ public class Renderer implements GLSurfaceView.Renderer {
 
     private void checkState() {
         int state = panels[cur].checkState();
-        if(state != -1) {
-            panels[state].setActive(panels[cur].getMap());
+        switch(state) {
+            case STATE_EDIT:
+                if(cur == STATE_MAIN_MENU) {
+                    EditPanel edit = (EditPanel) panels[STATE_EDIT];
+                    edit.setActive();
+                }
+                else if(cur == STATE_PLAY_TEST){
+                    EditPanel edit = (EditPanel) panels[STATE_EDIT];
+                    PlayTestPanel play = (PlayTestPanel) panels[STATE_PLAY_TEST];
+                    edit.setActive(play.getMap());
+                }
+                break;
+            case STATE_PLAY_TEST:
+                PlayTestPanel play = (PlayTestPanel) panels[STATE_PLAY_TEST];
+                EditPanel edit = (EditPanel) panels[STATE_EDIT];
+                play.setActive(edit.getMap());
+                break;
+            case STATE_MAIN_MENU:
+                if(cur == STATE_SPLASH_SCREEN) {
+                    MainMenu menu = (MainMenu) panels[STATE_MAIN_MENU];
+                    menu.setActive();
+                }
+        };
+        if(state != -1)
             cur = state;
-        }
     }
 }

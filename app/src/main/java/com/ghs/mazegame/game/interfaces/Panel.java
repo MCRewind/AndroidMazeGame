@@ -14,5 +14,4 @@ public interface Panel {
 
     public void setActive(Map map);
 
-    public Map getMap();
 }
