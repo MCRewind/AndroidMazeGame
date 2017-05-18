@@ -21,11 +21,19 @@ import javax.microedition.khronos.opengles.GL10;
 public class Renderer implements GLSurfaceView.Renderer {
 
     public static final int
+<<<<<<< HEAD
             STATE_SPLASH_SCREEN = 0,
             STATE_PLAY = 1,
             STATE_PLAY_TEST = 2,
             STATE_EDIT = 3,
             STATE_MAIN_MENU = 4;
+=======
+        STATE_SPLASH_SCREEN = 0,
+        STATE_PLAY = 1,
+        STATE_PLAY_TEST = 2,
+        STATE_EDIT = 3,
+        STATE_MAIN_MENU = 4;
+>>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
 
     public static final int SCALE = 16;
 
@@ -42,7 +50,11 @@ public class Renderer implements GLSurfaceView.Renderer {
     private Camera camera;
 
     private Panel[] panels;
+<<<<<<< HEAD
     public static int cur = STATE_SPLASH_SCREEN;
+=======
+    public int cur = STATE_SPLASH_SCREEN;
+>>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
 
     public Renderer(Resources resources) {
         this.resources = resources;

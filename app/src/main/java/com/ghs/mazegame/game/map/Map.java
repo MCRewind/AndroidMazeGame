@@ -18,14 +18,32 @@ import static com.ghs.mazegame.game.Renderer.SCALE;
 
 public class Map {
 
-    public static int NUM_TILES = 22;
+    public static final int NUM_TILES = 19;
+
+    public static final int
+        TYPE_EMPTY = 0,
+        TYPE_BRICK_WALL = 1,
+        TYPE_SQUARE_WALL = 2,
+        TYPE_S_WALL = 3,
+        TYPE_STONE_FLOOR = 4,
+        TYPE_LIMESTONE_FLOOR = 5,
+        TYPE_WOOD_FLOOR = 6,
+        TYPE_START = 7,
+        TYPE_END = 8,
+        TYPE_BRICK_WALL_RED = 9,
+        TYPE_BRICK_WALL_ORANGE = 10,
+        TYPE_BRICK_WALL_YELLOW = 11,
+        TYPE_BRICK_WALL_GREEN = 12,
+        TYPE_BRICK_WALL_CYAN = 13,
+        TYPE_BRICK_WALL_BLUE = 14,
+        TYPE_BRICK_WALL_PURPLE = 15,
+        TYPE_BRICK_WALL_MAGENTA = 16;
 
     public static final HashMap<String, Integer> types = new HashMap<>();
 
     public static final boolean
-            STATE_EDIT = false,
-            STATE_PLAY = true,
-            TILE_PAINT = false;
+        STATE_EDIT = false,
+        STATE_PLAY = true;
 
     private int width, height, rWidth, rHeight;
     private float x, y;
@@ -48,14 +66,14 @@ public class Map {
         this.height = height;
         rWidth = (int) Math.ceil((camera.getX() + camera.getWidth()) / SCALE);
         rHeight = (int) Math.ceil((camera.getY() + camera.getHeight()) / SCALE);
-        tileInit();
         for (int i = 0; i < map.length; ++i) {
             for (int j = 0; j < map[0].length; ++j) {
-                map[i][j] = types.get("TYPE_EMPTY");
-                over[i][j] = types.get("TYPE_EMPTY");
+                map[i][j] = TYPE_EMPTY;
+                over[i][j] = TYPE_EMPTY;
             }
         }
         tiles = new Tile[NUM_TILES];
+<<<<<<< HEAD
         tiles[types.get("TYPE_EMPTY")]              = new Tile(camera);
         tiles[types.get("TYPE_BRICK_WALL")]         = new Tile(camera, new Texture(R.drawable.brick_wall),         true, 0.9f);
         tiles[types.get("TYPE_SQUARE_WALL")]        = new Tile(camera, new Texture(R.drawable.square_wall),        true, 0.9f);
@@ -104,6 +122,25 @@ public class Map {
         types.put("TYPE_SANDSTONE_FLOOR",    20);
         types.put("TYPE_STONE_KEY_WALL",     21);
         NUM_TILES = types.size();
+=======
+        tiles[TYPE_EMPTY]              = new Tile(camera);
+        tiles[TYPE_BRICK_WALL]         = new Tile(camera, new Texture(R.drawable.brick_wall),         true,  0.9f);
+        tiles[TYPE_SQUARE_WALL]        = new Tile(camera, new Texture(R.drawable.square_wall),        true,  0.9f);
+        tiles[TYPE_S_WALL]             = new Tile(camera, new Texture(R.drawable.s_wall),             true,  0.9f);
+        tiles[TYPE_STONE_FLOOR]        = new Tile(camera, new Texture(R.drawable.stone_floor),        false, 0.9f);
+        tiles[TYPE_LIMESTONE_FLOOR]    = new Tile(camera, new Texture(R.drawable.limestone_floor),    false, 0.9f);
+        tiles[TYPE_WOOD_FLOOR]         = new Tile(camera, new Texture(R.drawable.wood_floor),         false, 0.9f);
+        tiles[TYPE_START]              = new Tile(camera, new Texture(R.drawable.start),              false, 0.8f);
+        tiles[TYPE_END]                = new Tile(camera, new Texture(R.drawable.end),                false, 0.8f);
+        tiles[TYPE_BRICK_WALL_RED]     = new Tile(camera, new Texture(R.drawable.brick_wall_red),     true,  0.9f);
+        tiles[TYPE_BRICK_WALL_ORANGE]  = new Tile(camera, new Texture(R.drawable.brick_wall_orange),  true,  0.9f);
+        tiles[TYPE_BRICK_WALL_YELLOW]  = new Tile(camera, new Texture(R.drawable.brick_wall_yellow),  true,  0.9f);
+        tiles[TYPE_BRICK_WALL_GREEN]   = new Tile(camera, new Texture(R.drawable.brick_wall_green),   true,  0.9f);
+        tiles[TYPE_BRICK_WALL_CYAN]    = new Tile(camera, new Texture(R.drawable.brick_wall_cyan),    true,  0.9f);
+        tiles[TYPE_BRICK_WALL_BLUE]    = new Tile(camera, new Texture(R.drawable.brick_wall_blue),    true,  0.9f);
+        tiles[TYPE_BRICK_WALL_PURPLE]  = new Tile(camera, new Texture(R.drawable.brick_wall_purple),  true,  0.9f);
+        tiles[TYPE_BRICK_WALL_MAGENTA] = new Tile(camera, new Texture(R.drawable.brick_wall_magenta), true,  0.9f);
+>>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
     }
 
     public void render() {
@@ -114,11 +151,19 @@ public class Map {
         for (int i = Math.max(minX, 0); i <= maxX && i < map.length; i++) {
             for (int j = Math.max(minY, 0); j <= maxY && j < map[0].length; j++) {
                 if (map[i][j] < NUM_TILES) {
+<<<<<<< HEAD
                     if (map[i][j] != types.get("TYPE_EMPTY") || state != STATE_PLAY) {
                         tiles[map[i][j]].setPosition(i * SCALE + x, j * SCALE + y);
                         tiles[map[i][j]].render();
                     }
                     if (over[i][j] != types.get("TYPE_EMPTY")) {
+=======
+                    if (map[i][j] != TYPE_EMPTY || state != STATE_PLAY) {
+                        tiles[map[i][j]].setPosition(i * SCALE + x, j * SCALE + y);
+                        tiles[map[i][j]].render();
+                    }
+                    if (over[i][j] != TYPE_EMPTY) {
+>>>>>>> 03c7c07a41064460e358ce7be4b96ddf3387e28b
                         tiles[over[i][j]].setPosition(i * SCALE + x, j * SCALE + y);
                         tiles[over[i][j]].render();
                     }
@@ -144,10 +189,6 @@ public class Map {
         for (int i = Math.max(minX, 0); i <= maxX && i < map.length; i++) {
             for (int j = Math.max(minY, 0); j <= maxY && j < map[0].length; j++) {
                 if (map[i][j] < NUM_TILES) {
-                    if (TILE_PAINT)
-                        //map[i][j] = EditPanel.paintType;
-                        map[i][j] = types.get("TYPE_TRUE_TILE");
-                    overHandle(over[i][j]);
                     if (tiles[map[i][j]].isSolid()) {
                         if (closest == null) {
                             closest = new Hitbox(i * SCALE, j * SCALE, SCALE, SCALE);
@@ -176,11 +217,11 @@ public class Map {
     }
 
 
-    public void overHandle(int tile) {
-        if (tile == types.get("TYPE_END")) {
-            state = STATE_EDIT;
-            Renderer.cur = Renderer.STATE_EDIT;
-        }
+    public int getTile(int x, int y, boolean overlay) {
+        if(overlay)
+            return over[x][y];
+        else
+            return map[x][y];
     }
 
     public int getTile(int x, int y, boolean overlay) {
@@ -193,20 +234,19 @@ public class Map {
     public void setTile(int type, int x, int y) {
         if (map.length > 0) {
             if ((x >= 0) && (y >= 0) && (x < map[0].length) && (x < map[0].length)) {
-                if (type == types.get("TYPE_START") || type == types.get("TYPE_END")) {
+                if (type == TYPE_START || type == TYPE_END) {
                     for (int i = 0; i < width; i++) {
                         for (int j = 0; j < height; j++) {
                             if (over[i][j] == type)
-                                over[i][j] = types.get("TYPE_EMPTY");
+                                over[i][j] = TYPE_EMPTY;
                         }
                     }
-
-                    if (tiles[map[x][y]].isSolid() == true && map[x][y] != types.get("TYPE_EMPTY"))
-                        map[x][y] = types.get("TYPE_STONE_FLOOR");
+                    if (map[x][y] < TYPE_STONE_FLOOR || map[x][y] > TYPE_WOOD_FLOOR)
+                        map[x][y] = TYPE_STONE_FLOOR;
                     over[x][y] = type;
                 } else {
-                    if (over[x][y] == types.get("TYPE_START") || over[x][y] == types.get("TYPE_END"))
-                        over[x][y] = types.get("TYPE_EMPTY");
+                    if ((over[x][y] == TYPE_START || over[x][y] == TYPE_END) && (type < TYPE_STONE_FLOOR || type > TYPE_WOOD_FLOOR))
+                        over[x][y] = TYPE_EMPTY;
                     map[x][y] = type;
                 }
             }
@@ -217,7 +257,7 @@ public class Map {
         Vector3f ret = new Vector3f(-1, -1, 0);
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                if (over[i][j] == types.get("TYPE_START")) {
+                if (over[i][j] == TYPE_START) {
                     ret.x = i;
                     ret.y = j;
                     return ret;
