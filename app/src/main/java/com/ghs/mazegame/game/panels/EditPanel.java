@@ -151,7 +151,7 @@ public class EditPanel implements Panel {
     }
 
     public void loadFile(){
-        String filename = "myfile";
+        String filename = "map0";
         File file = new File(context.getFilesDir(), filename);
         if(file.exists()) {
             int size = (int) file.length();
@@ -165,10 +165,6 @@ public class EditPanel implements Panel {
                 for(int y = 0; y < height; y++){
                     for(int x = 0; x < width; x++){
                         map.setTileRaw(false,(bytes[2+y*width+x]& 0xFF),x,y);  // 0 2 4 6 8
-                    }
-                }
-                for(int y = 0; y < height; y++){
-                    for(int x = 0; x < width; x++){
                         map.setTileRaw(true,(bytes[2+width*height+y*width+x]& 0xFF),x,y);
                     }
                 }
