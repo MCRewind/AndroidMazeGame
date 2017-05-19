@@ -69,7 +69,7 @@ public class PlayTestPanel implements Panel {
         Vector3f center = player.getCenter();
         int type = map.getTile((int) (center.x / SCALE), (int) (center.y / SCALE), true);
         center.sub((int) (center.x / SCALE) * SCALE + SCALE / 2, (int) (center.y / SCALE) * SCALE + SCALE / 2, 0);
-        if(type == Map.types.get("TYPE_END") && center.lengthSquared() <= SCALE / 6)
+        if(type == Map.TYPE_END && center.lengthSquared() <= SCALE)
             state = Renderer.STATE_EDIT;
     }
 
