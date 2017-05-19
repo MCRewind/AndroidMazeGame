@@ -3,6 +3,7 @@ package com.ghs.mazegame.game.panels;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.display.Camera;
 import com.ghs.mazegame.game.Renderer;
+import com.ghs.mazegame.game.enums.XDataTypes;
 import com.ghs.mazegame.game.interfaces.Panel;
 import com.ghs.mazegame.game.objects.Image;
 import com.ghs.mazegame.game.objects.Rectangle;
@@ -24,7 +25,7 @@ public class SplashPanel implements Panel {
         this.camera = camera;
         this.duration = duration;
         fadeTime = duration / 6f;
-        image = new Image(camera, texture, 0, 0, cameraWidth, cameraHeight, 0.6f);
+        image = new Image(camera, texture, 0, 0, cameraWidth, cameraHeight, 0.6f, XDataTypes.DEFAULT);
         fade = new Rectangle(camera, 0, 0, cameraWidth, cameraHeight, 0, 0, 0, 1);
         start = System.nanoTime() / 1000000f + 500;
     }

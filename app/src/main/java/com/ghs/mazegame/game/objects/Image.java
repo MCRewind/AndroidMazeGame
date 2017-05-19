@@ -6,6 +6,7 @@ import com.ghs.mazegame.engine.components.Shader;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.components.VAO;
 import com.ghs.mazegame.engine.display.Camera;
+import com.ghs.mazegame.game.enums.XDataTypes;
 import com.ghs.mazegame.game.interfaces.GameObject;
 
 import static com.ghs.mazegame.game.Renderer.defaultShader;
@@ -18,8 +19,9 @@ public class Image implements GameObject {
     private VAO vao;
     private Texture texture;
     private Shader shader;
+    private XDataTypes xData;
 
-    public Image(Camera camera, Texture texture, Shader shader, float x, float y, float width, float height, float depth) {
+    public Image(Camera camera, Texture texture, Shader shader, float x, float y, float width, float height, float depth, XDataTypes xData) {
         this.texture = texture;
         this.shader = shader;
         this.camera = camera;
@@ -27,6 +29,7 @@ public class Image implements GameObject {
         this.y = y;
         this.width = width;
         this.height = height;
+        this.xData = xData;
         float[] vertices = new float[] {
             0.0f,  0.0f,   depth, //TOP LEFT
             0.0f,  height, depth, //BOTTOM LEFT
@@ -46,7 +49,7 @@ public class Image implements GameObject {
         vao = new VAO(vertices, indices, texCoords);
     }
 
-    public Image(Camera camera, Texture texture, float x, float y, float width, float height, float depth) {
+    public Image(Camera camera, Texture texture, float x, float y, float width, float height, float depth, XDataTypes xData) {
         this.texture = texture;
         shader = defaultShader;
         this.camera = camera;
@@ -54,6 +57,7 @@ public class Image implements GameObject {
         this.y = y;
         this.width = width;
         this.height = height;
+        this.xData = xData;
         float[] vertices = new float[] {
             0.0f,  0.0f,   depth, //TOP LEFT
             0.0f,  height, depth, //BOTTOM LEFT
@@ -92,6 +96,14 @@ public class Image implements GameObject {
         } else {
             return false;
         }
+    }
+
+    public XDataTypes getXData() {
+        return xData;
+    }
+
+    public void setXData(XDataTypes data) {
+        xData = data;
     }
 
     public float getX() {
