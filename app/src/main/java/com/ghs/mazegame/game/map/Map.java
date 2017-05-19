@@ -1,16 +1,11 @@
 package com.ghs.mazegame.game.map;
 
-import android.util.Log;
-
 import com.ghs.mazegame.R;
-import com.ghs.mazegame.engine.components.Shader;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.math.Vector3f;
 import com.ghs.mazegame.engine.utils.Hitbox;
 import com.ghs.mazegame.engine.display.Camera;
-import com.ghs.mazegame.game.Renderer;
 import com.ghs.mazegame.game.objects.Player;
-import com.ghs.mazegame.game.panels.EditPanel;
 
 import java.util.HashMap;
 
@@ -181,6 +176,13 @@ public class Map {
             return map[x][y];
     }
 
+    public void setTileRaw(boolean isOver, int type, int x, int y){
+        if(isOver){
+            over[x][y] = type;
+        } else {
+            map[x][y] = type;
+        }
+    }
 
     public void setTile(int type, int x, int y) {
         if (map.length > 0) {
