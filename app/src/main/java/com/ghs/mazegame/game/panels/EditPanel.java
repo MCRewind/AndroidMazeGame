@@ -113,51 +113,26 @@ public class EditPanel implements Panel {
     }
 
     public void saveLevel() {
-/*
-for 0-255 numbers.
-int i = 200; // your int variable
-byte b = (byte)(i & 0xFF);
-File file = new File("data/data/your package name/test.txt");
-if (!file.exists()) {
-        try {
-            file.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-}
- */
-        String filename = "myfile";
+        String filename = "map0";
         File file = new File(context.getFilesDir(), filename);
         if(!file.exists()){
             try {
                 file.createNewFile();
-
-
-                Log.d("FileNotFoundSave","FileNotFoundSave");
-
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        Log.d("FileFoundSave","FileFoundSave");
-        String string = "Hello world!";
         FileOutputStream outputStream;
         int width = map.getWidth();
         int height = map.getHeight();
-
-        Log.d("Width1","Width " + width);
-        Log.d("Height2","Height " + height);
         int size = (int) file.length();
         byte[] map1 = new byte[width*height];
         byte[] map2 = new byte[width*height];
-
         ByteBuffer saveData = ByteBuffer.allocate(2+2*width*height);
         try {
             BufferedOutputStream buf = new BufferedOutputStream(new FileOutputStream(file));
             saveData.put((byte)(width & 0xFF));
             saveData.put((byte)(height & 0xFF));
-
             for(int y = 0; y < height; y++){
                 for(int x = 0; x < width; x++){
                     map1[y*width+x] = (byte)(map.getTile(x, y, false) & 0xFF);
@@ -166,73 +141,48 @@ if (!file.exists()) {
             }
             saveData.put(map1);
             saveData.put(map2);
-
-
-
             buf.write(saveData.array(), 0, saveData.array().length);
-            //buf.write(saveData.array());
             buf.close();
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
-
     }
+
     public void loadFile(){
         String filename = "myfile";
         File file = new File(context.getFilesDir(), filename);
         if(file.exists()) {
-
-            //Log.d("FileFoundLoad","FileFoundLoad");
             int size = (int) file.length();
             byte[] bytes = new byte[size];
-
-
-
             try {
                 BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
                 buf.read(bytes, 0, bytes.length);
-
                 buf.close();
                 int width = bytes[0]& 0xFF;
                 int height = bytes[1]& 0xFF;
-                //Log.d("Width","Width " + width);
-                //Log.d("Height","Height " + height);
-
                 for(int y = 0; y < height; y++){
                     for(int x = 0; x < width; x++){
-                        //Log.d("setDirectTile0","setDirectTile0 " + (bytes[2+y*width+x]& 0xFF));
                         map.setTileRaw(false,(bytes[2+y*width+x]& 0xFF),x,y);  // 0 2 4 6 8
                     }
                 }
-
                 for(int y = 0; y < height; y++){
                     for(int x = 0; x < width; x++){
-                        //Log.d("setDirectTile1","setDirectTile1 " + (bytes[2+width*height+y*width+x]& 0xFF));
                         map.setTileRaw(true,(bytes[2+width*height+y*width+x]& 0xFF),x,y);
                     }
                 }
-
-
             } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-        }
-        else
-        {
+        } else {
             Log.wtf("FileNotFound","FileNotFound during load file");
             return;
         }
-
     }
+
     private void updateCamera() {
         Vector3f dir = new Vector3f(swipe);
         swipe.x = 0;
