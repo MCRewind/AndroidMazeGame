@@ -3,16 +3,13 @@ package com.ghs.mazegame.game.map;
 import android.graphics.Bitmap;
 import android.renderscript.Matrix4f;
 
-import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Shader;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.components.VAO;
 import com.ghs.mazegame.engine.display.Camera;
-import com.ghs.mazegame.engine.utils.Hitbox;
-import com.ghs.mazegame.game.Renderer;
 
-import static com.ghs.mazegame.game.Renderer.SCALE;
-import static com.ghs.mazegame.game.Renderer.defaultShader;
+import static com.ghs.mazegame.game.Main.SCALE;
+import static com.ghs.mazegame.game.Main.defaultShader;
 
 public class Tile {
 

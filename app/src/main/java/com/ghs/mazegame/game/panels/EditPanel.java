@@ -8,7 +8,7 @@ import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.display.Camera;
 import com.ghs.mazegame.engine.math.Vector3f;
 import com.ghs.mazegame.engine.utils.ObjectManager;
-import com.ghs.mazegame.game.Renderer;
+import com.ghs.mazegame.game.Main;
 import com.ghs.mazegame.game.interfaces.Panel;
 import com.ghs.mazegame.game.objects.Backplate;
 import com.ghs.mazegame.game.objects.Button;
@@ -28,13 +28,14 @@ import java.nio.ByteBuffer;
 import static com.ghs.mazegame.engine.display.Surface.swipe;
 import static com.ghs.mazegame.engine.display.Surface.touchX;
 import static com.ghs.mazegame.engine.display.Surface.touchY;
-import static com.ghs.mazegame.game.Renderer.SCALE;
-import static com.ghs.mazegame.game.Renderer.time;
+import static com.ghs.mazegame.game.Main.SCALE;
 import static com.ghs.mazegame.game.objects.Backplate.makePlate;
 
 public class EditPanel implements Panel {
 
     private final int NUM_BLOCKS = 24, NUM_TOGGLES = 8;
+
+    private String name;
 
     private int state;
 
@@ -57,7 +58,7 @@ public class EditPanel implements Panel {
 
     public EditPanel(Camera camera, Context context) {
         this.context = context;
-        numPages = NUM_BLOCKS/NUM_TOGGLES;
+        numPages = NUM_BLOCKS / NUM_TOGGLES;
         this.camera = camera;
         this.map = new Map(camera, 0, 0, 20, 20);
         map.setState(Map.STATE_EDIT);
@@ -111,127 +112,6 @@ public class EditPanel implements Panel {
         updateToolbar();
     }
 
-    public void saveLevel() {
-/*
-for 0-255 numbers.
-int i = 200; // your int variable
-byte b = (byte)(i & 0xFF);
-File file = new File("data/data/your package name/test.txt");
-if (!file.exists()) {
-        try {
-            file.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-}
- */
-        String filename = "myfile";
-        File file = new File(context.getFilesDir(), filename);
-        if(!file.exists()){
-            try {
-                file.createNewFile();
-
-
-                Log.d("FileNotFoundSave","FileNotFoundSave");
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        Log.d("FileFoundSave","FileFoundSave");
-        String string = "Hello world!";
-        FileOutputStream outputStream;
-        int width = map.getWidth();
-        int height = map.getHeight();
-
-        Log.d("Width1","Width " + width);
-        Log.d("Height2","Height " + height);
-        int size = (int) file.length();
-        byte[] map1 = new byte[width*height];
-        byte[] map2 = new byte[width*height];
-
-        ByteBuffer saveData = ByteBuffer.allocate(2+2*width*height);
-        try {
-            BufferedOutputStream buf = new BufferedOutputStream(new FileOutputStream(file));
-            saveData.put((byte)(width & 0xFF));
-            saveData.put((byte)(height & 0xFF));
-
-            for(int y = 0; y < height; y++){
-                for(int x = 0; x < width; x++){
-                    map1[y*width+x] = (byte)(map.getTile(x, y, false) & 0xFF);
-                    map2[y*width+x] = (byte)(map.getTile(x, y, true) & 0xFF);
-                }
-            }
-            saveData.put(map1);
-            saveData.put(map2);
-
-
-
-            buf.write(saveData.array(), 0, saveData.array().length);
-            //buf.write(saveData.array());
-            buf.close();
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-
-    }
-    public void loadFile(){
-        String filename = "myfile";
-        File file = new File(context.getFilesDir(), filename);
-        if(file.exists()) {
-
-            //Log.d("FileFoundLoad","FileFoundLoad");
-            int size = (int) file.length();
-            byte[] bytes = new byte[size];
-
-
-
-            try {
-                BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
-                buf.read(bytes, 0, bytes.length);
-
-                buf.close();
-                int width = bytes[0]& 0xFF;
-                int height = bytes[1]& 0xFF;
-                //Log.d("Width","Width " + width);
-                //Log.d("Height","Height " + height);
-
-                for(int y = 0; y < height; y++){
-                    for(int x = 0; x < width; x++){
-                        //Log.d("setDirectTile0","setDirectTile0 " + (bytes[2+y*width+x]& 0xFF));
-                        map.setTileRaw(false,(bytes[2+y*width+x]& 0xFF),x,y);  // 0 2 4 6 8
-                    }
-                }
-
-                for(int y = 0; y < height; y++){
-                    for(int x = 0; x < width; x++){
-                        //Log.d("setDirectTile1","setDirectTile1 " + (bytes[2+width*height+y*width+x]& 0xFF));
-                        map.setTileRaw(true,(bytes[2+width*height+y*width+x]& 0xFF),x,y);
-                    }
-                }
-
-
-            } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        else
-        {
-            Log.wtf("FileNotFound","FileNotFound during load file");
-            return;
-        }
-
-    }
     private void updateCamera() {
         Vector3f dir = new Vector3f(swipe);
         swipe.x = 0;
@@ -262,7 +142,6 @@ if (!file.exists()) {
     private void updateToolbar() {
         leftArrow.update();
         if (leftArrow.getState() == Button.STATE_RELEASED) {
-            saveLevel();
             if (typeIter == 1) {
                 typeIter = numPages;
             } else {
@@ -271,7 +150,6 @@ if (!file.exists()) {
         }
         rightArrow.update();
         if (rightArrow.getState() == Button.STATE_RELEASED) {
-            loadFile();
             if (typeIter < numPages) {
                 typeIter++;
             } else {
@@ -290,11 +168,11 @@ if (!file.exists()) {
                 blockSelect[i].setState(ToggleButton.STATE_UNPRESSED);
         }
         testPlay.update();
-        //if play button pressed and start pad present
         if(testPlay.getState() == Button.STATE_RELEASED && map.getStart().x != -1) {
             paintType = curType;
             curType = -1;
-            state = Renderer.STATE_PLAY_TEST;
+            state = Main.STATE_PLAY_TEST;
+            map.save("meh.map");
         }
     }
 
@@ -314,7 +192,7 @@ if (!file.exists()) {
         for (int i = 0; i < NUM_TOGGLES; i++) {
             blockSelect[i].render();
         }
-        for (int i = (typeIter*NUM_TOGGLES)-NUM_TOGGLES; i < typeIter*NUM_TOGGLES; i++) {
+        for (int i = (typeIter * NUM_TOGGLES) - NUM_TOGGLES; i < typeIter * NUM_TOGGLES; i++) {
             if(blockPreview[i] != null)
                 blockPreview[i].render();
         }
@@ -337,14 +215,16 @@ if (!file.exists()) {
         this.map = map;
     }
 
-    public void setActive() {
+    public void setActive(boolean newMap) {
+        if(newMap)
+            map = new Map(camera, 0, 0, 20, 20);
         camera.setPosition(-left.getWidth(), -top.getHeight(), 0);
         map.setState(Map.STATE_EDIT);
     }
 
-    public void setActive(Map map) {
+    public void setActive(String name) {
+        map.load(name);
         camera.setPosition(-left.getWidth(), -top.getHeight(), 0);
-        this.map = map;
         map.setState(Map.STATE_EDIT);
     }
 }

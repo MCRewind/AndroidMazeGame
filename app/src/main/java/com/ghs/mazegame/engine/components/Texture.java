@@ -6,14 +6,14 @@ import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
 
-import com.ghs.mazegame.game.Renderer;
+import com.ghs.mazegame.game.Main;
 
 public class Texture {
 
     private int id, width, height;
 
     public Texture(int identifier) {
-        Resources resources = Renderer.resources;
+        Resources resources = Main.resources;
         try {
             final BitmapFactory.Options options = new BitmapFactory.Options();
             options.inScaled = false;

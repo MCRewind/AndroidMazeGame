@@ -12,36 +12,41 @@ import static com.ghs.mazegame.engine.display.Surface.touchX;
 import static com.ghs.mazegame.engine.display.Surface.touchY;
 import static com.ghs.mazegame.game.Main.defaultShader;
 
-public class ToggleButton implements GameObject {
+public class Thumbnail implements GameObject {
 
     public static int
-        STATE_UNPRESSED = 0,
-        STATE_PRESSED = 2;
+        STATE_RELEASED = 0,
+        STATE_UNPRESSED = 1,
+        STATE_PRESSED = 2,
+        STATE_HELD = 3;
+
+    private String value;
 
     private float x = 0, y = 0, width = 0, height = 0;
+    private boolean independent;
     private int state, texture;
-    private boolean reset;
     private Camera camera;
     private VAO vao;
     private Texture[] textures;
     private Shader shader;
 
-    public ToggleButton(Camera camera, Texture unpressed, Texture pressed, float x, float y, float width, float height) {
+    public Thumbnail(Camera camera, Texture unpressed, Texture pressed, String value, float x, float y, float width, float height, float depth, boolean independent) {
         textures = new Texture[2];
         textures[0] = unpressed;
         textures[1] = pressed;
         shader = defaultShader;
+        state = STATE_UNPRESSED;
         this.camera = camera;
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        reset = true;
+        this.independent = independent;
         float[] vertices = new float[] {
-            0.0f,  0.0f,   0.1f, //TOP LEFT
-            0.0f,  height, 0.1f, //BOTTOM LEFT
-            width, height, 0.1f, //BOTTOM RIGHT
-            width, 0.0f,   0.1f  //TOP RIGHT
+            0.0f,  0.0f,   depth, //TOP LEFT
+            0.0f,  height, depth, //BOTTOM LEFT
+            width, height, depth, //BOTTOM RIGHT
+            width, 0.0f,   depth  //TOP RIGHT
         };
         int[] indices = new int[] {
             0, 1, 3,
@@ -57,24 +62,32 @@ public class ToggleButton implements GameObject {
     }
 
     public void update() {
-        float x = touchX;
-        float y = touchY;
-        if (contains(x, y) && reset) {
-            reset = false;
-            if (state > STATE_UNPRESSED + 1)
-                state = STATE_UNPRESSED;
-            else
-                state = STATE_PRESSED;
+        float tx = touchX;
+        float ty = touchY;
+        if(!independent) {
+            tx += camera.getX();
+            ty += camera.getY();
         }
-        else if(state % 2 == 0)
-            ++state;
-        if(x < 0)
-            reset = true;
-        texture = state / 2;
+        if ((tx >= x && tx < x + width) && (ty >= y && ty < y + height)) {
+            if(state == STATE_PRESSED)
+                state = STATE_HELD;
+            else if(state < STATE_PRESSED)
+                state = STATE_PRESSED;
+        } else {
+            if(state == STATE_RELEASED)
+                state = STATE_UNPRESSED;
+            else if(state > STATE_UNPRESSED)
+                state = STATE_RELEASED;
+
+        }
+        if(state >= STATE_PRESSED)
+            texture = 1;
+        else
+            texture = 0;
     }
 
     public void render() {
-        Matrix4f proj = camera.getUnatransformedProjection();
+        Matrix4f proj = independent ? camera.getUnatransformedProjection() : camera.getProjection();
         proj.translate(x, y, 0);
         shader.setUniformMat4f("projection", proj);
         textures[texture].bind();
@@ -142,7 +155,7 @@ public class ToggleButton implements GameObject {
         this.y = y;
     }
 
-    public void setState(int state) {
-        this.state = state;
+    public String getValue() {
+        return value;
     }
 }
