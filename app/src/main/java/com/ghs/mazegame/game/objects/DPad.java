@@ -5,7 +5,6 @@ import com.ghs.mazegame.engine.components.Shader;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.display.Camera;
 import com.ghs.mazegame.engine.math.Vector3f;
-import com.ghs.mazegame.game.enums.XDataTypes;
 import com.ghs.mazegame.game.interfaces.GameObject;
 
 import static com.ghs.mazegame.engine.display.Surface.touchX;
@@ -28,15 +27,15 @@ public class DPad implements GameObject {
         dir = new Vector3f();
         shader = new Shader(R.raw.defaultvs, R.raw.dpadfs);
         dpad = new Image[9];
-        dpad[0] = new Image(camera, new Texture(R.drawable.d_upleft),    shader, x,                     y,                      width / scale, height / scale, 0.0f, XDataTypes.DEFAULT);
-        dpad[1] = new Image(camera, new Texture(R.drawable.d_up),        shader, x + width / scale,     y,                      width / scale, height / scale, 0.0f, XDataTypes.DEFAULT);
-        dpad[2] = new Image(camera, new Texture(R.drawable.d_upright),   shader, x + 2 * width / scale, y,                      width / scale, height / scale, 0.0f, XDataTypes.DEFAULT);
-        dpad[3] = new Image(camera, new Texture(R.drawable.d_left),      shader, x,                     y + height / scale,     width / scale, height / scale, 0.0f, XDataTypes.DEFAULT);
-        dpad[4] = new Image(camera, new Texture(R.drawable.d_center),    shader, x + width / scale,     y + height / scale,     width / scale, height / scale, 0.0f, XDataTypes.DEFAULT);
-        dpad[5] = new Image(camera, new Texture(R.drawable.d_right),     shader, x + 2 * width / scale, y + height / scale,     width / scale, height / scale, 0.0f, XDataTypes.DEFAULT);
-        dpad[6] = new Image(camera, new Texture(R.drawable.d_downleft),  shader, x,                     y + 2 * height / scale, width / scale, height / scale, 0.0f, XDataTypes.DEFAULT);
-        dpad[7] = new Image(camera, new Texture(R.drawable.d_down),      shader, x + width / scale,     y + 2 * height / scale, width / scale, height / scale, 0.0f, XDataTypes.DEFAULT);
-        dpad[8] = new Image(camera, new Texture(R.drawable.d_downright), shader, x + 2 * width / scale, y + 2 * height / scale, width / scale, height / scale, 0.0f, XDataTypes.DEFAULT);
+        dpad[0] = new Image(camera, new Texture(R.drawable.d_upleft),    shader, x,                     y,                      width / scale, height / scale, 0.0f);
+        dpad[1] = new Image(camera, new Texture(R.drawable.d_up),        shader, x + width / scale,     y,                      width / scale, height / scale, 0.0f);
+        dpad[2] = new Image(camera, new Texture(R.drawable.d_upright),   shader, x + 2 * width / scale, y,                      width / scale, height / scale, 0.0f);
+        dpad[3] = new Image(camera, new Texture(R.drawable.d_left),      shader, x,                     y + height / scale,     width / scale, height / scale, 0.0f);
+        dpad[4] = new Image(camera, new Texture(R.drawable.d_center),    shader, x + width / scale,     y + height / scale,     width / scale, height / scale, 0.0f);
+        dpad[5] = new Image(camera, new Texture(R.drawable.d_right),     shader, x + 2 * width / scale, y + height / scale,     width / scale, height / scale, 0.0f);
+        dpad[6] = new Image(camera, new Texture(R.drawable.d_downleft),  shader, x,                     y + 2 * height / scale, width / scale, height / scale, 0.0f);
+        dpad[7] = new Image(camera, new Texture(R.drawable.d_down),      shader, x + width / scale,     y + 2 * height / scale, width / scale, height / scale, 0.0f);
+        dpad[8] = new Image(camera, new Texture(R.drawable.d_downright), shader, x + 2 * width / scale, y + 2 * height / scale, width / scale, height / scale, 0.0f);
     }
 
     public void update() {

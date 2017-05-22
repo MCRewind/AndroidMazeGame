@@ -50,8 +50,8 @@ public class Map {
         TYPE_SANDSTONE_WALL = 17,
         TYPE_SANDSTONE_FLOOR = 18,
         TYPE_STONE_KEY_WALL = 19,
-        TYPE_STONE_KEY = 20,
-        TYPE_GOLD_KEY = 21,
+        TYPE_20 = 20,
+        TYPE_21 = 21,
         TYPE_22 = 22,
         TYPE_23 = 23,
         TYPE_24 = 24;
@@ -89,34 +89,6 @@ public class Map {
                 over[i][j] = TYPE_EMPTY;
             }
         }
-<<<<<<< HEAD
-        tiles = new Tile[NUM_TILES];
-        tiles[TYPE_EMPTY]              = new Tile(camera);
-        tiles[TYPE_BRICK_WALL]         = new Tile(camera, new Texture(R.drawable.brick_wall),         true,  0.9f);
-        tiles[TYPE_SQUARE_WALL]        = new Tile(camera, new Texture(R.drawable.square_wall),        true,  0.9f);
-        tiles[TYPE_S_WALL]             = new Tile(camera, new Texture(R.drawable.s_wall),             true,  0.9f);
-        tiles[TYPE_STONE_FLOOR]        = new Tile(camera, new Texture(R.drawable.stone_floor),        false, 0.9f);
-        tiles[TYPE_LIMESTONE_FLOOR]    = new Tile(camera, new Texture(R.drawable.limestone_floor),    false, 0.9f);
-        tiles[TYPE_WOOD_FLOOR]         = new Tile(camera, new Texture(R.drawable.wood_floor),         false, 0.9f);
-        tiles[TYPE_START]              = new Tile(camera, new Texture(R.drawable.start),              false, 0.8f);
-        tiles[TYPE_END]                = new Tile(camera, new Texture(R.drawable.end),                false, 0.8f);
-        tiles[TYPE_BRICK_WALL_RED]     = new Tile(camera, new Texture(R.drawable.brick_wall_red),     true,  0.9f);
-        tiles[TYPE_BRICK_WALL_ORANGE]  = new Tile(camera, new Texture(R.drawable.brick_wall_orange),  true,  0.9f);
-        tiles[TYPE_BRICK_WALL_YELLOW]  = new Tile(camera, new Texture(R.drawable.brick_wall_yellow),  true,  0.9f);
-        tiles[TYPE_BRICK_WALL_GREEN]   = new Tile(camera, new Texture(R.drawable.brick_wall_green),   true,  0.9f);
-        tiles[TYPE_BRICK_WALL_CYAN]    = new Tile(camera, new Texture(R.drawable.brick_wall_cyan),    true,  0.9f);
-        tiles[TYPE_BRICK_WALL_BLUE]    = new Tile(camera, new Texture(R.drawable.brick_wall_blue),    true,  0.9f);
-        tiles[TYPE_BRICK_WALL_PURPLE]  = new Tile(camera, new Texture(R.drawable.brick_wall_purple),  true,  0.9f);
-        tiles[TYPE_BRICK_WALL_MAGENTA] = new Tile(camera, new Texture(R.drawable.brick_wall_magenta), true,  0.9f);
-        tiles[TYPE_SANDSTONE_WALL]     = new Tile(camera, new Texture(R.drawable.sandstone_wall),     true,  0.9f);
-        tiles[TYPE_SANDSTONE_FLOOR]    = new Tile(camera, new Texture(R.drawable.sandstone_floor),    false, 0.9f);
-        tiles[TYPE_STONE_KEY_WALL]     = new Tile(camera, new Texture(R.drawable.stone_key_wall),     true,  0.9f);
-        tiles[TYPE_STONE_KEY]          = new Tile(camera, new Texture(R.drawable.stone_key),          false, 0.8f);
-        tiles[TYPE_GOLD_KEY]           = new Tile(camera, new Texture(R.drawable.gold_key),           false, 0.8f);
-        tiles[TYPE_22]                 = new Tile(camera, new Texture(R.drawable.true_tile),          false, 0.9f);
-        tiles[TYPE_23]                 = new Tile(camera, new Texture(R.drawable.true_tile),          false, 0.9f);
-        tiles[TYPE_24]                 = new Tile(camera, new Texture(R.drawable.true_tile),          false, 0.9f);
-=======
         if(tiles == null) {
             tiles = new Tile[NUM_TILES];
             tiles[TYPE_EMPTY]              = new Tile(camera);
@@ -145,7 +117,6 @@ public class Map {
             tiles[TYPE_23]                 = new Tile(camera, R.drawable.true_tile,          false, 0.9f);
             tiles[TYPE_24]                 = new Tile(camera, R.drawable.true_tile,          false, 0.9f);
         }
->>>>>>> dev
     }
 
     public void render() {
@@ -232,14 +203,14 @@ public class Map {
     public void setTile(int type, int x, int y) {
         if (map.length > 0) {
             if ((x >= 0) && (y >= 0) && (x < map[0].length) && (x < map[0].length)) {
-                if (type == TYPE_START || type == TYPE_END || type == TYPE_STONE_KEY || type == TYPE_GOLD_KEY) {
+                if (type == TYPE_START || type == TYPE_END) {
                     for (int i = 0; i < width; i++) {
                         for (int j = 0; j < height; j++) {
                             if (over[i][j] == type)
                                 over[i][j] = TYPE_EMPTY;
                         }
                     }
-                    if (tiles[map[x][y]].isSolid() && map[x][y] != TYPE_EMPTY)
+                    if (map[x][y] < TYPE_STONE_FLOOR || map[x][y] > TYPE_WOOD_FLOOR)
                         map[x][y] = TYPE_STONE_FLOOR;
                     over[x][y] = type;
                 } else {

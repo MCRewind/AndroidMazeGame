@@ -1,12 +1,6 @@
 package com.ghs.mazegame.game.panels;
 
-<<<<<<< HEAD
-import android.util.Log;
-
-import static com.ghs.mazegame.game.Renderer.*;
-=======
 import static com.ghs.mazegame.game.Main.*;
->>>>>>> dev
 
 import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Shader;
@@ -19,8 +13,6 @@ import com.ghs.mazegame.game.objects.DPad;
 import com.ghs.mazegame.game.map.Map;
 import com.ghs.mazegame.game.objects.Player;
 
-import java.util.ArrayList;
-
 public class PlayTestPanel implements Panel {
 
     private int state = -1;
@@ -30,8 +22,6 @@ public class PlayTestPanel implements Panel {
     private DPad dpad;
 
     private Camera camera;
-
-    private ArrayList<Integer> items = new ArrayList<>();
 
     public PlayTestPanel(Camera camera) {
         this.camera = camera;
@@ -43,7 +33,7 @@ public class PlayTestPanel implements Panel {
         dpad.update();
         updatePlayer();
         updateCamera();
-        checkTile();
+        checkEnd();
     }
 
     public void render() {
@@ -75,21 +65,12 @@ public class PlayTestPanel implements Panel {
             camera.setPosition(camera.getX(), height * SCALE - camera.getHeight(), 0);
     }
 
-    private void checkTile() {
+    private void checkEnd() {
         Vector3f center = player.getCenter();
         int type = map.getTile((int) (center.x / SCALE), (int) (center.y / SCALE), true);
         center.sub((int) (center.x / SCALE) * SCALE + SCALE / 2, (int) (center.y / SCALE) * SCALE + SCALE / 2, 0);
         if(type == Map.TYPE_END && center.lengthSquared() <= SCALE)
-<<<<<<< HEAD
-            state = Renderer.STATE_EDIT;
-        if(type == Map.TYPE_GOLD_KEY && center.lengthSquared() <= SCALE) {
-            map.setTileRaw(true, Map.TYPE_EMPTY, (int) (center.x / SCALE), (int) (center.y / SCALE));
-            items.add(Map.TYPE_GOLD_KEY);
-            Log.d("key", "collected");
-        }
-=======
             state = Main.STATE_EDIT;
->>>>>>> dev
     }
 
     public int checkState() {
