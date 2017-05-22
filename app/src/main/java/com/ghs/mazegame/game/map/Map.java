@@ -1,15 +1,29 @@
 package com.ghs.mazegame.game.map;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.util.Log;
+
 import com.ghs.mazegame.R;
-import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.math.Vector3f;
 import com.ghs.mazegame.engine.utils.Hitbox;
 import com.ghs.mazegame.engine.display.Camera;
+import com.ghs.mazegame.game.objects.Image;
 import com.ghs.mazegame.game.objects.Player;
 
-import java.util.HashMap;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 
-import static com.ghs.mazegame.game.Renderer.SCALE;
+import static com.ghs.mazegame.game.Main.SCALE;
+import static com.ghs.mazegame.game.Main.context;
+import static com.ghs.mazegame.game.Main.maps;
 
 public class Map {
 
@@ -42,14 +56,12 @@ public class Map {
         TYPE_23 = 23,
         TYPE_24 = 24;
 
-    public static final HashMap<String, Integer> types = new HashMap<>();
-
     public static final boolean
         STATE_EDIT = false,
         STATE_PLAY = true;
 
     private int width, height, rWidth, rHeight;
-    private float x, y;
+    private float x, y, rightBound, bottomBound;
 
     private boolean state;
 
@@ -57,7 +69,7 @@ public class Map {
 
     private int[][] map;
     private int[][] over;
-    private Tile[] tiles;
+    private static Tile[] tiles;
 
     public Map(Camera camera, float x, float y, int width, int height) {
         this.camera = camera;
@@ -69,12 +81,15 @@ public class Map {
         this.height = height;
         rWidth = (int) Math.ceil((camera.getX() + camera.getWidth()) / SCALE);
         rHeight = (int) Math.ceil((camera.getY() + camera.getHeight()) / SCALE);
+        rightBound = 0;
+        bottomBound = 0;
         for (int i = 0; i < map.length; ++i) {
             for (int j = 0; j < map[0].length; ++j) {
                 map[i][j] = TYPE_EMPTY;
                 over[i][j] = TYPE_EMPTY;
             }
         }
+<<<<<<< HEAD
         tiles = new Tile[NUM_TILES];
         tiles[TYPE_EMPTY]              = new Tile(camera);
         tiles[TYPE_BRICK_WALL]         = new Tile(camera, new Texture(R.drawable.brick_wall),         true,  0.9f);
@@ -101,6 +116,36 @@ public class Map {
         tiles[TYPE_22]                 = new Tile(camera, new Texture(R.drawable.true_tile),          false, 0.9f);
         tiles[TYPE_23]                 = new Tile(camera, new Texture(R.drawable.true_tile),          false, 0.9f);
         tiles[TYPE_24]                 = new Tile(camera, new Texture(R.drawable.true_tile),          false, 0.9f);
+=======
+        if(tiles == null) {
+            tiles = new Tile[NUM_TILES];
+            tiles[TYPE_EMPTY]              = new Tile(camera);
+            tiles[TYPE_BRICK_WALL]         = new Tile(camera, R.drawable.brick_wall,         true,  0.9f);
+            tiles[TYPE_SQUARE_WALL]        = new Tile(camera, R.drawable.square_wall,        true,  0.9f);
+            tiles[TYPE_S_WALL]             = new Tile(camera, R.drawable.s_wall,             true,  0.9f);
+            tiles[TYPE_STONE_FLOOR]        = new Tile(camera, R.drawable.stone_floor,        false, 0.9f);
+            tiles[TYPE_LIMESTONE_FLOOR]    = new Tile(camera, R.drawable.limestone_floor,    false, 0.9f);
+            tiles[TYPE_WOOD_FLOOR]         = new Tile(camera, R.drawable.wood_floor,         false, 0.9f);
+            tiles[TYPE_START]              = new Tile(camera, R.drawable.start,              false, 0.8f);
+            tiles[TYPE_END]                = new Tile(camera, R.drawable.end,                false, 0.8f);
+            tiles[TYPE_BRICK_WALL_RED]     = new Tile(camera, R.drawable.brick_wall_red,     true,  0.9f);
+            tiles[TYPE_BRICK_WALL_ORANGE]  = new Tile(camera, R.drawable.brick_wall_orange,  true,  0.9f);
+            tiles[TYPE_BRICK_WALL_YELLOW]  = new Tile(camera, R.drawable.brick_wall_yellow,  true,  0.9f);
+            tiles[TYPE_BRICK_WALL_GREEN]   = new Tile(camera, R.drawable.brick_wall_green,   true,  0.9f);
+            tiles[TYPE_BRICK_WALL_CYAN]    = new Tile(camera, R.drawable.brick_wall_cyan,    true,  0.9f);
+            tiles[TYPE_BRICK_WALL_BLUE]    = new Tile(camera, R.drawable.brick_wall_blue,    true,  0.9f);
+            tiles[TYPE_BRICK_WALL_PURPLE]  = new Tile(camera, R.drawable.brick_wall_purple,  true,  0.9f);
+            tiles[TYPE_BRICK_WALL_MAGENTA] = new Tile(camera, R.drawable.brick_wall_magenta, true,  0.9f);
+            tiles[TYPE_SANDSTONE_WALL]     = new Tile(camera, R.drawable.sandstone_wall,     true,  0.9f);
+            tiles[TYPE_SANDSTONE_FLOOR]    = new Tile(camera, R.drawable.sandstone_floor,    false, 0.9f);
+            tiles[TYPE_STONE_KEY_WALL]     = new Tile(camera, R.drawable.stone_key_wall,     true,  0.9f);
+            tiles[TYPE_20]                 = new Tile(camera, R.drawable.true_tile,          false, 0.9f);
+            tiles[TYPE_21]                 = new Tile(camera, R.drawable.true_tile,          false, 0.9f);
+            tiles[TYPE_22]                 = new Tile(camera, R.drawable.true_tile,          false, 0.9f);
+            tiles[TYPE_23]                 = new Tile(camera, R.drawable.true_tile,          false, 0.9f);
+            tiles[TYPE_24]                 = new Tile(camera, R.drawable.true_tile,          false, 0.9f);
+        }
+>>>>>>> dev
     }
 
     public void render() {
@@ -242,5 +287,146 @@ public class Map {
         for (int i = xOffset; i < width; i++)
             for (int j = yOffset; j < height; j++)
                 this.map[i][j] = map[i][j];
+    }
+
+    public void setCamera(Camera camera) {
+        this.camera = camera;
+    }
+
+    public void save(String filename) {
+        if(!maps.contains(filename))
+            maps.add(filename);
+
+        try {
+            FileOutputStream outputStream = context.openFileOutput("maps.log", Context.MODE_PRIVATE);
+            for (int i = 0; i < maps.size(); i++)
+                outputStream.write(maps.get(i).getBytes());
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        File file = new File(context.getFilesDir(), filename + ".map");
+        if(!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        int width = getWidth();
+        int height = getHeight();
+
+        byte[] map1 = new byte[width * height];
+        byte[] map2 = new byte[width * height];
+
+        ByteBuffer saveData = ByteBuffer.allocate(2 + 2 * width * height);
+        try {
+            BufferedOutputStream buf = new BufferedOutputStream(new FileOutputStream(file));
+            saveData.put((byte) (width & 0xFF));
+            saveData.put((byte) (height & 0xFF));
+
+            for(int y = 0; y < height; y++){
+                for(int x = 0; x < width; x++){
+                    map1[y*width+x] = (byte) (getTile(x, y, false) & 0xFF);
+                    map2[y*width+x] = (byte) (getTile(x, y, true) & 0xFF);
+                }
+            }
+            saveData.put(map1);
+            saveData.put(map2);
+
+            buf.write(saveData.array(), 0, saveData.array().length);
+            buf.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            final int WIDTH = 12, HEIGHT = 8;
+            Bitmap thumbnail = Bitmap.createBitmap(SCALE * WIDTH, SCALE * HEIGHT, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(thumbnail);
+
+            Bitmap under = Bitmap.createBitmap(SCALE * WIDTH, SCALE * HEIGHT, Bitmap.Config.ARGB_8888);
+            int[] pixels = new int[SCALE * SCALE];
+            for (int i = 0; i < WIDTH; i++) {
+                for (int j = 0; j < HEIGHT; j++) {
+                    tiles[map[i][j]].getBitmap().getPixels(pixels, 0, SCALE, 0, 0, SCALE, SCALE);
+                    under.setPixels(pixels, 0, SCALE, i * SCALE, j * SCALE, SCALE, SCALE);
+                }
+            }
+            canvas.drawBitmap(under, 4, 4, null);
+            under.recycle();
+
+            Bitmap overlay = Bitmap.createBitmap(SCALE * WIDTH, SCALE * HEIGHT, Bitmap.Config.ARGB_8888);
+            pixels = new int[SCALE * SCALE];
+            for (int i = 0; i < WIDTH; i++) {
+                for (int j = 0; j <  HEIGHT; j++) {
+                    if(over[i][j] != TYPE_EMPTY) {
+                        tiles[over[i][j]].getBitmap().getPixels(pixels, 0, SCALE, 0, 0, SCALE, SCALE);
+                        overlay.setPixels(pixels, 0, SCALE, i * SCALE, j * SCALE, SCALE, SCALE);
+                    }
+                }
+            }
+            canvas.drawBitmap(overlay, 4, 4, null);
+            overlay.recycle();
+
+            for (int i = 0; i < thumbnail.getWidth(); i++) {
+                for (int j = 0; j < thumbnail.getHeight(); j++) {
+                    if(i < 4 || j < 4 || i >= SCALE * WIDTH - 4 || j >= SCALE * HEIGHT - 4)
+                    thumbnail.setPixel(i, j, 0xFFFFFFFF);
+                }
+            }
+
+            File thumbFile = new File(context.getFilesDir(), filename + ".png");
+            if(!thumbFile.exists())
+                thumbFile.createNewFile();
+            FileOutputStream fos = new FileOutputStream(thumbFile);
+            thumbnail.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            thumbnail.recycle();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void load(String filename) {
+        File file = new File(context.getFilesDir(), filename + ".map");
+        if(file.exists()) {
+            Log.e("File", "Exists!");
+            int size = (int) file.length();
+            byte[] bytes = new byte[size];
+            try {
+                BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+                buf.read(bytes, 0, bytes.length);
+
+                buf.close();
+                width = bytes[0] & 0xFF;
+                height = bytes[1] & 0xFF;
+                map = new int[width][height];
+                over = new int[width][height];
+                for (int i = 0; i < map.length; i++) {
+                    for (int j = 0; j < map[0].length; j++) {
+                        map[i][j] = TYPE_EMPTY;
+                        over[i][j] = TYPE_EMPTY;
+                    }
+                }
+
+                for(int y = 0; y < height; y++)
+                    for(int x = 0; x < width; x++)
+                        setTileRaw(false, (bytes[2 + y * width + x] & 0xFF), x, y);
+
+                for(int y = 0; y < height; y++)
+                    for(int x = 0; x < width; x++)
+                        setTileRaw(true, (bytes[2 + width * height + y * width + x] & 0xFF), x, y);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
+import android.util.Log;
 
 import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Shader;
@@ -11,15 +12,26 @@ import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.display.Camera;
 import com.ghs.mazegame.game.interfaces.Panel;
 
+import com.ghs.mazegame.game.map.Map;
 import com.ghs.mazegame.game.panels.EditPanel;
 import com.ghs.mazegame.game.panels.MainMenu;
 import com.ghs.mazegame.game.panels.PlayTestPanel;
 import com.ghs.mazegame.game.panels.SplashPanel;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-public class Renderer implements GLSurfaceView.Renderer {
+public class Main implements GLSurfaceView.Renderer {
 
     public static final int
         STATE_SPLASH_SCREEN = 0,
@@ -35,21 +47,23 @@ public class Renderer implements GLSurfaceView.Renderer {
 
     public static float time;
 
+    public static Context context;
     public static Resources resources;
     public static Shader defaultShader;
+    public static ArrayList<String> maps;
 
     private float pastTime, curTime;
 
     private Camera camera;
 
-    private Context context;
-
     private Panel[] panels;
     public int cur = STATE_SPLASH_SCREEN;
 
-    public Renderer(Resources resources, Context context) {
+    public Main(Resources resources, Context context) {
         this.resources = resources;
         this.context = context;
+        maps = new ArrayList<>();
+        loadMaps();
     }
 
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
@@ -101,12 +115,16 @@ public class Renderer implements GLSurfaceView.Renderer {
             case STATE_EDIT:
                 if(cur == STATE_MAIN_MENU) {
                     EditPanel edit = (EditPanel) panels[STATE_EDIT];
-                    edit.setActive();
+                    MainMenu menu = (MainMenu) panels[STATE_MAIN_MENU];
+                    int map = menu.getMap();
+                    if(map == maps.size())
+                        edit.setActive(true);
+                    else
+                        edit.setActive(maps.get(map));
                 }
                 else if(cur == STATE_PLAY_TEST){
                     EditPanel edit = (EditPanel) panels[STATE_EDIT];
-                    PlayTestPanel play = (PlayTestPanel) panels[STATE_PLAY_TEST];
-                    edit.setActive(play.getMap());
+                    edit.setActive(false);
                 }
                 break;
             case STATE_PLAY_TEST:
@@ -114,13 +132,30 @@ public class Renderer implements GLSurfaceView.Renderer {
                 EditPanel edit = (EditPanel) panels[STATE_EDIT];
                 play.setActive(edit.getMap());
                 break;
-            case STATE_MAIN_MENU:
-                if(cur == STATE_SPLASH_SCREEN) {
-                    MainMenu menu = (MainMenu) panels[STATE_MAIN_MENU];
-                    menu.setActive();
-                }
         };
         if(state != -1)
             cur = state;
+    }
+
+    private void loadMaps() {
+        File mapsFile = new File(context.getFilesDir(), "maps.log");
+        if(!mapsFile.exists()) {
+            try {
+                mapsFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            try {
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(mapsFile)));
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    maps.add(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

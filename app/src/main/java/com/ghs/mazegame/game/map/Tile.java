@@ -1,18 +1,18 @@
 package com.ghs.mazegame.game.map;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.renderscript.Matrix4f;
 
-import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Shader;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.components.VAO;
 import com.ghs.mazegame.engine.display.Camera;
-import com.ghs.mazegame.engine.utils.Hitbox;
-import com.ghs.mazegame.game.Renderer;
+import com.ghs.mazegame.game.Main;
 
-import static com.ghs.mazegame.game.Renderer.SCALE;
-import static com.ghs.mazegame.game.Renderer.defaultShader;
+import static com.ghs.mazegame.game.Main.SCALE;
+import static com.ghs.mazegame.game.Main.defaultShader;
 
 public class Tile {
 
@@ -23,9 +23,10 @@ public class Tile {
     private Shader shader;
     private VAO vao;
 
-    public Tile(Camera camera, Texture texture, boolean solid, float depth) {
+    private Bitmap bitmap;
+
+    public Tile(Camera camera, int identifier, boolean solid, float depth) {
         this.camera = camera;
-        this.texture = texture;
         shader = defaultShader;
         this.x = 0;
         this.y = 0;
@@ -49,6 +50,17 @@ public class Tile {
             1, 0
         };
         vao = new VAO(vertices, indices, texCoords);
+        Resources resources = Main.resources;
+        try {
+            final BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inScaled = false;
+
+            bitmap = BitmapFactory.decodeResource(resources, identifier, options);
+
+            texture = new Texture(bitmap);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public Tile(Camera camera) {
@@ -76,11 +88,9 @@ public class Tile {
         };
         vao = new VAO(vertices, indices, texCoords);
 
-        final Bitmap bitmap = Bitmap.createBitmap(SCALE * 2, SCALE * 2, Bitmap.Config.ARGB_8888);
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
+        bitmap = Bitmap.createBitmap(SCALE * 2, SCALE * 2, Bitmap.Config.ARGB_8888);
+        for (int i = 0; i < bitmap.getWidth(); i++) {
+            for (int j = 0; j < bitmap.getHeight(); j++) {
                 if(i == 0 || j == 0)
                     bitmap.setPixel(i, j, 0xFFDDDDDD);
                 else
@@ -88,6 +98,10 @@ public class Tile {
             }
         }
         texture = new Texture(bitmap);
+        bitmap = Bitmap.createBitmap(SCALE, SCALE, Bitmap.Config.ARGB_8888);
+        for (int i = 0; i < bitmap.getWidth(); i++)
+            for (int j = 0; j < bitmap.getHeight(); j++)
+                bitmap.setPixel(i, j, 0XFF000000);
     }
 
     public void render() {
@@ -112,5 +126,9 @@ public class Tile {
     public void setPosition(float x, float y) {
         this.x = x;
         this.y = y;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
     }
 }

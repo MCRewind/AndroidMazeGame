@@ -8,7 +8,7 @@ import com.ghs.mazegame.engine.components.VAO;
 import com.ghs.mazegame.engine.display.Camera;
 import com.ghs.mazegame.game.interfaces.GameObject;
 
-import static com.ghs.mazegame.game.Renderer.defaultShader;
+import static com.ghs.mazegame.game.Main.defaultShader;
 
 public class Item implements GameObject {
 

@@ -4,7 +4,7 @@ import android.content.res.Resources;
 import android.opengl.GLES20;
 import android.renderscript.Matrix4f;
 
-import com.ghs.mazegame.game.Renderer;
+import com.ghs.mazegame.game.Main;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +24,7 @@ public class Shader {
     }
 
     private void makeProgram(int vertId, int fragId) {
-        Resources resources = Renderer.resources;
+        Resources resources = Main.resources;
 
         Scanner vert = new Scanner(resources.openRawResource(vertId));
         Scanner frag = new Scanner(resources.openRawResource(fragId));

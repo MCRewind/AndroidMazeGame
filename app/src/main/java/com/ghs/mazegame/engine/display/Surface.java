@@ -3,11 +3,11 @@ package com.ghs.mazegame.engine.display;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.SurfaceView;
 
 import com.ghs.mazegame.engine.math.Vector3f;
+import com.ghs.mazegame.game.Main;
+
 public class Surface extends GLSurfaceView {
 
     public static float touchX = -1;
@@ -28,6 +28,8 @@ public class Surface extends GLSurfaceView {
     public boolean onTouchEvent(MotionEvent e) {
         int pointerCount = e.getPointerCount();
 
+        Log.e("Pointers", "Pointer Count: " + pointerCount);
+
         float tx = e.getX();
         float ty = e.getY();
 
@@ -43,8 +45,8 @@ public class Surface extends GLSurfaceView {
                     touchY = -1;
                     isPanning = true;
                 case MotionEvent.ACTION_POINTER_DOWN:
-                    GLOBAL_TOUCH_POSITION_X = (((tx2+tx)/(float)2) * (float)com.ghs.mazegame.game.Renderer.cameraWidth) / (float)getWidth();
-                    GLOBAL_TOUCH_POSITION_Y = (((ty2+ty)/(float)2) * (float)com.ghs.mazegame.game.Renderer.cameraHeight) / (float)getHeight();
+                    GLOBAL_TOUCH_POSITION_X = (((tx2+tx)/(float)2) * (float) Main.cameraWidth) / (float)getWidth();
+                    GLOBAL_TOUCH_POSITION_Y = (((ty2+ty)/(float)2) * (float) Main.cameraHeight) / (float)getHeight();
                     isPanning = true;
                     touchX = -1;
                     touchY = -1;
@@ -58,18 +60,23 @@ public class Surface extends GLSurfaceView {
                     swipe.x = 0;
                     swipe.y = 0;
                     isPanning = false;
+                    try {
+                        Thread.sleep(16);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
                     break;
                 case MotionEvent.ACTION_MOVE:
                     isPanning = true;
                     touchX = -1;
                     touchY = -1;
-                    GLOBAL_TOUCH_CURRENT_POSITION_X = (((tx2+tx)/(float)2) * (float)com.ghs.mazegame.game.Renderer.cameraWidth) / (float)getWidth();
-                    GLOBAL_TOUCH_CURRENT_POSITION_Y = (((ty2+ty)/(float)2) * (float)com.ghs.mazegame.game.Renderer.cameraHeight) / (float)getHeight();
+                    GLOBAL_TOUCH_CURRENT_POSITION_X = (((tx2+tx)/(float)2) * (float) Main.cameraWidth) / (float)getWidth();
+                    GLOBAL_TOUCH_CURRENT_POSITION_Y = (((ty2+ty)/(float)2) * (float) Main.cameraHeight) / (float)getHeight();
 
                     float diffX = GLOBAL_TOUCH_POSITION_X-GLOBAL_TOUCH_CURRENT_POSITION_X;
                     float diffY = GLOBAL_TOUCH_POSITION_Y-GLOBAL_TOUCH_CURRENT_POSITION_Y;
-                    GLOBAL_TOUCH_POSITION_X = (((tx2+tx)/(float)2) * (float)com.ghs.mazegame.game.Renderer.cameraWidth) / (float)getWidth();
-                    GLOBAL_TOUCH_POSITION_Y = (((ty2+ty)/(float)2) * (float)com.ghs.mazegame.game.Renderer.cameraHeight) / (float)getHeight();
+                    GLOBAL_TOUCH_POSITION_X = (((tx2+tx)/(float)2) * (float) Main.cameraWidth) / (float)getWidth();
+                    GLOBAL_TOUCH_POSITION_Y = (((ty2+ty)/(float)2) * (float) Main.cameraHeight) / (float)getHeight();
                     if(Math.abs(diffX)<-0.4){
                         swipe.x = 0;
                     }
@@ -87,17 +94,22 @@ public class Surface extends GLSurfaceView {
                     break;
             }
         }
-        else if(!isPanning && (pointerCount == 1)) {
+        else if(!isPanning && pointerCount == 1) {
             switch (e.getActionMasked()) {
-                case MotionEvent.ACTION_POINTER_DOWN:
                 case MotionEvent.ACTION_DOWN:
-                case MotionEvent.ACTION_MOVE:
-                    touchX = (tx * com.ghs.mazegame.game.Renderer.cameraWidth) / getWidth();
-                    touchY = (ty * com.ghs.mazegame.game.Renderer.cameraHeight) / getHeight();
+                    try {
+                        Thread.sleep(16);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
                     break;
                 case MotionEvent.ACTION_UP:
                     touchX = -1;
                     touchY = -1;
+                    break;
+                default:
+                    touchX = (tx * Main.cameraWidth) / getWidth();
+                    touchY = (ty * Main.cameraHeight) / getHeight();
                     break;
             }
         }

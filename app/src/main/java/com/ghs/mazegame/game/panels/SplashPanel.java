@@ -1,15 +1,20 @@
 package com.ghs.mazegame.game.panels;
 
+import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.display.Camera;
+<<<<<<< HEAD
 import com.ghs.mazegame.game.Renderer;
 import com.ghs.mazegame.game.enums.XDataTypes;
+=======
+import com.ghs.mazegame.game.Main;
+>>>>>>> dev
 import com.ghs.mazegame.game.interfaces.Panel;
 import com.ghs.mazegame.game.objects.Image;
 import com.ghs.mazegame.game.objects.Rectangle;
 
-import static com.ghs.mazegame.game.Renderer.cameraHeight;
-import static com.ghs.mazegame.game.Renderer.cameraWidth;
+import static com.ghs.mazegame.game.Main.cameraHeight;
+import static com.ghs.mazegame.game.Main.cameraWidth;
 
 public class SplashPanel implements Panel {
 
@@ -25,16 +30,28 @@ public class SplashPanel implements Panel {
         this.camera = camera;
         this.duration = duration;
         fadeTime = duration / 6f;
+<<<<<<< HEAD
         image = new Image(camera, texture, 0, 0, cameraWidth, cameraHeight, 0.6f, XDataTypes.DEFAULT);
+=======
+        image = new Image(camera, randomImage(), 0, 0, cameraWidth, cameraHeight, 0.6f);
+>>>>>>> dev
         fade = new Rectangle(camera, 0, 0, cameraWidth, cameraHeight, 0, 0, 0, 1);
-        start = System.nanoTime() / 1000000f + 500;
+        start = System.nanoTime() / 1000000f + 700;
+    }
+
+    private Texture randomImage() {
+        Texture[] textures = new Texture[3];
+        textures[0] = new Texture(R.drawable.splash_screen);
+        textures[1] = new Texture(R.drawable.splash_screen_2);
+        textures[2] = new Texture(R.drawable.splash_screen_3);
+        return textures[(int) ((System.nanoTime() / 1000000f) % 3)];
     }
 
     public void update() {
         float time = System.nanoTime() / 1000000f;
         if(time > start) {
             if (time >= start + duration)
-                state = Renderer.STATE_MAIN_MENU;
+                state = Main.STATE_MAIN_MENU;
             else if (time - start < fadeTime)
                 fade.setColor(0, 0, 0, 1f - ((time - start) / fadeTime));
             else if (time > start + duration - fadeTime)

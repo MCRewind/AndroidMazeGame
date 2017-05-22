@@ -8,8 +8,12 @@ import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.display.Camera;
 import com.ghs.mazegame.engine.math.Vector3f;
 import com.ghs.mazegame.engine.utils.ObjectManager;
+<<<<<<< HEAD
 import com.ghs.mazegame.game.Renderer;
 import com.ghs.mazegame.game.enums.XDataTypes;
+=======
+import com.ghs.mazegame.game.Main;
+>>>>>>> dev
 import com.ghs.mazegame.game.interfaces.Panel;
 import com.ghs.mazegame.game.objects.Backplate;
 import com.ghs.mazegame.game.objects.Button;
@@ -29,13 +33,14 @@ import java.nio.ByteBuffer;
 import static com.ghs.mazegame.engine.display.Surface.swipe;
 import static com.ghs.mazegame.engine.display.Surface.touchX;
 import static com.ghs.mazegame.engine.display.Surface.touchY;
-import static com.ghs.mazegame.game.Renderer.SCALE;
-import static com.ghs.mazegame.game.Renderer.time;
+import static com.ghs.mazegame.game.Main.SCALE;
 import static com.ghs.mazegame.game.objects.Backplate.makePlate;
 
 public class EditPanel implements Panel {
 
     private final int NUM_BLOCKS = 24, NUM_TOGGLES = 8;
+
+    private String name;
 
     private int state;
 
@@ -58,7 +63,7 @@ public class EditPanel implements Panel {
 
     public EditPanel(Camera camera, Context context) {
         this.context = context;
-        numPages = NUM_BLOCKS/NUM_TOGGLES;
+        numPages = NUM_BLOCKS / NUM_TOGGLES;
         this.camera = camera;
         this.map = new Map(camera, 0, 0, 20, 20);
         map.setState(Map.STATE_EDIT);
@@ -112,6 +117,7 @@ public class EditPanel implements Panel {
         updateToolbar();
     }
 
+<<<<<<< HEAD
     public void saveLevel() {
         String filename = "map0";
         File file = new File(context.getFilesDir(), filename);
@@ -179,6 +185,8 @@ public class EditPanel implements Panel {
         }
     }
 
+=======
+>>>>>>> dev
     private void updateCamera() {
         Vector3f dir = new Vector3f(swipe);
         swipe.x = 0;
@@ -209,16 +217,15 @@ public class EditPanel implements Panel {
     private void updateToolbar() {
         leftArrow.update();
         if (leftArrow.getState() == Button.STATE_RELEASED) {
-            saveLevel();
             if (typeIter == 1) {
                 typeIter = numPages;
             } else {
                 typeIter--;
             }
+            map.save("meh");
         }
         rightArrow.update();
         if (rightArrow.getState() == Button.STATE_RELEASED) {
-            loadFile();
             if (typeIter < numPages) {
                 typeIter++;
             } else {
@@ -237,11 +244,10 @@ public class EditPanel implements Panel {
                 blockSelect[i].setState(ToggleButton.STATE_UNPRESSED);
         }
         testPlay.update();
-        //if play button pressed and start pad present
         if(testPlay.getState() == Button.STATE_RELEASED && map.getStart().x != -1) {
             paintType = curType;
             curType = -1;
-            state = Renderer.STATE_PLAY_TEST;
+            state = Main.STATE_PLAY_TEST;
         }
     }
 
@@ -261,7 +267,7 @@ public class EditPanel implements Panel {
         for (int i = 0; i < NUM_TOGGLES; i++) {
             blockSelect[i].render();
         }
-        for (int i = (typeIter*NUM_TOGGLES)-NUM_TOGGLES; i < typeIter*NUM_TOGGLES; i++) {
+        for (int i = (typeIter * NUM_TOGGLES) - NUM_TOGGLES; i < typeIter * NUM_TOGGLES; i++) {
             if(blockPreview[i] != null)
                 blockPreview[i].render();
         }
@@ -284,14 +290,16 @@ public class EditPanel implements Panel {
         this.map = map;
     }
 
-    public void setActive() {
+    public void setActive(boolean newMap) {
+        if(newMap)
+            map = new Map(camera, 0, 0, 20, 20);
         camera.setPosition(-left.getWidth(), -top.getHeight(), 0);
         map.setState(Map.STATE_EDIT);
     }
 
-    public void setActive(Map map) {
+    public void setActive(String name) {
+        map.load(name);
         camera.setPosition(-left.getWidth(), -top.getHeight(), 0);
-        this.map = map;
         map.setState(Map.STATE_EDIT);
     }
 }
