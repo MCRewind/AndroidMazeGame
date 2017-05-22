@@ -78,9 +78,9 @@ public class PlayTestPanel implements Panel {
         if(type == Map.TYPE_END && center.lengthSquared() <= SCALE)
             state = Renderer.STATE_EDIT;
         if(type == Map.TYPE_GOLD_KEY && center.lengthSquared() <= SCALE) {
-            map.setTileRaw(true, Map.TYPE_EMPTY, (int) (center.x / SCALE), (int) (center.y / SCALE));
+            map.setTileRaw(true, Map.TYPE_EMPTY, (int) (player.getCenter().x / SCALE), (int) (player.getCenter().y / SCALE));
             items.add(Map.TYPE_GOLD_KEY);
-            Log.d("key", "collected");
+            Log.d("key", "Position: " + (int) (player.getCenter().x / SCALE) + (int) (player.getCenter().y / SCALE));
         }
     }
 
