@@ -386,13 +386,12 @@ public class Map {
                     }
                 }
 
-                for(int y = 0; y < height; y++)
-                    for(int x = 0; x < width; x++)
+                for(int y = 0; y < height; y++) {
+                    for (int x = 0; x < width; x++) {
                         setTileRaw(false, (bytes[2 + y * width + x] & 0xFF), x, y);
-
-                for(int y = 0; y < height; y++)
-                    for(int x = 0; x < width; x++)
                         setTileRaw(true, (bytes[2 + width * height + y * width + x] & 0xFF), x, y);
+                    }
+                }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
