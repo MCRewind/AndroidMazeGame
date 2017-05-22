@@ -1,7 +1,6 @@
 package com.ghs.mazegame.game.panels;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Texture;
@@ -15,15 +14,6 @@ import com.ghs.mazegame.game.objects.Button;
 import com.ghs.mazegame.game.map.Map;
 import com.ghs.mazegame.game.objects.Image;
 import com.ghs.mazegame.game.objects.ToggleButton;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.ByteBuffer;
 
 import static com.ghs.mazegame.engine.display.Surface.swipe;
 import static com.ghs.mazegame.engine.display.Surface.touchX;
@@ -47,7 +37,6 @@ public class EditPanel implements Panel {
     private ToggleButton[] blockSelect;
     private Image[] blockPreview;
     private Button testPlay, leftArrow, rightArrow;
-
     private int curType, typeIter = 1, numPages;
 
     private Context context;

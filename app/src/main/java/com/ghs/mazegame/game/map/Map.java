@@ -54,7 +54,8 @@ public class Map {
         TYPE_21 = 21,
         TYPE_22 = 22,
         TYPE_23 = 23,
-        TYPE_24 = 24;
+        TYPE_24 = 24,
+        TYPE_E_STONE_KEY = -1;
 
     public static final boolean
         STATE_EDIT = false,
@@ -210,7 +211,7 @@ public class Map {
                                 over[i][j] = TYPE_EMPTY;
                         }
                     }
-                    if (map[x][y] < TYPE_STONE_FLOOR || map[x][y] > TYPE_WOOD_FLOOR)
+                    if (tiles[map[x][y]].isSolid() && map[x][y] != TYPE_EMPTY)
                         map[x][y] = TYPE_STONE_FLOOR;
                     over[x][y] = type;
                 } else {
