@@ -35,7 +35,6 @@ public class Texture {
         width = bitmap.getWidth();
         height = bitmap.getHeight();
         setTexture(bitmap);
-        bitmap.recycle();
     }
 
     private void setTexture(Bitmap bitmap) {

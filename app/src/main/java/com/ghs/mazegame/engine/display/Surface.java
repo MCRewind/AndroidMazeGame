@@ -2,6 +2,7 @@ package com.ghs.mazegame.engine.display;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import com.ghs.mazegame.engine.math.Vector3f;
@@ -26,6 +27,8 @@ public class Surface extends GLSurfaceView {
 
     public boolean onTouchEvent(MotionEvent e) {
         int pointerCount = e.getPointerCount();
+
+        Log.e("Pointers", "Pointer Count: " + pointerCount);
 
         float tx = e.getX();
         float ty = e.getY();
@@ -57,6 +60,11 @@ public class Surface extends GLSurfaceView {
                     swipe.x = 0;
                     swipe.y = 0;
                     isPanning = false;
+                    try {
+                        Thread.sleep(16);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
                     break;
                 case MotionEvent.ACTION_MOVE:
                     isPanning = true;
@@ -86,17 +94,22 @@ public class Surface extends GLSurfaceView {
                     break;
             }
         }
-        else if(!isPanning && (pointerCount == 1)) {
+        else if(!isPanning && pointerCount == 1) {
             switch (e.getActionMasked()) {
-                case MotionEvent.ACTION_POINTER_DOWN:
                 case MotionEvent.ACTION_DOWN:
-                case MotionEvent.ACTION_MOVE:
-                    touchX = (tx * Main.cameraWidth) / getWidth();
-                    touchY = (ty * Main.cameraHeight) / getHeight();
+                    try {
+                        Thread.sleep(16);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
                     break;
                 case MotionEvent.ACTION_UP:
                     touchX = -1;
                     touchY = -1;
+                    break;
+                default:
+                    touchX = (tx * Main.cameraWidth) / getWidth();
+                    touchY = (ty * Main.cameraHeight) / getHeight();
                     break;
             }
         }

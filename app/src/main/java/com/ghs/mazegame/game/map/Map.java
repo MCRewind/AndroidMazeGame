@@ -1,15 +1,15 @@
 package com.ghs.mazegame.game.map;
 
 import android.content.Context;
-import android.opengl.GLES20;
-import android.opengl.GLES30;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.util.Log;
 
 import com.ghs.mazegame.R;
-import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.math.Vector3f;
 import com.ghs.mazegame.engine.utils.Hitbox;
 import com.ghs.mazegame.engine.display.Camera;
+import com.ghs.mazegame.game.objects.Image;
 import com.ghs.mazegame.game.objects.Player;
 
 import java.io.BufferedInputStream;
@@ -91,31 +91,31 @@ public class Map {
         }
         if(tiles == null) {
             tiles = new Tile[NUM_TILES];
-            tiles[TYPE_EMPTY] = new Tile(camera);
-            tiles[TYPE_BRICK_WALL] = new Tile(camera, new Texture(R.drawable.brick_wall), true, 0.9f);
-            tiles[TYPE_SQUARE_WALL] = new Tile(camera, new Texture(R.drawable.square_wall), true, 0.9f);
-            tiles[TYPE_S_WALL] = new Tile(camera, new Texture(R.drawable.s_wall), true, 0.9f);
-            tiles[TYPE_STONE_FLOOR] = new Tile(camera, new Texture(R.drawable.stone_floor), false, 0.9f);
-            tiles[TYPE_LIMESTONE_FLOOR] = new Tile(camera, new Texture(R.drawable.limestone_floor), false, 0.9f);
-            tiles[TYPE_WOOD_FLOOR] = new Tile(camera, new Texture(R.drawable.wood_floor), false, 0.9f);
-            tiles[TYPE_START] = new Tile(camera, new Texture(R.drawable.start), false, 0.8f);
-            tiles[TYPE_END] = new Tile(camera, new Texture(R.drawable.end), false, 0.8f);
-            tiles[TYPE_BRICK_WALL_RED] = new Tile(camera, new Texture(R.drawable.brick_wall_red), true, 0.9f);
-            tiles[TYPE_BRICK_WALL_ORANGE] = new Tile(camera, new Texture(R.drawable.brick_wall_orange), true, 0.9f);
-            tiles[TYPE_BRICK_WALL_YELLOW] = new Tile(camera, new Texture(R.drawable.brick_wall_yellow), true, 0.9f);
-            tiles[TYPE_BRICK_WALL_GREEN] = new Tile(camera, new Texture(R.drawable.brick_wall_green), true, 0.9f);
-            tiles[TYPE_BRICK_WALL_CYAN] = new Tile(camera, new Texture(R.drawable.brick_wall_cyan), true, 0.9f);
-            tiles[TYPE_BRICK_WALL_BLUE] = new Tile(camera, new Texture(R.drawable.brick_wall_blue), true, 0.9f);
-            tiles[TYPE_BRICK_WALL_PURPLE] = new Tile(camera, new Texture(R.drawable.brick_wall_purple), true, 0.9f);
-            tiles[TYPE_BRICK_WALL_MAGENTA] = new Tile(camera, new Texture(R.drawable.brick_wall_magenta), true, 0.9f);
-            tiles[TYPE_SANDSTONE_WALL] = new Tile(camera, new Texture(R.drawable.sandstone_wall), true, 0.9f);
-            tiles[TYPE_SANDSTONE_FLOOR] = new Tile(camera, new Texture(R.drawable.sandstone_floor), false, 0.9f);
-            tiles[TYPE_STONE_KEY_WALL] = new Tile(camera, new Texture(R.drawable.stone_key_wall), true, 0.9f);
-            tiles[TYPE_20] = new Tile(camera, new Texture(R.drawable.true_tile), false, 0.9f);
-            tiles[TYPE_21] = new Tile(camera, new Texture(R.drawable.true_tile), false, 0.9f);
-            tiles[TYPE_22] = new Tile(camera, new Texture(R.drawable.true_tile), false, 0.9f);
-            tiles[TYPE_23] = new Tile(camera, new Texture(R.drawable.true_tile), false, 0.9f);
-            tiles[TYPE_24] = new Tile(camera, new Texture(R.drawable.true_tile), false, 0.9f);
+            tiles[TYPE_EMPTY]              = new Tile(camera);
+            tiles[TYPE_BRICK_WALL]         = new Tile(camera, R.drawable.brick_wall,         true,  0.9f);
+            tiles[TYPE_SQUARE_WALL]        = new Tile(camera, R.drawable.square_wall,        true,  0.9f);
+            tiles[TYPE_S_WALL]             = new Tile(camera, R.drawable.s_wall,             true,  0.9f);
+            tiles[TYPE_STONE_FLOOR]        = new Tile(camera, R.drawable.stone_floor,        false, 0.9f);
+            tiles[TYPE_LIMESTONE_FLOOR]    = new Tile(camera, R.drawable.limestone_floor,    false, 0.9f);
+            tiles[TYPE_WOOD_FLOOR]         = new Tile(camera, R.drawable.wood_floor,         false, 0.9f);
+            tiles[TYPE_START]              = new Tile(camera, R.drawable.start,              false, 0.8f);
+            tiles[TYPE_END]                = new Tile(camera, R.drawable.end,                false, 0.8f);
+            tiles[TYPE_BRICK_WALL_RED]     = new Tile(camera, R.drawable.brick_wall_red,     true,  0.9f);
+            tiles[TYPE_BRICK_WALL_ORANGE]  = new Tile(camera, R.drawable.brick_wall_orange,  true,  0.9f);
+            tiles[TYPE_BRICK_WALL_YELLOW]  = new Tile(camera, R.drawable.brick_wall_yellow,  true,  0.9f);
+            tiles[TYPE_BRICK_WALL_GREEN]   = new Tile(camera, R.drawable.brick_wall_green,   true,  0.9f);
+            tiles[TYPE_BRICK_WALL_CYAN]    = new Tile(camera, R.drawable.brick_wall_cyan,    true,  0.9f);
+            tiles[TYPE_BRICK_WALL_BLUE]    = new Tile(camera, R.drawable.brick_wall_blue,    true,  0.9f);
+            tiles[TYPE_BRICK_WALL_PURPLE]  = new Tile(camera, R.drawable.brick_wall_purple,  true,  0.9f);
+            tiles[TYPE_BRICK_WALL_MAGENTA] = new Tile(camera, R.drawable.brick_wall_magenta, true,  0.9f);
+            tiles[TYPE_SANDSTONE_WALL]     = new Tile(camera, R.drawable.sandstone_wall,     true,  0.9f);
+            tiles[TYPE_SANDSTONE_FLOOR]    = new Tile(camera, R.drawable.sandstone_floor,    false, 0.9f);
+            tiles[TYPE_STONE_KEY_WALL]     = new Tile(camera, R.drawable.stone_key_wall,     true,  0.9f);
+            tiles[TYPE_20]                 = new Tile(camera, R.drawable.true_tile,          false, 0.9f);
+            tiles[TYPE_21]                 = new Tile(camera, R.drawable.true_tile,          false, 0.9f);
+            tiles[TYPE_22]                 = new Tile(camera, R.drawable.true_tile,          false, 0.9f);
+            tiles[TYPE_23]                 = new Tile(camera, R.drawable.true_tile,          false, 0.9f);
+            tiles[TYPE_24]                 = new Tile(camera, R.drawable.true_tile,          false, 0.9f);
         }
     }
 
@@ -277,7 +277,7 @@ public class Map {
             e.printStackTrace();
         }
 
-        File file = new File(context.getFilesDir(), filename);
+        File file = new File(context.getFilesDir(), filename + ".map");
         if(!file.exists()) {
             try {
                 file.createNewFile();
@@ -313,11 +313,61 @@ public class Map {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        try {
+            final int WIDTH = 12, HEIGHT = 8;
+            Bitmap thumbnail = Bitmap.createBitmap(SCALE * WIDTH, SCALE * HEIGHT, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(thumbnail);
+
+            Bitmap under = Bitmap.createBitmap(SCALE * WIDTH, SCALE * HEIGHT, Bitmap.Config.ARGB_8888);
+            int[] pixels = new int[SCALE * SCALE];
+            for (int i = 0; i < WIDTH; i++) {
+                for (int j = 0; j < HEIGHT; j++) {
+                    tiles[map[i][j]].getBitmap().getPixels(pixels, 0, SCALE, 0, 0, SCALE, SCALE);
+                    under.setPixels(pixels, 0, SCALE, i * SCALE, j * SCALE, SCALE, SCALE);
+                }
+            }
+            canvas.drawBitmap(under, 4, 4, null);
+            under.recycle();
+
+            Bitmap overlay = Bitmap.createBitmap(SCALE * WIDTH, SCALE * HEIGHT, Bitmap.Config.ARGB_8888);
+            pixels = new int[SCALE * SCALE];
+            for (int i = 0; i < WIDTH; i++) {
+                for (int j = 0; j <  HEIGHT; j++) {
+                    if(over[i][j] != TYPE_EMPTY) {
+                        tiles[over[i][j]].getBitmap().getPixels(pixels, 0, SCALE, 0, 0, SCALE, SCALE);
+                        overlay.setPixels(pixels, 0, SCALE, i * SCALE, j * SCALE, SCALE, SCALE);
+                    }
+                }
+            }
+            canvas.drawBitmap(overlay, 4, 4, null);
+            overlay.recycle();
+
+            for (int i = 0; i < thumbnail.getWidth(); i++) {
+                for (int j = 0; j < thumbnail.getHeight(); j++) {
+                    if(i < 4 || j < 4 || i >= SCALE * WIDTH - 4 || j >= SCALE * HEIGHT - 4)
+                    thumbnail.setPixel(i, j, 0xFFFFFFFF);
+                }
+            }
+
+            File thumbFile = new File(context.getFilesDir(), filename + ".png");
+            if(!thumbFile.exists())
+                thumbFile.createNewFile();
+            FileOutputStream fos = new FileOutputStream(thumbFile);
+            thumbnail.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            thumbnail.recycle();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void load(String filename) {
-        File file = new File(context.getFilesDir(), filename);
+        File file = new File(context.getFilesDir(), filename + ".map");
         if(file.exists()) {
+            Log.e("File", "Exists!");
             int size = (int) file.length();
             byte[] bytes = new byte[size];
             try {

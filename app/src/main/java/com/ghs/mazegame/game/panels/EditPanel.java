@@ -147,6 +147,7 @@ public class EditPanel implements Panel {
             } else {
                 typeIter--;
             }
+            map.save("meh");
         }
         rightArrow.update();
         if (rightArrow.getState() == Button.STATE_RELEASED) {
@@ -172,7 +173,6 @@ public class EditPanel implements Panel {
             paintType = curType;
             curType = -1;
             state = Main.STATE_PLAY_TEST;
-            map.save("meh.map");
         }
     }
 
