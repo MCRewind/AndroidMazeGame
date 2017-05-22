@@ -29,9 +29,7 @@ public class Thumbnail implements GameObject {
         STATE_PRESSED = 2,
         STATE_HELD = 3;
 
-    private String map;
-
-    private float x = 0, y = 0, width = 0, height = 0;
+    private float x = 0, y = 0, xOffset = 0, yOffset = 0, width = 0, height = 0;
     private int state;
     private Camera camera;
     private VAO vao;
@@ -43,7 +41,6 @@ public class Thumbnail implements GameObject {
         shader = defaultShader;
         state = STATE_UNPRESSED;
         this.camera = camera;
-        this.map = map;
         this.x = x;
         this.y = y;
         this.width = (cameraWidth - SCALE) / 3f;
@@ -120,7 +117,7 @@ public class Thumbnail implements GameObject {
 
     public void render() {
         Matrix4f proj = camera.getProjection();
-        proj.translate(x, y, 0);
+        proj.translate(x + xOffset, y + yOffset, 0);
         shader.setUniformMat4f("projection", proj);
         texture.bind();
         shader.enable();
@@ -141,10 +138,6 @@ public class Thumbnail implements GameObject {
         } else {
             return false;
         }
-    }
-
-    public String getMap() {
-        return map;
     }
 
     public float getX() {
@@ -187,5 +180,10 @@ public class Thumbnail implements GameObject {
     public void setPosition(float x, float y) {
         this.x = x;
         this.y = y;
+    }
+
+    public void setOffset(float x, float y) {
+        this.xOffset = x;
+        this.yOffset = y;
     }
 }

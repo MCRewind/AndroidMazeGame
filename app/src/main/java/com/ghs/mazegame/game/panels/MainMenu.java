@@ -18,10 +18,12 @@ import java.io.File;
 import java.util.ArrayList;
 
 import static com.ghs.mazegame.game.Main.SCALE;
+import static com.ghs.mazegame.game.Main.STATE_EDIT;
 import static com.ghs.mazegame.game.Main.cameraHeight;
 import static com.ghs.mazegame.game.Main.cameraWidth;
 import static com.ghs.mazegame.game.Main.context;
 import static com.ghs.mazegame.game.Main.maps;
+import static com.ghs.mazegame.game.objects.Thumbnail.STATE_RELEASED;
 
 public class MainMenu implements Panel {
 
@@ -31,7 +33,9 @@ public class MainMenu implements Panel {
 
     private int state = -1;
 
-    private int x, y, ax, xy;
+    private int x, y, ax, ay;
+
+    private int map = -1;
 
     private Camera camera;
 
@@ -40,10 +44,13 @@ public class MainMenu implements Panel {
     private Rectangle[] colors;
 
     private ArrayList<Thumbnail> thumbnails;
-    private Image image;
 
     public MainMenu(Camera camera) {
         this.camera = camera;
+        x = 0;
+        y = 0;
+        ay = 0;
+        ax = 0;
         actions = new Button[HOR_VIEWS];
         actions[0] = new Button(camera, new Texture(R.drawable.menu_play_button), new Texture(R.drawable.menu_play_button_pressed), cameraWidth / 4, cameraHeight / 4f, cameraWidth / 2f, cameraHeight / 2f, 0.1f, false);
         actions[1] = new Button(camera, new Texture(R.drawable.menu_edit_button), new Texture(R.drawable.menu_edit_button_pressed), cameraWidth + cameraWidth / 4, cameraHeight / 4f, cameraWidth / 2f, cameraHeight / 2f, 0.1f, false);
@@ -51,39 +58,64 @@ public class MainMenu implements Panel {
         colors[0] = new Rectangle(camera, 0, 0, camera.getWidth(), camera.getHeight(), 0.6f, 0, 0.15f, 1);
         colors[1] = new Rectangle(camera, cameraWidth, 0, camera.getWidth(), camera.getHeight(), 0, 0.5f, 0.5f, 1);
         dir = new Button[2];
-        dir[0] = new Button(camera, new Texture(R.drawable.left_menu_arrow), new Texture(R.drawable.left_menu_arrow_pressed), 0, 0, SCALE * 2, cameraHeight, 0.1f, true);
-        dir[1] = new Button(camera, new Texture(R.drawable.right_menu_arrow), new Texture(R.drawable.right_menu_arrow_pressed), camera.getWidth() - SCALE * 2, 0, SCALE * 2, cameraHeight, 0.1f, true);
+        dir[0] = new Button(camera, new Texture(R.drawable.left_menu_arrow), new Texture(R.drawable.left_menu_arrow_pressed), 0, 0, SCALE * 2, cameraHeight, 0.1f, false);
+        dir[1] = new Button(camera, new Texture(R.drawable.right_menu_arrow), new Texture(R.drawable.right_menu_arrow_pressed), camera.getWidth() - SCALE * 2, 0, SCALE * 2, cameraHeight, 0.1f, false);
         thumbnails = new ArrayList<>();
         loadThumbnails();
     }
 
     public void update() {
-        dir[0].update();
-        dir[1].update();
-        if (dir[0].getState() == Button.STATE_PRESSED && x > 0) {
-            ax = x;
-            --x;
+        if (y == 0) {
+            dir[0].update();
+            dir[1].update();
+            if (dir[0].getState() == Button.STATE_PRESSED && x > 0) {
+                ax = x;
+                --x;
+            } else if (dir[1].getState() == Button.STATE_PRESSED && x < HOR_VIEWS - 1) {
+                ax = x;
+                ++x;
+            }
+            if(camera.getX() / cameraWidth > x) {
+                dir[0].translate(-cameraWidth / SPEED, 0);
+                dir[1].translate(-cameraWidth / SPEED, 0);
+                camera.translate(-cameraWidth / SPEED, 0, 0);
+                if(camera.getX() / cameraWidth < x) {
+                    camera.setPosition(x * cameraWidth, camera.getY(), 0);
+                    dir[0].setPosition(x * cameraWidth, camera.getY());
+                    dir[1].setPosition((x + 1) * cameraWidth - dir[1].getWidth(), camera.getY());
+                }
+            }
+            else if(camera.getX() / cameraWidth < x) {
+                dir[0].translate(cameraWidth / SPEED, 0);
+                dir[1].translate(cameraWidth / SPEED, 0);
+                camera.translate(cameraWidth / SPEED, 0, 0);
+                if(camera.getX() / cameraWidth > x) {
+                    camera.setPosition(x * cameraWidth, camera.getY(), 0);
+                    dir[0].setPosition(x * cameraWidth, camera.getY());
+                    dir[1].setPosition((x + 1) * cameraWidth - dir[1].getWidth(), camera.getY());
+                }
+            }
+            else
+                ax = -1;
+            if(ax == -1) {
+                actions[x].update();
+                if (actions[1].getState() == Button.STATE_RELEASED)
+                    y = 1;
+            }
         }
-        else if(dir[1].getState() == Button.STATE_PRESSED && x < HOR_VIEWS - 1) {
-            ax = x;
-            ++x;
-        }
-        if(camera.getX() / cameraWidth > x) {
-            camera.translate(-cameraWidth / SPEED, 0, 0);
-            if(camera.getX() / cameraWidth < x)
-                camera.setPosition(x * cameraWidth, camera.getY(), 0);
-        }
-        else if(camera.getX() / cameraWidth < x) {
-            camera.translate(cameraWidth / SPEED, 0, 0);
-            if(camera.getX() / cameraWidth > x)
-                camera.setPosition(x * cameraWidth, camera.getY(), 0);
-        }
-        else
-            ax = -1;
-        if(ax == -1) {
-            actions[x].update();
-            if (actions[1].getState() == Button.STATE_RELEASED)
-                state = Main.STATE_EDIT;
+        else if(y == 1) {
+            if(camera.getY() < cameraHeight) {
+                camera.translate(0, cameraHeight / SPEED, 0);
+                if(camera.getY() > cameraHeight)
+                    camera.setPosition(0, cameraHeight, 0);
+            }
+            for (int i = 0; i < thumbnails.size(); i++) {
+                thumbnails.get(i).update();
+                if(thumbnails.get(i).getState() == STATE_RELEASED) {
+                    state = STATE_EDIT;
+                    map = i;
+                }
+            }
         }
     }
 
@@ -113,8 +145,12 @@ public class MainMenu implements Panel {
     private void loadThumbnails() {
         thumbnails.clear();
         for (int i = 0; i < maps.size(); i++)
-            thumbnails.add(new Thumbnail(camera, maps.get(i), ((i % 3) * ((cameraWidth - SCALE) / 3f)) + (SCALE * (i % 3 + 1) / 4f), ((i / 3) * ((cameraWidth - SCALE) / 6f)) + (SCALE * (i / 3f + 1) / 4f), 0.1f));
+            thumbnails.add(new Thumbnail(camera, maps.get(i), ((i % 3) * ((cameraWidth - SCALE) / 3f)) + (SCALE * (i % 3 + 1) / 4f), ((i / 3) * ((cameraWidth - SCALE) / 6f)) + (SCALE * (i / 3f + 1) / 4f) + cameraHeight, 0.1f));
         int i = maps.size();
-        thumbnails.add(new Thumbnail(camera, ((i % 3) * ((cameraWidth - SCALE) / 3f)) + (SCALE * (i % 3 + 1) / 4f), ((i / 3) * ((cameraWidth - SCALE) * 2 / 3f)) + (SCALE * (i / 3f + 1) / 4f), 0.1f));
+        thumbnails.add(new Thumbnail(camera, ((i % 3) * ((cameraWidth - SCALE) / 3f)) + (SCALE * (i % 3 + 1) / 4f), ((i / 3) * ((cameraWidth - SCALE) * 2 / 3f)) + (SCALE * (i / 3f + 1) / 4f) + cameraHeight, 0.1f));
+    }
+
+    public int getMap() {
+        return map;
     }
 }
