@@ -3,12 +3,11 @@ package com.ghs.mazegame.game;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.ghs.mazegame.engine.display.Surface;
 
-public class MainActivity extends Activity {
+public class LaunchActivity extends Activity {
 
     Surface surface;
 
@@ -17,7 +16,7 @@ public class MainActivity extends Activity {
 
         surface = new Surface(this);
         surface.setEGLContextClientVersion(2);
-        surface.setRenderer(new Renderer(surface.getResources(),this));
+        surface.setRenderer(new Main(surface.getResources(),this));
 
         setContentView(surface);
 

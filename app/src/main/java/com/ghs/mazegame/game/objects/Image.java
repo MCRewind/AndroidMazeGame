@@ -9,7 +9,7 @@ import com.ghs.mazegame.engine.display.Camera;
 import com.ghs.mazegame.game.enums.XDataTypes;
 import com.ghs.mazegame.game.interfaces.GameObject;
 
-import static com.ghs.mazegame.game.Renderer.defaultShader;
+import static com.ghs.mazegame.game.Main.defaultShader;
 
 public class Image implements GameObject {
 

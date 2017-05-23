@@ -1,7 +1,6 @@
 package com.ghs.mazegame.game.objects;
 
 import android.renderscript.Matrix4f;
-import android.util.Log;
 
 import com.ghs.mazegame.engine.components.Shader;
 import com.ghs.mazegame.engine.components.Texture;
@@ -11,7 +10,7 @@ import com.ghs.mazegame.game.interfaces.GameObject;
 
 import static com.ghs.mazegame.engine.display.Surface.touchX;
 import static com.ghs.mazegame.engine.display.Surface.touchY;
-import static com.ghs.mazegame.game.Renderer.defaultShader;
+import static com.ghs.mazegame.game.Main.defaultShader;
 
 public class ToggleButton implements GameObject {
 
