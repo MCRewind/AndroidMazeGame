@@ -1,6 +1,7 @@
 package com.ghs.mazegame.game.objects;
 
 import android.renderscript.Matrix4f;
+import android.util.Log;
 
 import com.ghs.mazegame.engine.components.Shader;
 import com.ghs.mazegame.engine.components.Texture;
@@ -20,7 +21,7 @@ public class Button implements GameObject {
         STATE_PRESSED = 2,
         STATE_HELD = 3;
 
-    private float x = 0, y = 0, width = 0, height = 0;
+    private float x = 0, y = 0, xOffset = 0, yOffset = 0, width = 0, height = 0;
     private boolean independent;
     private int state, texture;
     private Camera camera;
@@ -28,7 +29,7 @@ public class Button implements GameObject {
     private Texture[] textures;
     private Shader shader;
 
-    public Button(Camera camera, Texture unpressed, Texture pressed, float x, float y, float width, float height, float depth, boolean independent) {
+    public Button(Camera camera, Texture unpressed, Texture pressed, float x, float y, float depth, float width, float height, boolean independent) {
         textures = new Texture[2];
         textures[0] = unpressed;
         textures[1] = pressed;
@@ -66,18 +67,16 @@ public class Button implements GameObject {
             tx += camera.getX();
             ty += camera.getY();
         }
-        if ((tx >= x && tx < x + width) && (ty >= y && ty < y + height)) {
+        if ((tx >= x + xOffset && tx < x + xOffset + width) && (ty >= y + yOffset && ty < y + yOffset + height)) {
             if(state == STATE_PRESSED)
                 state = STATE_HELD;
             else if(state < STATE_PRESSED)
                 state = STATE_PRESSED;
-        } else {
-            if(state == STATE_RELEASED)
-                state = STATE_UNPRESSED;
-            else if(state > STATE_UNPRESSED)
-                state = STATE_RELEASED;
-
         }
+        else if(touchX == -1 && touchY == -1 && state > STATE_UNPRESSED)
+            state = STATE_RELEASED;
+        else
+            state = STATE_UNPRESSED;
         if(state >= STATE_PRESSED)
             texture = 1;
         else
@@ -86,7 +85,7 @@ public class Button implements GameObject {
 
     public void render() {
         Matrix4f proj = independent ? camera.getUnatransformedProjection() : camera.getProjection();
-        proj.translate(x, y, 0);
+        proj.translate(x + xOffset, y + yOffset, 0);
         shader.setUniformMat4f("projection", proj);
         textures[texture].bind();
         shader.enable();
@@ -100,7 +99,7 @@ public class Button implements GameObject {
     }
 
     public boolean contains(float x, float y) {
-        if ((x >= this.x && x < this.x + this.width) && (y >= this.y && y < this.y + this.height)) {
+        if ((x >= this.x + xOffset && x < this.x + xOffset + this.width) && (y >= this.y + yOffset && y < this.y + yOffset + this.height)) {
             return true;
         } else {
             return false;
@@ -151,5 +150,10 @@ public class Button implements GameObject {
     public void setPosition(float x, float y) {
         this.x = x;
         this.y = y;
+    }
+
+    public void setOffset(float x, float y) {
+        this.xOffset = x;
+        this.yOffset = y;
     }
 }

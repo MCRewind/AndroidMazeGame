@@ -23,11 +23,12 @@ import static com.ghs.mazegame.game.Main.cameraHeight;
 import static com.ghs.mazegame.game.Main.cameraWidth;
 import static com.ghs.mazegame.game.Main.context;
 import static com.ghs.mazegame.game.Main.maps;
+import static com.ghs.mazegame.game.Main.time;
 import static com.ghs.mazegame.game.objects.Thumbnail.STATE_RELEASED;
 
 public class MainMenu implements Panel {
 
-    private final int HOR_VIEWS = 2, VERT_VIEWS = 2;
+    private final int HOR_VIEWS = 2;
 
     private final float SPEED = 10;
 
@@ -44,6 +45,7 @@ public class MainMenu implements Panel {
     private Rectangle[] colors;
 
     private ArrayList<Thumbnail> thumbnails;
+    private Button newMap;
 
     public MainMenu(Camera camera) {
         this.camera = camera;
@@ -52,14 +54,14 @@ public class MainMenu implements Panel {
         ay = 0;
         ax = 0;
         actions = new Button[HOR_VIEWS];
-        actions[0] = new Button(camera, new Texture(R.drawable.menu_play_button), new Texture(R.drawable.menu_play_button_pressed), cameraWidth / 4, cameraHeight / 4f, cameraWidth / 2f, cameraHeight / 2f, 0.1f, false);
-        actions[1] = new Button(camera, new Texture(R.drawable.menu_edit_button), new Texture(R.drawable.menu_edit_button_pressed), cameraWidth + cameraWidth / 4, cameraHeight / 4f, cameraWidth / 2f, cameraHeight / 2f, 0.1f, false);
+        actions[0] = new Button(camera, new Texture(R.drawable.menu_play_button), new Texture(R.drawable.menu_play_button_pressed), cameraWidth / 4, cameraHeight / 4f, 0.2f, cameraWidth / 2f, cameraHeight / 2f, false);
+        actions[1] = new Button(camera, new Texture(R.drawable.menu_edit_button), new Texture(R.drawable.menu_edit_button_pressed), cameraWidth + cameraWidth / 4, cameraHeight / 4f, 0.2f, cameraWidth / 2f, cameraHeight / 2f, false);
         colors = new Rectangle[HOR_VIEWS];
-        colors[0] = new Rectangle(camera, 0, 0, camera.getWidth(), camera.getHeight(), 0.6f, 0, 0.15f, 1);
-        colors[1] = new Rectangle(camera, cameraWidth, 0, camera.getWidth(), camera.getHeight(), 0, 0.5f, 0.5f, 1);
+        colors[0] = new Rectangle(camera, 0, 0, 0.5f, camera.getWidth(), camera.getHeight(), 0.6f, 0, 0.15f, 1);
+        colors[1] = new Rectangle(camera, cameraWidth, 0, 0.5f, camera.getWidth(), camera.getHeight(), 0, 0.5f, 0.5f, 1);
         dir = new Button[2];
-        dir[0] = new Button(camera, new Texture(R.drawable.left_menu_arrow), new Texture(R.drawable.left_menu_arrow_pressed), 0, 0, SCALE * 2, cameraHeight, 0.1f, false);
-        dir[1] = new Button(camera, new Texture(R.drawable.right_menu_arrow), new Texture(R.drawable.right_menu_arrow_pressed), camera.getWidth() - SCALE * 2, 0, SCALE * 2, cameraHeight, 0.1f, false);
+        dir[0] = new Button(camera, new Texture(R.drawable.left_menu_arrow), new Texture(R.drawable.left_menu_arrow_pressed), 0, 0, 0.1f, SCALE * 2, cameraHeight, false);
+        dir[1] = new Button(camera, new Texture(R.drawable.right_menu_arrow), new Texture(R.drawable.right_menu_arrow_pressed), camera.getWidth() - SCALE * 2, 0, 0.1f, SCALE * 2, cameraHeight, false);
         thumbnails = new ArrayList<>();
         loadThumbnails();
     }
@@ -76,39 +78,39 @@ public class MainMenu implements Panel {
                 ++x;
             }
             if(camera.getX() / cameraWidth > x) {
-                dir[0].translate(-cameraWidth / SPEED, 0);
-                dir[1].translate(-cameraWidth / SPEED, 0);
                 camera.translate(-cameraWidth / SPEED, 0, 0);
-                if(camera.getX() / cameraWidth < x) {
+                if(camera.getX() / cameraWidth < x)
                     camera.setPosition(x * cameraWidth, camera.getY(), 0);
-                    dir[0].setPosition(x * cameraWidth, camera.getY());
-                    dir[1].setPosition((x + 1) * cameraWidth - dir[1].getWidth(), camera.getY());
-                }
             }
             else if(camera.getX() / cameraWidth < x) {
-                dir[0].translate(cameraWidth / SPEED, 0);
-                dir[1].translate(cameraWidth / SPEED, 0);
                 camera.translate(cameraWidth / SPEED, 0, 0);
-                if(camera.getX() / cameraWidth > x) {
+                if(camera.getX() / cameraWidth > x)
                     camera.setPosition(x * cameraWidth, camera.getY(), 0);
-                    dir[0].setPosition(x * cameraWidth, camera.getY());
-                    dir[1].setPosition((x + 1) * cameraWidth - dir[1].getWidth(), camera.getY());
-                }
             }
             else
                 ax = -1;
             if(ax == -1) {
                 actions[x].update();
-                if (actions[1].getState() == Button.STATE_RELEASED)
+                if (actions[1].getState() == Button.STATE_RELEASED) {
                     y = 1;
+                    ay = 0;
+                    for (int i = 0; i < thumbnails.size(); i++)
+                        thumbnails.get(i).setOffset(cameraWidth * x, 0);
+                    newMap.setOffset(cameraWidth * x, 0);
+                }
             }
+            dir[0].setX(camera.getX());
+            dir[1].setX(camera.getX() + cameraWidth - dir[1].getWidth());
         }
         else if(y == 1) {
+            colors[x].setPosition(camera.getX(), camera.getY());
             if(camera.getY() < cameraHeight) {
                 camera.translate(0, cameraHeight / SPEED, 0);
                 if(camera.getY() > cameraHeight)
-                    camera.setPosition(0, cameraHeight, 0);
+                    camera.setPosition(camera.getX(), cameraHeight, 0);
             }
+            else
+                ay = -1;
             for (int i = 0; i < thumbnails.size(); i++) {
                 thumbnails.get(i).update();
                 if(thumbnails.get(i).getState() == STATE_RELEASED) {
@@ -116,20 +118,36 @@ public class MainMenu implements Panel {
                     map = i;
                 }
             }
+            newMap.update();
+            if(newMap.getState() == STATE_RELEASED) {
+                state = STATE_EDIT;
+                map = thumbnails.size();
+            }
         }
     }
 
     public void render() {
-        colors[x].render();
-        actions[x].render();
-        if(ax != -1) {
-            colors[ax].render();
-            actions[ax].render();
+        if (y == 0) {
+            colors[x].render();
+            actions[x].render();
+            if (ax != -1) {
+                colors[ax].render();
+                actions[ax].render();
+            }
+            dir[0].render();
+            dir[1].render();
         }
-        for (int i = 0; i < thumbnails.size(); i++)
-            thumbnails.get(i).render();
-        dir[0].render();
-        dir[1].render();
+        else if(y == 1) {
+            colors[x].render();
+            if(ay == 0) {
+                actions[x].render();
+                dir[0].render();
+                dir[1].render();
+            }
+            for (int i = 0; i < thumbnails.size(); i++)
+                thumbnails.get(i).render();
+            newMap.render();
+        }
     }
 
     public int checkState() {
@@ -145,9 +163,12 @@ public class MainMenu implements Panel {
     private void loadThumbnails() {
         thumbnails.clear();
         for (int i = 0; i < maps.size(); i++)
-            thumbnails.add(new Thumbnail(camera, maps.get(i), ((i % 3) * ((cameraWidth - SCALE) / 3f)) + (SCALE * (i % 3 + 1) / 4f), ((i / 3) * ((cameraWidth - SCALE) / 6f)) + (SCALE * (i / 3f + 1) / 4f) + cameraHeight, 0.1f));
+            thumbnails.add(new Thumbnail(camera, maps.get(i), ((i % 3) * ((cameraWidth - SCALE) / 3f)) + (SCALE * (i % 3 + 1) / 4f),
+                                                              ((i / 3) * ((cameraWidth - SCALE) * 2 / 9f)) + (SCALE * (i / 3 + 1) / 4f) + cameraHeight, 0.1f));
         int i = maps.size();
-        thumbnails.add(new Thumbnail(camera, ((i % 3) * ((cameraWidth - SCALE) / 3f)) + (SCALE * (i % 3 + 1) / 4f), ((i / 3) * ((cameraWidth - SCALE) * 2 / 3f)) + (SCALE * (i / 3f + 1) / 4f) + cameraHeight, 0.1f));
+        newMap = new Button(camera, new Texture(R.drawable.new_map_button), new Texture(R.drawable.new_map_button_pressed),
+            ((i % 3) * ((cameraWidth - SCALE) / 3f)) + (SCALE * (i % 3 + 1) / 4f),
+            ((i / 3) * ((cameraWidth - SCALE) * 2 / 9f)) + (SCALE * (i / 3 + 1) / 4f) + cameraHeight, 0.1f, (cameraWidth - SCALE) / 3f, (cameraWidth - SCALE) * 2 / 9f, false);
     }
 
     public int getMap() {

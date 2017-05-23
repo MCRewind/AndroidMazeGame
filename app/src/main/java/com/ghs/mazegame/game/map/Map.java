@@ -271,7 +271,7 @@ public class Map {
         try {
             FileOutputStream outputStream = context.openFileOutput("maps.log", Context.MODE_PRIVATE);
             for (int i = 0; i < maps.size(); i++)
-                outputStream.write(maps.get(i).getBytes());
+                outputStream.write((maps.get(i) + "\n").getBytes());
             outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();

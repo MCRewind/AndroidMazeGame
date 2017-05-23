@@ -3,6 +3,7 @@ package com.ghs.mazegame.game.objects;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.renderscript.Matrix4f;
+import android.util.Log;
 
 import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Shader;
@@ -44,8 +45,8 @@ public class Thumbnail implements GameObject {
         this.x = x;
         this.y = y;
         this.width = (cameraWidth - SCALE) / 3f;
-        this.height = width * 2 / 3f;
-        over = new Rectangle(camera, x, y, width, height, 0, 0, 0, 0.5f);
+        this.height = (cameraWidth - SCALE) * 2 / 9f;
+        over = new Rectangle(camera, x, y, depth - 0.01f, width, height, 0, 0, 0, 0.5f);
         float[] vertices = new float[] {
             0.0f,  0.0f,   depth, //TOP LEFT
             0.0f,  height, depth, //BOTTOM LEFT
@@ -69,50 +70,19 @@ public class Thumbnail implements GameObject {
         texture = new Texture(BitmapFactory.decodeFile(file.getPath(), options));
     }
 
-    public Thumbnail(Camera camera, float x, float y, float depth) {
-        shader = defaultShader;
-        state = STATE_UNPRESSED;
-        this.camera = camera;
-        this.x = x;
-        this.y = y;
-        this.width = (cameraWidth - SCALE) / 3f;
-        this.height = width * 2 / 3f;
-        over = new Rectangle(camera, x, y, width, height, 0, 0, 0, 0.5f);
-        float[] vertices = new float[] {
-            0.0f,  0.0f,   depth, //TOP LEFT
-            0.0f,  height, depth, //BOTTOM LEFT
-            width, height, depth, //BOTTOM RIGHT
-            width, 0.0f,   depth  //TOP RIGHT
-        };
-        int[] indices = new int[] {
-            0, 1, 3,
-            1, 2, 3
-        };
-        float[] texCoords = new float[] {
-            0, 0,
-            0, 1,
-            1, 1,
-            1, 0
-        };
-        vao = new VAO(vertices, indices, texCoords);
-        texture = new Texture(R.drawable.new_map_button);
-    }
-
     public void update() {
         float tx = touchX + camera.getX();
         float ty = touchY + camera.getY();
-        if ((tx >= x && tx < x + width) && (ty >= y && ty < y + height)) {
+        if ((tx >= x + xOffset && tx < x + xOffset + width) && (ty >= y + yOffset && ty < y + yOffset + height)) {
             if(state == STATE_PRESSED)
                 state = STATE_HELD;
             else if(state < STATE_PRESSED)
                 state = STATE_PRESSED;
-        } else {
-            if(state == STATE_RELEASED)
-                state = STATE_UNPRESSED;
-            else if(state > STATE_UNPRESSED)
-                state = STATE_RELEASED;
-
         }
+        else if(touchX == -1 && touchY == -1 && state > STATE_UNPRESSED)
+            state = STATE_RELEASED;
+        else
+            state = STATE_UNPRESSED;
     }
 
     public void render() {
@@ -175,15 +145,18 @@ public class Thumbnail implements GameObject {
     public void translate(float dx, float dy) {
         this.x += dx;
         this.y += dy;
+        over.setPosition(this.x + xOffset, this.y + yOffset);
     }
 
     public void setPosition(float x, float y) {
         this.x = x;
         this.y = y;
+        over.setPosition(this.x + xOffset, this.y + yOffset);
     }
 
     public void setOffset(float x, float y) {
         this.xOffset = x;
         this.yOffset = y;
+        over.setPosition(this.x + xOffset, this.y + yOffset);
     }
 }

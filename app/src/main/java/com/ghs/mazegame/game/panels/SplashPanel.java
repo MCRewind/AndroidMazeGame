@@ -26,7 +26,7 @@ public class SplashPanel implements Panel {
         this.duration = duration;
         fadeTime = duration / 6f;
         image = new Image(camera, randomImage(), 0, 0, cameraWidth, cameraHeight, 0.6f);
-        fade = new Rectangle(camera, 0, 0, cameraWidth, cameraHeight, 0, 0, 0, 1);
+        fade = new Rectangle(camera, 0, 0, 0.5f, cameraWidth, cameraHeight, 0, 0, 0, 1);
         start = System.nanoTime() / 1000000f + 700;
     }
 

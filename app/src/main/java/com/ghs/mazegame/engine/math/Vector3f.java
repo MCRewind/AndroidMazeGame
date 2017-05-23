@@ -95,4 +95,8 @@ public class Vector3f {
     public float lengthSquared() {
         return x * x + y * y + z * z;
     }
+
+    public String toString() {
+        return "<" + x + ", " + y + ", " + z + ">";
+    }
 }
