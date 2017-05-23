@@ -2,14 +2,14 @@ package com.ghs.mazegame.game.panels;
 
 import android.util.Log;
 
-import static com.ghs.mazegame.game.Renderer.*;
+import static com.ghs.mazegame.game.Main.*;
 
 import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Shader;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.display.Camera;
 import com.ghs.mazegame.engine.math.Vector3f;
-import com.ghs.mazegame.game.Renderer;
+import com.ghs.mazegame.game.Main;
 import com.ghs.mazegame.game.interfaces.Panel;
 import com.ghs.mazegame.game.objects.DPad;
 import com.ghs.mazegame.game.map.Map;
@@ -76,7 +76,7 @@ public class PlayTestPanel implements Panel {
         int type = map.getTile((int) (center.x / SCALE), (int) (center.y / SCALE), true);
         center.sub((int) (center.x / SCALE) * SCALE + SCALE / 2, (int) (center.y / SCALE) * SCALE + SCALE / 2, 0);
         if(type == Map.TYPE_END && center.lengthSquared() <= SCALE)
-            state = Renderer.STATE_EDIT;
+            state = Main.STATE_EDIT;
         if(type == Map.TYPE_GOLD_KEY && center.lengthSquared() <= SCALE) {
             map.setTileRaw(true, Map.TYPE_EMPTY, (int) (player.getCenter().x / SCALE), (int) (player.getCenter().y / SCALE));
             items.add(Map.TYPE_GOLD_KEY);

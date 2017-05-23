@@ -49,7 +49,7 @@ public class Image implements GameObject {
         vao = new VAO(vertices, indices, texCoords);
     }
 
-    public Image(Camera camera, Texture texture, float x, float y, float width, float height, float depth, XDataTypes xData) {
+    public Image(Camera camera, Texture texture, float x, float y, float width, float height, float depth) {
         this.texture = texture;
         shader = defaultShader;
         this.camera = camera;
