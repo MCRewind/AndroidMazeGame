@@ -88,6 +88,25 @@ public class Map {
                 over[i][j] = TYPE_EMPTY;
             }
         }
+        tileInit();
+    }
+
+    public Map(Map newMap) {
+        camera = newMap.camera;
+        x = newMap.x;
+        y = newMap.y;
+        map = newMap.map;
+        over = newMap.over;
+        width = newMap.width;
+        height = newMap.height;
+        rWidth = (int) Math.ceil((camera.getX() + camera.getWidth()) / SCALE);
+        rHeight = (int) Math.ceil((camera.getY() + camera.getHeight()) / SCALE);
+        rightBound = 0;
+        bottomBound = 0;
+        tileInit();
+    }
+
+    public void tileInit() {
         if(tiles == null) {
             tiles = new Tile[NUM_TILES];
             tiles[TYPE_EMPTY]              = new Tile(camera);
