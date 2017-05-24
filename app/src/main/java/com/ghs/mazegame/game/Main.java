@@ -124,7 +124,9 @@ public class Main implements GLSurfaceView.Renderer {
                 }
                 else if(cur == STATE_PLAY_TEST){
                     EditPanel edit = (EditPanel) panels[STATE_EDIT];
-                    edit.setActive(false);
+                    MainMenu menu = (MainMenu) panels[STATE_MAIN_MENU];
+                    int map = menu.getMap();
+                    edit.setActive(maps.get(map));
                 }
                 break;
             case STATE_PLAY_TEST:

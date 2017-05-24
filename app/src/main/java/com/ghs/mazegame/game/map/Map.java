@@ -9,7 +9,6 @@ import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.math.Vector3f;
 import com.ghs.mazegame.engine.utils.Hitbox;
 import com.ghs.mazegame.engine.display.Camera;
-import com.ghs.mazegame.game.objects.Image;
 import com.ghs.mazegame.game.objects.Player;
 
 import java.io.BufferedInputStream;
@@ -30,35 +29,35 @@ public class Map {
     public static final int NUM_TILES = 25;
 
     public static final int
-        TYPE_EMPTY = 0,
-        TYPE_BRICK_WALL = 1,
-        TYPE_SQUARE_WALL = 2,
-        TYPE_S_WALL = 3,
-        TYPE_STONE_FLOOR = 4,
-        TYPE_LIMESTONE_FLOOR = 5,
-        TYPE_WOOD_FLOOR = 6,
-        TYPE_START = 7,
-        TYPE_END = 8,
-        TYPE_BRICK_WALL_RED = 9,
-        TYPE_BRICK_WALL_ORANGE = 10,
-        TYPE_BRICK_WALL_YELLOW = 11,
-        TYPE_BRICK_WALL_GREEN = 12,
-        TYPE_BRICK_WALL_CYAN = 13,
-        TYPE_BRICK_WALL_BLUE = 14,
-        TYPE_BRICK_WALL_PURPLE = 15,
-        TYPE_BRICK_WALL_MAGENTA = 16,
-        TYPE_SANDSTONE_WALL = 17,
-        TYPE_SANDSTONE_FLOOR = 18,
-        TYPE_STONE_KEY_WALL = 19,
-        TYPE_20 = 20,
-        TYPE_21 = 21,
-        TYPE_22 = 22,
-        TYPE_23 = 23,
-        TYPE_24 = 24;
+            TYPE_EMPTY = 0,
+            TYPE_BRICK_WALL = 1,
+            TYPE_SQUARE_WALL = 2,
+            TYPE_S_WALL = 3,
+            TYPE_STONE_FLOOR = 4,
+            TYPE_LIMESTONE_FLOOR = 5,
+            TYPE_WOOD_FLOOR = 6,
+            TYPE_START = 7,
+            TYPE_END = 8,
+            TYPE_BRICK_WALL_RED = 9,
+            TYPE_BRICK_WALL_ORANGE = 10,
+            TYPE_BRICK_WALL_YELLOW = 11,
+            TYPE_BRICK_WALL_GREEN = 12,
+            TYPE_BRICK_WALL_CYAN = 13,
+            TYPE_BRICK_WALL_BLUE = 14,
+            TYPE_BRICK_WALL_PURPLE = 15,
+            TYPE_BRICK_WALL_MAGENTA = 16,
+            TYPE_SANDSTONE_WALL = 17,
+            TYPE_SANDSTONE_FLOOR = 18,
+            TYPE_STONE_KEY_WALL = 19,
+            TYPE_STONE_KEY = 20,
+            TYPE_GOLD_KEY = 21,
+            TYPE_22 = 22,
+            TYPE_23 = 23,
+            TYPE_24 = 24;
 
     public static final boolean
-        STATE_EDIT = false,
-        STATE_PLAY = true;
+            STATE_EDIT = false,
+            STATE_PLAY = true;
 
     private int width, height, rWidth, rHeight;
     private float x, y, rightBound, bottomBound;
@@ -89,6 +88,25 @@ public class Map {
                 over[i][j] = TYPE_EMPTY;
             }
         }
+        tileInit();
+    }
+
+    public Map(Map newMap) {
+        camera = newMap.camera;
+        x = newMap.x;
+        y = newMap.y;
+        map = newMap.map;
+        over = newMap.over;
+        width = newMap.width;
+        height = newMap.height;
+        rWidth = (int) Math.ceil((camera.getX() + camera.getWidth()) / SCALE);
+        rHeight = (int) Math.ceil((camera.getY() + camera.getHeight()) / SCALE);
+        rightBound = 0;
+        bottomBound = 0;
+        tileInit();
+    }
+
+    public void tileInit() {
         if(tiles == null) {
             tiles = new Tile[NUM_TILES];
             tiles[TYPE_EMPTY]              = new Tile(camera);
@@ -111,8 +129,8 @@ public class Map {
             tiles[TYPE_SANDSTONE_WALL]     = new Tile(camera, R.drawable.sandstone_wall,     true,  0.9f);
             tiles[TYPE_SANDSTONE_FLOOR]    = new Tile(camera, R.drawable.sandstone_floor,    false, 0.9f);
             tiles[TYPE_STONE_KEY_WALL]     = new Tile(camera, R.drawable.stone_key_wall,     true,  0.9f);
-            tiles[TYPE_20]                 = new Tile(camera, R.drawable.true_tile,          false, 0.9f);
-            tiles[TYPE_21]                 = new Tile(camera, R.drawable.true_tile,          false, 0.9f);
+            tiles[TYPE_STONE_KEY]          = new Tile(camera, R.drawable.stone_key,          false, 0.8f);
+            tiles[TYPE_GOLD_KEY]           = new Tile(camera, R.drawable.gold_key,           false, 0.8f);
             tiles[TYPE_22]                 = new Tile(camera, R.drawable.true_tile,          false, 0.9f);
             tiles[TYPE_23]                 = new Tile(camera, R.drawable.true_tile,          false, 0.9f);
             tiles[TYPE_24]                 = new Tile(camera, R.drawable.true_tile,          false, 0.9f);
@@ -203,18 +221,18 @@ public class Map {
     public void setTile(int type, int x, int y) {
         if (map.length > 0) {
             if ((x >= 0) && (y >= 0) && (x < map[0].length) && (x < map[0].length)) {
-                if (type == TYPE_START || type == TYPE_END) {
+                if (type == TYPE_START || type == TYPE_END || type == TYPE_STONE_KEY || type == TYPE_GOLD_KEY) {
                     for (int i = 0; i < width; i++) {
                         for (int j = 0; j < height; j++) {
                             if (over[i][j] == type)
                                 over[i][j] = TYPE_EMPTY;
                         }
                     }
-                    if (map[x][y] < TYPE_STONE_FLOOR || map[x][y] > TYPE_WOOD_FLOOR)
+                    if (tiles[map[x][y]].isSolid() && map[x][y] != TYPE_EMPTY)
                         map[x][y] = TYPE_STONE_FLOOR;
                     over[x][y] = type;
                 } else {
-                    if ((over[x][y] == TYPE_START || over[x][y] == TYPE_END) && (type < TYPE_STONE_FLOOR || type > TYPE_WOOD_FLOOR))
+                    if ((over[x][y] == TYPE_START || over[x][y] == TYPE_END || type == TYPE_STONE_KEY || type == TYPE_GOLD_KEY) && (type < TYPE_STONE_FLOOR || type > TYPE_WOOD_FLOOR))
                         over[x][y] = TYPE_EMPTY;
                     map[x][y] = type;
                 }
@@ -345,7 +363,7 @@ public class Map {
             for (int i = 0; i < thumbnail.getWidth(); i++) {
                 for (int j = 0; j < thumbnail.getHeight(); j++) {
                     if(i < 4 || j < 4 || i >= SCALE * WIDTH - 4 || j >= SCALE * HEIGHT - 4)
-                    thumbnail.setPixel(i, j, 0xFFFFFFFF);
+                        thumbnail.setPixel(i, j, 0xFFFFFFFF);
                 }
             }
 
