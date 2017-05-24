@@ -236,6 +236,14 @@ public class Map {
         return ret;
     }
 
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
     public int getWidth() {
         return width;
     }
@@ -262,6 +270,19 @@ public class Map {
 
     public void setCamera(Camera camera) {
         this.camera = camera;
+    }
+
+    public void copy(Map map) {
+        width = map.getWidth();
+        height = map.getHeight();
+        this.map = new int[width][height];
+        this.over = new int[width][height];
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                this.map[i][j] = map.getTile(i, j, false);
+                this.over[i][j] = map.getTile(i, j, true);
+            }
+        }
     }
 
     public void save(String filename) {

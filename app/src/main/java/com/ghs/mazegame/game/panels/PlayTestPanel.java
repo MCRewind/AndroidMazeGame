@@ -27,6 +27,7 @@ public class PlayTestPanel implements Panel {
         this.camera = camera;
         dpad = new DPad(camera, SCALE * 0.25f, cameraHeight - SCALE * 3.25f, SCALE * 3, SCALE * 3);
         player = new Player(camera, new Texture(R.drawable.samby), new Shader(R.raw.defaultvs, R.raw.defaultfs), 0, 0, SCALE, SCALE);
+        map = new Map(camera, 0, 0, 0, 0);
     }
 
     public void update() {
@@ -80,7 +81,7 @@ public class PlayTestPanel implements Panel {
     }
 
     public void setActive(Map map) {
-        this.map = map;
+        this.map.copy(map);
         map.setState(Map.STATE_PLAY);
         player.setPosition(map.getStart().mul(SCALE, new Vector3f()));
         player.setBounds(map.getBounds());
