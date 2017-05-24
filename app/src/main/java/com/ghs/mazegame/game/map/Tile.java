@@ -105,11 +105,12 @@ public class Tile {
     }
 
     public void render() {
-        Matrix4f proj = camera.getProjection();
-        proj.translate(x, y, 0);
-        shader.setUniformMat4f("projection", proj);
         texture.bind();
         shader.enable();
+        Matrix4f model = new Matrix4f();
+        model.loadTranslate(x, y, 0);
+        shader.setUniformMat4f("model", model);
+        shader.setUniformMat4f("projection", camera.getProjection());
         vao.render();
         shader.disable();
         texture.unbind();

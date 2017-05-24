@@ -1,30 +1,20 @@
 package com.ghs.mazegame.game.panels;
 
-import android.graphics.BitmapFactory;
-import android.util.Log;
-
 import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.display.Camera;
-import com.ghs.mazegame.game.Main;
 import com.ghs.mazegame.game.interfaces.Panel;
-import com.ghs.mazegame.game.map.Map;
 import com.ghs.mazegame.game.objects.Button;
-import com.ghs.mazegame.game.objects.Font;
-import com.ghs.mazegame.game.objects.Image;
 import com.ghs.mazegame.game.objects.Rectangle;
 import com.ghs.mazegame.game.objects.Thumbnail;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import static com.ghs.mazegame.game.Main.SCALE;
 import static com.ghs.mazegame.game.Main.STATE_EDIT;
 import static com.ghs.mazegame.game.Main.cameraHeight;
 import static com.ghs.mazegame.game.Main.cameraWidth;
-import static com.ghs.mazegame.game.Main.context;
 import static com.ghs.mazegame.game.Main.maps;
-import static com.ghs.mazegame.game.Main.time;
 import static com.ghs.mazegame.game.objects.Thumbnail.STATE_RELEASED;
 
 public class MainMenu implements Panel {
@@ -165,11 +155,11 @@ public class MainMenu implements Panel {
         thumbnails.clear();
         for (int i = 0; i < maps.size(); i++)
             thumbnails.add(new Thumbnail(camera, maps.get(i), ((i % 3) * ((cameraWidth - SCALE) / 3f)) + (SCALE * (i % 3 + 1) / 4f),
-                ((i / 3) * ((cameraWidth - SCALE) * 2 / 9f)) + (SCALE * (i / 3 + 1) / 4f) + cameraHeight, 0.1f));
+                ((i / 3) * ((cameraWidth - SCALE) * 2 / 9f)) + (SCALE * (i / 3 + 1) / 4f) + cameraHeight + SCALE, 0.1f));
         int i = maps.size();
         newMap = new Button(camera, new Texture(R.drawable.new_map_button), new Texture(R.drawable.new_map_button_pressed),
             ((i % 3) * ((cameraWidth - SCALE) / 3f)) + (SCALE * (i % 3 + 1) / 4f),
-            ((i / 3) * ((cameraWidth - SCALE) * 2 / 9f) + 5) + (SCALE * (i / 3 + 1) / 4f) + cameraHeight, 0.1f, (cameraWidth - SCALE) / 3f, (cameraWidth - SCALE) * 2 / 9f, false);
+            ((i / 3) * ((cameraWidth - SCALE) * 2 / 9f)) + (SCALE * (i / 3 + 1) / 4f) + cameraHeight + SCALE, 0.1f, (cameraWidth - SCALE) / 3f, (cameraWidth - SCALE) * 2 / 9f, false);
     }
 
     public int getMap() {

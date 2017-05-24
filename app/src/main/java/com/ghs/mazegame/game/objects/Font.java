@@ -76,6 +76,7 @@ public class Font {
 
     public void drawString(String string, float x, float y) {
         texture.bind();
+        shader.enable();
         for (char c : string.toCharArray()) {
             shader.setUniform4f("color", r, g, b, a);
             Matrix4f model = new Matrix4f();
@@ -83,11 +84,10 @@ public class Font {
             model.scale(scale, scale, 0);
             shader.setUniformMat4f("model", model);
             shader.setUniformMat4f("projection", camera.getProjection());
-            shader.enable();
             vaos[c].render();
-            shader.disable();
             x += widths[c] * scale;
         }
+        shader.disable();
         texture.unbind();
     }
 

@@ -92,12 +92,12 @@ public class Thumbnail implements GameObject {
     }
 
     public void render() {
+        texture.bind();
+        shader.enable();
         Matrix4f model = new Matrix4f();
         model.loadTranslate(x + xOffset, y + yOffset, 0);
         shader.setUniformMat4f("model", model);
         shader.setUniformMat4f("projection", camera.getProjection());
-        texture.bind();
-        shader.enable();
         vao.render();
         shader.disable();
         texture.unbind();

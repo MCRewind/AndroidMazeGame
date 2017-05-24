@@ -48,12 +48,12 @@ public class Backplate {
     }
 
     public void render() {
+        texture.bind();
+        shader.enable();
         Matrix4f model = new Matrix4f();
         model.loadTranslate(x, y, 0);
         shader.setUniformMat4f("model", model);
         shader.setUniformMat4f("projection", camera.getUntransformedProjection());
-        texture.bind();
-        shader.enable();
         vao.render();
         shader.disable();
         texture.unbind();

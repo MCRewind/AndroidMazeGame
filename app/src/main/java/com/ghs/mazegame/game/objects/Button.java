@@ -84,12 +84,12 @@ public class Button implements GameObject {
     }
 
     public void render() {
+        textures[texture].bind();
+        shader.enable();
         Matrix4f model = new Matrix4f();
         model.loadTranslate(x + xOffset, y + yOffset, 0);
         shader.setUniformMat4f("model", model);
         shader.setUniformMat4f("projection", independent ? camera.getUntransformedProjection() : camera.getProjection());
-        textures[texture].bind();
-        shader.enable();
         vao.render();
         shader.disable();
         textures[texture].unbind();

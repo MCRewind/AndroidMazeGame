@@ -74,27 +74,19 @@ public class Shader {
     }
 
     public void setUniform1i(String name, int x) {
-        enable();
         GLES20.glUniform1i(getLocation(name), x);
-        disable();
     }
 
     public void setUniform2f(String name, float x, float y) {
-        enable();
         GLES20.glUniform2f(getLocation(name), x, y);
-        disable();
     }
 
     public void setUniform4f(String name, float x, float y, float z, float w) {
-        enable();
         GLES20.glUniform4f(getLocation(name), x, y, z, w);
-        disable();
     }
 
     public void setUniformMat4f(String name, Matrix4f matrix) {
-        enable();
         GLES20.glUniformMatrix4fv(getLocation(name), 1, false, matrix.getArray(), 0);
-        disable();
     }
 
     public void enable() {
