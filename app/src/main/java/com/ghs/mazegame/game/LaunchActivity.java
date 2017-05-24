@@ -17,6 +17,7 @@ public class LaunchActivity extends Activity {
         surface = new Surface(this);
         surface.setEGLContextClientVersion(2);
         surface.setRenderer(new Main(surface.getResources(),this));
+        surface.setPreserveEGLContextOnPause(true);
 
         setContentView(surface);
 
@@ -43,4 +44,5 @@ public class LaunchActivity extends Activity {
         super.onResume();
         surface.onResume();
     }
+
 }
