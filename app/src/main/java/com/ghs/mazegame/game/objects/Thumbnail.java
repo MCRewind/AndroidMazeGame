@@ -30,8 +30,11 @@ public class Thumbnail implements GameObject {
         STATE_PRESSED = 2,
         STATE_HELD = 3;
 
+    private static Font font;
+
     private float x = 0, y = 0, xOffset = 0, yOffset = 0, width = 0, height = 0;
     private int state;
+    private String map;
     private Camera camera;
     private VAO vao;
     private Texture texture;
@@ -42,6 +45,7 @@ public class Thumbnail implements GameObject {
         shader = defaultShader;
         state = STATE_UNPRESSED;
         this.camera = camera;
+        this.map = map;
         this.x = x;
         this.y = y;
         this.width = (cameraWidth - SCALE) / 3f;
@@ -68,6 +72,8 @@ public class Thumbnail implements GameObject {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inScaled = false;
         texture = new Texture(BitmapFactory.decodeFile(file.getPath(), options));
+        if(font == null)
+            font = new Font(camera, R.drawable.bunky_font, R.raw.bunky, 6, 0.2f, 1, 1, 1, 1);
     }
 
     public void update() {
@@ -86,9 +92,10 @@ public class Thumbnail implements GameObject {
     }
 
     public void render() {
-        Matrix4f proj = camera.getProjection();
-        proj.translate(x + xOffset, y + yOffset, 0);
-        shader.setUniformMat4f("projection", proj);
+        Matrix4f model = new Matrix4f();
+        model.loadTranslate(x + xOffset, y + yOffset, 0);
+        shader.setUniformMat4f("model", model);
+        shader.setUniformMat4f("projection", camera.getProjection());
         texture.bind();
         shader.enable();
         vao.render();
@@ -96,6 +103,8 @@ public class Thumbnail implements GameObject {
         texture.unbind();
         if(state >= STATE_PRESSED)
             over.render();
+        float width = font.getLength(map);
+        font.drawString(map, x + xOffset + (this.width - width) / 2, y + yOffset + height + 1);
     }
 
     public int getState() {

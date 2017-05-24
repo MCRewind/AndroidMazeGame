@@ -60,15 +60,15 @@ public class VAO {
         GLES20.glDisableVertexAttribArray(Shader.TEX_COORD_ATTRIB);
     }
 
-    public FloatBuffer toFloatBuffer(float[] array) {
+    private FloatBuffer toFloatBuffer(float[] array) {
         FloatBuffer buffer = ByteBuffer.allocateDirect(array.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
         buffer.put(array).position(0);
         return buffer;
-    };
+    }
 
-    public IntBuffer toIntBuffer(int[] array) {
+    private IntBuffer toIntBuffer(int[] array) {
         IntBuffer buffer = ByteBuffer.allocateDirect(array.length * 4).order(ByteOrder.nativeOrder()).asIntBuffer();
         buffer.put(array).position(0);
         return buffer;
-    };
+    }
 }

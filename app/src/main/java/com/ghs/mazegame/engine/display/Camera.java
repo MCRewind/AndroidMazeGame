@@ -46,7 +46,7 @@ public class Camera {
         position.z -= z;
     }
 
-    public Matrix4f getUnatransformedProjection() {
+    public Matrix4f getUntransformedProjection() {
         Matrix4f ret = new Matrix4f();
         ret.load(projection);
         return ret;
@@ -75,4 +75,3 @@ public class Camera {
         return height;
     }
 }
-

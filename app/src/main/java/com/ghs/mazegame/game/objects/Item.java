@@ -78,9 +78,10 @@ public class Item implements GameObject {
     public void update() {}
 
     public void render() {
-        Matrix4f proj = camera.getUnatransformedProjection();
-        proj.translate(x, y, 0);
-        shader.setUniformMat4f("projection", proj);
+        Matrix4f model = new Matrix4f();
+        model.loadTranslate(x, y, 0);
+        shader.setUniformMat4f("model", model);
+        shader.setUniformMat4f("projection", camera.getProjection());
         texture.bind();
         shader.enable();
         vao.render();
