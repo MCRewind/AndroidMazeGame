@@ -18,7 +18,7 @@ public class Font {
     private Camera camera;
     private static Shader shader;
     private Texture texture;
-    private int[] widths;
+    private float[] widths;
     private VAO[] vaos;
     private int numRows, numColumns, height, cellWidth, cellHeight;
     private float scale, r, g, b, a;
@@ -30,13 +30,13 @@ public class Font {
             shader = new Shader(R.raw.defaultvs, R.raw.textfs);
         texture = new Texture(fontId);
         Scanner info = new Scanner(resources.openRawResource(infoId));
-        this.height = Integer.parseInt(info.nextLine());
         numColumns = Integer.parseInt(info.nextLine());
         numRows = Integer.parseInt(info.nextLine());
         cellWidth = Integer.parseInt(info.nextLine());
         cellHeight = Integer.parseInt(info.nextLine());
+        this.height = cellHeight;
         int numChars = numColumns * numRows;
-        widths = new int[numChars];
+        widths = new float[numChars];
         vaos = new VAO[numChars];
         float[] vertices = new float[] {
             0.0f, 0.0f,       depth, //TOP LEFT
@@ -103,10 +103,10 @@ public class Font {
     }
 
     public float getLength(String string) {
-        int width = 0;
+        float width = 0;
         for (char c : string.toCharArray())
-            width += widths[c] * scale;
-        return width;
+            width += widths[c];
+        return width * scale;
     }
 
     public float getHeight() {

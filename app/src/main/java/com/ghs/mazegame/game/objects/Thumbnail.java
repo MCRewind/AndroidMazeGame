@@ -50,7 +50,7 @@ public class Thumbnail implements GameObject {
         this.y = y;
         this.width = (cameraWidth - SCALE) / 3f;
         this.height = (cameraWidth - SCALE) * 2 / 9f;
-        over = new Rectangle(camera, x, y, depth - 0.01f, width, height, 0, 0, 0, 0.5f);
+        over = new Rectangle(camera, x, y, depth - 0.01f, width, height, 0, 0, 0, 0.25f);
         float[] vertices = new float[] {
             0.0f,  0.0f,   depth, //TOP LEFT
             0.0f,  height, depth, //BOTTOM LEFT
