@@ -23,6 +23,8 @@ public class PlayTestPanel implements Panel {
 
     private Camera camera;
 
+    public Long startTime;
+
     public PlayTestPanel(Camera camera) {
         this.camera = camera;
         dpad = new DPad(camera, SCALE * 0.25f, cameraHeight - SCALE * 3.25f, SCALE * 3, SCALE * 3);
@@ -69,8 +71,16 @@ public class PlayTestPanel implements Panel {
         Vector3f center = player.getCenter();
         int type = map.getTile((int) (center.x / SCALE), (int) (center.y / SCALE), true);
         center.sub((int) (center.x / SCALE) * SCALE + SCALE / 2, (int) (center.y / SCALE) * SCALE + SCALE / 2, 0);
-        if(type == Map.TYPE_END && center.lengthSquared() <= SCALE)
+        if(type == Map.TYPE_END && center.lengthSquared() <= SCALE) {
+            // Map ends
             state = Main.STATE_EDIT;
+
+            float totalTime = (System.nanoTime()-startTime)/1000000f;
+
+            //doSomething(totalTime);
+
+        }
+
     }
 
     public int checkState() {
@@ -80,10 +90,16 @@ public class PlayTestPanel implements Panel {
     }
 
     public void setActive(Map map) {
+        // Map starts
         this.map = map;
         map.setState(Map.STATE_PLAY);
         player.setPosition(map.getStart().mul(SCALE, new Vector3f()));
         player.setBounds(map.getBounds());
+
+        startTime = System.nanoTime();
+
+
+
     }
 
     public Map getMap() {
