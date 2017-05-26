@@ -148,6 +148,20 @@ public class EditPanel implements Panel {
                 typeIter--;
             }
             map.save("meh");
+            map.save("bidou");
+            map.save("Jeb");
+            map.save("Jen Shina");
+            map.save("Hoydy");
+            map.save("Toydy");
+            map.save("Bylabs");
+            map.save("Sweg Calvin");
+            map.save("Spaghetti");
+            map.save("Pokemoj Statum");
+            map.save("Pkoe mango");
+            map.save("Pac Man");
+            map.save("KKKKEEBAY");
+            map.save("Kys Man");
+            map.save("Eye Awes");
         }
         rightArrow.update();
         if (rightArrow.getState() == Button.STATE_RELEASED) {

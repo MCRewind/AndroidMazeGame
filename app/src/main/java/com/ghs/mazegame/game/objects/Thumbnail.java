@@ -168,4 +168,8 @@ public class Thumbnail implements GameObject {
         this.yOffset = y;
         over.setPosition(this.x + xOffset, this.y + yOffset);
     }
+
+    public void setState(int state) {
+        this.state = state;
+    }
 }

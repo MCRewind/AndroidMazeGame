@@ -339,29 +339,28 @@ public class Map {
             Bitmap thumbnail = Bitmap.createBitmap(SCALE * WIDTH, SCALE * HEIGHT, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(thumbnail);
 
-            Bitmap under = Bitmap.createBitmap(SCALE * WIDTH, SCALE * HEIGHT, Bitmap.Config.ARGB_8888);
+            Bitmap draw = Bitmap.createBitmap(SCALE * WIDTH, SCALE * HEIGHT, Bitmap.Config.ARGB_8888);
             int[] pixels = new int[SCALE * SCALE];
             for (int i = 0; i < WIDTH; i++) {
                 for (int j = 0; j < HEIGHT; j++) {
                     tiles[map[i][j]].getBitmap().getPixels(pixels, 0, SCALE, 0, 0, SCALE, SCALE);
-                    under.setPixels(pixels, 0, SCALE, i * SCALE, j * SCALE, SCALE, SCALE);
+                    draw.setPixels(pixels, 0, SCALE, i * SCALE, j * SCALE, SCALE, SCALE);
                 }
             }
-            canvas.drawBitmap(under, 4, 4, null);
-            under.recycle();
+            canvas.drawBitmap(draw, 4, 4, null);
 
-            Bitmap overlay = Bitmap.createBitmap(SCALE * WIDTH, SCALE * HEIGHT, Bitmap.Config.ARGB_8888);
+            draw = Bitmap.createBitmap(SCALE * WIDTH, SCALE * HEIGHT, Bitmap.Config.ARGB_8888);
             pixels = new int[SCALE * SCALE];
             for (int i = 0; i < WIDTH; i++) {
                 for (int j = 0; j <  HEIGHT; j++) {
                     if(over[i][j] != TYPE_EMPTY) {
                         tiles[over[i][j]].getBitmap().getPixels(pixels, 0, SCALE, 0, 0, SCALE, SCALE);
-                        overlay.setPixels(pixels, 0, SCALE, i * SCALE, j * SCALE, SCALE, SCALE);
+                        draw.setPixels(pixels, 0, SCALE, i * SCALE, j * SCALE, SCALE, SCALE);
                     }
                 }
             }
-            canvas.drawBitmap(overlay, 4, 4, null);
-            overlay.recycle();
+            canvas.drawBitmap(draw, 4, 4, null);
+            draw.recycle();
 
             for (int i = 0; i < thumbnail.getWidth(); i++) {
                 for (int j = 0; j < thumbnail.getHeight(); j++) {
