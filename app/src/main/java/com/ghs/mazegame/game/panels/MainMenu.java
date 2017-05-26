@@ -7,10 +7,8 @@ import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.display.Camera;
 import com.ghs.mazegame.engine.math.Vector3f;
 import com.ghs.mazegame.game.interfaces.Panel;
-import com.ghs.mazegame.game.objects.Backplate;
 import com.ghs.mazegame.game.objects.Button;
 import com.ghs.mazegame.game.objects.Image;
-import com.ghs.mazegame.game.objects.Rectangle;
 import com.ghs.mazegame.game.objects.Thumbnail;
 
 import java.util.ArrayList;
@@ -189,13 +187,13 @@ public class MainMenu implements Panel {
 
     private void loadThumbnails() {
         thumbnails.clear();
-        for (int i = 0; i < maps.size(); i++)
+        int i;
+        for (i = 0; i < maps.size(); i++)
             thumbnails.add(new Thumbnail(camera, maps.get(i), ((i % 3) * ((cameraWidth - SCALE) / 3f)) + (SCALE * (i % 3 + 1) / 4f),
-                ((i / 3) * ((cameraWidth - SCALE) * 2 / 9f + 6)) + (SCALE * (i / 3 + 1) / 4f) + cameraHeight + SCALE, 0.1f));
-        int i = maps.size();
+                    ((i / 3) * ((cameraWidth - SCALE) * 2 / 9f + 6)) + (SCALE * (i / 3 + 1) / 4f) + cameraHeight + SCALE, 0.1f));
         newMap = new Button(camera, new Texture(R.drawable.new_map_button), new Texture(R.drawable.new_map_button_pressed),
-            ((i % 3) * ((cameraWidth - SCALE) / 3f)) + (SCALE * (i % 3 + 1) / 4f),
-            ((i / 3) * ((cameraWidth - SCALE) * 2 / 9f + 6)) + (SCALE * (i / 3 + 1) / 4f) + cameraHeight + SCALE, 0.1f, (cameraWidth - SCALE) / 3f, (cameraWidth - SCALE) * 2 / 9f, false);
+                ((i % 3) * ((cameraWidth - SCALE) / 3f)) + (SCALE * (i % 3 + 1) / 4f),
+                ((i / 3) * ((cameraWidth - SCALE) * 2 / 9f + 6)) + (SCALE * (i / 3 + 1) / 4f) + cameraHeight + SCALE, 0.1f, (cameraWidth - SCALE) / 3f, (cameraWidth - SCALE) * 2 / 9f, false);
     }
 
     public int getMap() {
