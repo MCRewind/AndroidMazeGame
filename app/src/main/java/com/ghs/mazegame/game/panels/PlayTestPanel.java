@@ -30,7 +30,7 @@ public class PlayTestPanel implements Panel {
 
     private ArrayList<Integer> items = new ArrayList<>();
 
-    public Long startTime;
+    public long startTime;
 
 
     public PlayTestPanel(Camera camera) {
@@ -83,8 +83,10 @@ public class PlayTestPanel implements Panel {
             // Map ends
             state = Main.STATE_EDIT;
             float totalTime = (System.nanoTime() - startTime) / 1000000f;
-
-            //doSomething(totalTime);
+            float savedTime = map.getBestTimeMS();
+            if((savedTime == -1) || (totalTime < savedTime)){
+                map.setBestTimeMS(totalTime);
+            }
         }
         if(type == Map.TYPE_GOLD_KEY && center.lengthSquared() <= SCALE) {
             map.setTileRaw(true, Map.TYPE_EMPTY, (int) (player.getCenter().x / SCALE), (int) (player.getCenter().y / SCALE));
