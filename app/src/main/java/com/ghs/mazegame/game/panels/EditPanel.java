@@ -6,6 +6,7 @@ import android.util.Log;
 import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.display.Camera;
+import com.ghs.mazegame.engine.display.Surface;
 import com.ghs.mazegame.engine.math.Vector3f;
 import com.ghs.mazegame.engine.utils.ObjectManager;
 import com.ghs.mazegame.game.Main;
@@ -15,15 +16,6 @@ import com.ghs.mazegame.game.objects.Button;
 import com.ghs.mazegame.game.map.Map;
 import com.ghs.mazegame.game.objects.Image;
 import com.ghs.mazegame.game.objects.ToggleButton;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.ByteBuffer;
 
 import static com.ghs.mazegame.engine.display.Surface.swipe;
 import static com.ghs.mazegame.engine.display.Surface.touchX;
@@ -48,9 +40,11 @@ public class EditPanel implements Panel {
     private Image[] blockPreview;
     private Button testPlay, leftArrow, rightArrow;
 
-    private int curType, typeIter = 1, numPages;
+    private int curType, typeIter = 1, numPages, lastX = 0, lastY = 0;
 
     private Context context;
+
+    private float touchHeld = 0f;
 
     public static int paintType = 1;
 
@@ -106,8 +100,14 @@ public class EditPanel implements Panel {
     }
 
     public void update() {
+        Log.d("time held", touchHeld + "");
+        if (Surface.down) {
+            touchHeld++;
+        } else {
+            touchHeld = 0f;
+        }
         updateCamera();
-        if (!top.contains(touchX, touchY) && !left.contains(touchX, touchY) && !corner.contains(touchX, touchY) && curType != -1)
+        if (!top.contains(touchX, touchY) && !left.contains(touchX, touchY) && !corner.contains(touchX, touchY) && curType != -1 && touchX >= 0 && touchY >= 0)
             draw();
         updateToolbar();
     }
@@ -173,17 +173,36 @@ public class EditPanel implements Panel {
             paintType = curType;
             curType = -1;
             map.save("meh");
-            map.save("meh");
+            map.save("meh1");
             state = Main.STATE_PLAY_TEST;
         }
     }
 
     private void draw() {
+        Log.e("Map", "entered");
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if(touchX > -1 && touchY > -1) {
             int x = (int) (touchX + camera.getX()) / SCALE;
             int y = (int) (touchY + camera.getY()) / SCALE;
-            map.setTile(curType, x, y);
+            if (lastX != x || lastY != y) {
+                touchHeld = 0;
+            }
+            lastX = x;
+            lastY = y;
+            if (map.getTile(x, y, false) == Map.TYPE_STONE_KEY_WALL) {
+                if (touchHeld > 40) {
+                    map.setTile(Map.TYPE_BRICK_WALL_CYAN, x, y);
+                }
+            } else if(touchHeld <= 40) {
+                map.setTile(curType, x, y);
+            }
         }
+        else
+            updateCamera();
     }
 
     public void render() {
