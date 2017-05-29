@@ -73,7 +73,7 @@ public class Thumbnail implements GameObject {
         options.inScaled = false;
         texture = new Texture(BitmapFactory.decodeFile(file.getPath(), options));
         if(font == null)
-            font = new Font(camera, R.drawable.bunky_font, R.raw.bunky, 6, 0.2f, 1, 1, 1, 1);
+            font = new Font(camera, R.drawable.bunky_font, R.raw.bunky, 6, depth, 1, 1, 1, 1);
     }
 
     public void update() {

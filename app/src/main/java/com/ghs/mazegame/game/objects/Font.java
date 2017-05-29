@@ -56,7 +56,7 @@ public class Font {
             vertices[9] = widths[i];
             tx = (float) (i % numColumns) / (float) numColumns;
             ty = (float) (i / numColumns) / (float) numRows;
-            dx = (1f / (float) numColumns) * ((float) widths[i] / (float) cellWidth);
+            dx = (1f / (float) numColumns) * (widths[i] / (float) cellWidth);
             texCoords[0] = tx;
             texCoords[1] = ty;
             texCoords[2] = tx;
@@ -81,7 +81,7 @@ public class Font {
             shader.setUniform4f("color", r, g, b, a);
             Matrix4f model = new Matrix4f();
             model.loadTranslate(x, y, 0);
-            model.scale(scale, scale, 0);
+            model.scale(scale, scale, 1);
             shader.setUniformMat4f("model", model);
             shader.setUniformMat4f("projection", camera.getProjection());
             vaos[c].render();

@@ -52,10 +52,6 @@ public class EditPanel implements Panel {
 
     private Context context;
 
-    public static int paintType = 1;
-
-    private ObjectManager objectManager;
-
     public EditPanel(Camera camera, Context context) {
         this.context = context;
         numPages = NUM_BLOCKS / NUM_TOGGLES;
@@ -75,30 +71,30 @@ public class EditPanel implements Panel {
         for (int i = 0; i < NUM_TOGGLES; i++)
             blockSelect[i] = new ToggleButton(camera, makePlate(SCALE, SCALE, 1, false), makePlate(SCALE, SCALE, 1, true), corner.getWidth() + ((top.getWidth() - NUM_TOGGLES * (dim + 1)) / 2) + i * (dim + 1), (top.getHeight() - dim) / 2, dim, dim);
         dim = SCALE - 6;
-        blockPreview[0]  = new Image(camera, new Texture(R.drawable.brick_wall_prev),         blockSelect[0].getX() + (blockSelect[0].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim);
-        blockPreview[1]  = new Image(camera, new Texture(R.drawable.square_wall_prev),        blockSelect[1].getX() + (blockSelect[1].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim);
-        blockPreview[2]  = new Image(camera, new Texture(R.drawable.s_wall_prev),             blockSelect[2].getX() + (blockSelect[2].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim);
-        blockPreview[3]  = new Image(camera, new Texture(R.drawable.stone_floor_prev),        blockSelect[3].getX() + (blockSelect[3].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim);
-        blockPreview[4]  = new Image(camera, new Texture(R.drawable.limestone_floor_prev),    blockSelect[4].getX() + (blockSelect[4].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim);
-        blockPreview[5]  = new Image(camera, new Texture(R.drawable.wood_floor_prev),         blockSelect[5].getX() + (blockSelect[5].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim);
-        blockPreview[6]  = new Image(camera, new Texture(R.drawable.start_prev),              blockSelect[6].getX() + (blockSelect[6].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim);
-        blockPreview[7]  = new Image(camera, new Texture(R.drawable.end_prev),                blockSelect[7].getX() + (blockSelect[7].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim);
-        blockPreview[8]  = new Image(camera, new Texture(R.drawable.brick_wall_red_prev),     blockSelect[0].getX() + (blockSelect[0].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim);
-        blockPreview[9]  = new Image(camera, new Texture(R.drawable.brick_wall_orange_prev),  blockSelect[1].getX() + (blockSelect[1].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim);
-        blockPreview[10] = new Image(camera, new Texture(R.drawable.brick_wall_yellow_prev),  blockSelect[2].getX() + (blockSelect[2].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim);
-        blockPreview[11] = new Image(camera, new Texture(R.drawable.brick_wall_green_prev),   blockSelect[3].getX() + (blockSelect[3].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim);
-        blockPreview[12] = new Image(camera, new Texture(R.drawable.brick_wall_cyan_prev),    blockSelect[4].getX() + (blockSelect[4].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim);
-        blockPreview[13] = new Image(camera, new Texture(R.drawable.brick_wall_blue_prev),    blockSelect[5].getX() + (blockSelect[5].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim);
-        blockPreview[14] = new Image(camera, new Texture(R.drawable.brick_wall_purple_prev),  blockSelect[6].getX() + (blockSelect[6].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim);
-        blockPreview[15] = new Image(camera, new Texture(R.drawable.brick_wall_magenta_prev), blockSelect[7].getX() + (blockSelect[7].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim);
-        blockPreview[16] = new Image(camera, new Texture(R.drawable.sandstone_wall_prev),     blockSelect[0].getX() + (blockSelect[0].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim);
-        blockPreview[17] = new Image(camera, new Texture(R.drawable.sandstone_floor_prev),    blockSelect[1].getX() + (blockSelect[1].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim);
-        blockPreview[18] = new Image(camera, new Texture(R.drawable.stone_key_wall_prev),     blockSelect[2].getX() + (blockSelect[2].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim);
-        blockPreview[19] = new Image(camera, new Texture(R.drawable.stone_key_prev),          blockSelect[3].getX() + (blockSelect[3].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim);
-        blockPreview[20] = new Image(camera, new Texture(R.drawable.gold_key_prev),           blockSelect[4].getX() + (blockSelect[4].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim);
-        blockPreview[21] = new Image(camera, new Texture(R.drawable.brick_wall_green_prev),   blockSelect[5].getX() + (blockSelect[5].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim);
-        blockPreview[22] = new Image(camera, new Texture(R.drawable.brick_wall_green_prev),   blockSelect[6].getX() + (blockSelect[6].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim);
-        blockPreview[23] = new Image(camera, new Texture(R.drawable.brick_wall_green_prev),   blockSelect[7].getX() + (blockSelect[7].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim);
+        blockPreview[0]  = new Image(camera, new Texture(R.drawable.brick_wall_prev),         blockSelect[0].getX() + (blockSelect[0].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[1]  = new Image(camera, new Texture(R.drawable.square_wall_prev),        blockSelect[1].getX() + (blockSelect[1].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[2]  = new Image(camera, new Texture(R.drawable.s_wall_prev),             blockSelect[2].getX() + (blockSelect[2].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[3]  = new Image(camera, new Texture(R.drawable.stone_floor_prev),        blockSelect[3].getX() + (blockSelect[3].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[4]  = new Image(camera, new Texture(R.drawable.limestone_floor_prev),    blockSelect[4].getX() + (blockSelect[4].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[5]  = new Image(camera, new Texture(R.drawable.wood_floor_prev),         blockSelect[5].getX() + (blockSelect[5].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[6]  = new Image(camera, new Texture(R.drawable.start_prev),              blockSelect[6].getX() + (blockSelect[6].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[7]  = new Image(camera, new Texture(R.drawable.end_prev),                blockSelect[7].getX() + (blockSelect[7].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[8]  = new Image(camera, new Texture(R.drawable.brick_wall_red_prev),     blockSelect[0].getX() + (blockSelect[0].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[9]  = new Image(camera, new Texture(R.drawable.brick_wall_orange_prev),  blockSelect[1].getX() + (blockSelect[1].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[10] = new Image(camera, new Texture(R.drawable.brick_wall_yellow_prev),  blockSelect[2].getX() + (blockSelect[2].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[11] = new Image(camera, new Texture(R.drawable.brick_wall_green_prev),   blockSelect[3].getX() + (blockSelect[3].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[12] = new Image(camera, new Texture(R.drawable.brick_wall_cyan_prev),    blockSelect[4].getX() + (blockSelect[4].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[13] = new Image(camera, new Texture(R.drawable.brick_wall_blue_prev),    blockSelect[5].getX() + (blockSelect[5].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[14] = new Image(camera, new Texture(R.drawable.brick_wall_purple_prev),  blockSelect[6].getX() + (blockSelect[6].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[15] = new Image(camera, new Texture(R.drawable.brick_wall_magenta_prev), blockSelect[7].getX() + (blockSelect[7].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[16] = new Image(camera, new Texture(R.drawable.sandstone_wall_prev),     blockSelect[0].getX() + (blockSelect[0].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[17] = new Image(camera, new Texture(R.drawable.sandstone_floor_prev),    blockSelect[1].getX() + (blockSelect[1].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[18] = new Image(camera, new Texture(R.drawable.stone_key_wall_prev),     blockSelect[2].getX() + (blockSelect[2].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[19] = new Image(camera, new Texture(R.drawable.stone_key_prev),          blockSelect[3].getX() + (blockSelect[3].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[20] = new Image(camera, new Texture(R.drawable.gold_key_prev),           blockSelect[4].getX() + (blockSelect[4].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[21] = new Image(camera, new Texture(R.drawable.brick_wall_green_prev),   blockSelect[5].getX() + (blockSelect[5].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[22] = new Image(camera, new Texture(R.drawable.brick_wall_green_prev),   blockSelect[6].getX() + (blockSelect[6].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[23] = new Image(camera, new Texture(R.drawable.brick_wall_green_prev),   blockSelect[7].getX() + (blockSelect[7].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
         testPlay = new Button(camera, new Texture(R.drawable.play_unpressed), new Texture(R.drawable.play_pressed), (corner.getWidth() - SCALE) / 2, (corner.getHeight() - SCALE) / 2, 0.1f, SCALE, SCALE, true);
         leftArrow = new Button(camera, new Texture(R.drawable.left_arrow), new Texture(R.drawable.left_arrow_down), corner.getWidth() + SCALE / 3, (corner.getHeight() - SCALE / 2) / 2, 0.1f, SCALE / 2, SCALE / 2, true);
         rightArrow = new Button(camera, new Texture(R.drawable.right_arrow), new Texture(R.drawable.right_arrow_down), camera.getWidth() - ((SCALE / 8) * 7), (top.getHeight() - SCALE / 2) / 2, 0.1f, SCALE / 2, SCALE / 2, true);
@@ -106,7 +102,6 @@ public class EditPanel implements Panel {
     }
 
     public void update() {
-        updateCamera();
         if (!top.contains(touchX, touchY) && !left.contains(touchX, touchY) && !corner.contains(touchX, touchY) && curType != -1)
             draw();
         updateToolbar();
@@ -147,7 +142,6 @@ public class EditPanel implements Panel {
             } else {
                 typeIter--;
             }
-            map.save("meh");
         }
         rightArrow.update();
         if (rightArrow.getState() == Button.STATE_RELEASED) {
@@ -170,34 +164,40 @@ public class EditPanel implements Panel {
         }
         testPlay.update();
         if(testPlay.getState() == Button.STATE_RELEASED && map.getStart().x != -1) {
-            paintType = curType;
             curType = -1;
             map.save("meh");
             map.save("bab");
             map.save("jen Shina");
+            map.save("bidou");
+            map.save("Jeb");
+            map.save("Hoydy");
+            map.save("Toydy");
+            map.save("Bylabs");
+            map.save("Sweg Calvin");
             map.save("Spaghetti");
-            map.save("Bikyle");
-            map.save("Bylab");
-            map.save("Senastiob");
-            map.save("Trisciut");
             map.save("Pokemoj Stadum");
-            map.save("Dat boi");
-            map.save("Sweg carbean");
-            map.save("Bob the Builder");
-            map.save("Badger");
-            map.save("Cheng");
-            map.save("Klep");
-            map.save("Turb");
+            map.save("Pkoe mango");
+            map.save("Pac Man");
+            map.save("KKKKEEBAY");
+            map.save("Kys Man");
+            map.save("Eye Awes");
             state = Main.STATE_PLAY_TEST;
         }
     }
 
     private void draw() {
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if(touchX > -1 && touchY > -1) {
             int x = (int) (touchX + camera.getX()) / SCALE;
             int y = (int) (touchY + camera.getY()) / SCALE;
             map.setTile(curType, x, y);
         }
+        else
+            updateCamera();
     }
 
     public void render() {

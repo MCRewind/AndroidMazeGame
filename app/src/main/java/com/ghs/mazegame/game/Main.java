@@ -80,7 +80,7 @@ public class Main implements GLSurfaceView.Renderer {
         pastTime = System.nanoTime() / 1000000f;
 
         panels = new Panel[5];
-        panels[STATE_SPLASH_SCREEN] = new SplashPanel(camera, 4000);
+        panels[STATE_SPLASH_SCREEN] = new SplashPanel(camera, 2500);
         panels[STATE_PLAY_TEST] = new PlayTestPanel(camera);
         panels[STATE_EDIT] = new EditPanel(camera, context);
         panels[STATE_MAIN_MENU] = new MainMenu(camera);

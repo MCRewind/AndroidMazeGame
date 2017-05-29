@@ -34,7 +34,7 @@ public class PlayTestPanel implements Panel {
     public PlayTestPanel(Camera camera) {
         this.camera = camera;
         dpad = new DPad(camera, SCALE * 0.25f, cameraHeight - SCALE * 3.25f, SCALE * 3, SCALE * 3);
-        player = new Player(camera, new Texture(R.drawable.samby), new Shader(R.raw.defaultvs, R.raw.defaultfs), 0, 0, SCALE, SCALE);
+        player = new Player(camera, new Texture(R.drawable.samby), 0, 0, SCALE, SCALE);
     }
 
     public void update() {
