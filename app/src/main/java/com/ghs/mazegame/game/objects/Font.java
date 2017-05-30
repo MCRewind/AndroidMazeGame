@@ -78,14 +78,18 @@ public class Font {
         texture.bind();
         shader.enable();
         for (char c : string.toCharArray()) {
-            shader.setUniform4f("color", r, g, b, a);
-            Matrix4f model = new Matrix4f();
-            model.loadTranslate(x, y, 0);
-            model.scale(scale, scale, 1);
-            shader.setUniformMat4f("model", model);
-            shader.setUniformMat4f("projection", camera.getProjection());
-            vaos[c].render();
-            x += widths[c] * scale;
+            if(c == '\n')
+                y += height * scale;
+            else {
+                shader.setUniform4f("color", r, g, b, a);
+                Matrix4f model = new Matrix4f();
+                model.loadTranslate(x, y, 0);
+                model.scale(scale, scale, 1);
+                shader.setUniformMat4f("model", model);
+                shader.setUniformMat4f("projection", camera.getProjection());
+                vaos[c].render();
+                x += widths[c] * scale;
+            }
         }
         shader.disable();
         texture.unbind();

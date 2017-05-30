@@ -36,8 +36,8 @@ public class Thumbnail implements GameObject {
     private int state;
     private String map;
     private Camera camera;
-    private VAO vao;
-    private Texture texture;
+    private VAO borderVAO, vao;
+    private Texture border, texture;
     private Rectangle over;
     private Shader shader;
 
@@ -51,6 +51,12 @@ public class Thumbnail implements GameObject {
         this.width = (cameraWidth - SCALE) / 3f;
         this.height = (cameraWidth - SCALE) * 2 / 9f;
         over = new Rectangle(camera, x, y, depth - 0.01f, width, height, 0, 0, 0, 0.25f);
+        Bitmap borderBitmap = Bitmap.createBitmap((int) width, (int) height, Bitmap.Config.ARGB_8888);
+        for (int i = 0; i < borderBitmap.getWidth(); i++)
+            for (int j = 0; j < borderBitmap.getHeight(); j++)
+                if (i == 0 || j == 0 || i == borderBitmap.getWidth() - 1 || j == borderBitmap.getHeight() - 1)
+                    borderBitmap.setPixel(i, j, 0xFFFFFFFF);
+        border = new Texture(borderBitmap);
         float[] vertices = new float[] {
             0.0f,  0.0f,   depth, //TOP LEFT
             0.0f,  height, depth, //BOTTOM LEFT
@@ -67,6 +73,11 @@ public class Thumbnail implements GameObject {
             1, 1,
             1, 0
         };
+        borderVAO = new VAO(vertices, indices, texCoords);
+        vertices[4] -= 2;
+        vertices[6] -= 2;
+        vertices[7] -= 2;
+        vertices[9] -= 2;
         vao = new VAO(vertices, indices, texCoords);
         File file = new File(context.getFilesDir(), map + ".png");
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -92,15 +103,20 @@ public class Thumbnail implements GameObject {
     }
 
     public void render() {
-        texture.bind();
         shader.enable();
         Matrix4f model = new Matrix4f();
+        shader.setUniformMat4f("projection", camera.getProjection());
+        model.loadTranslate(x + xOffset + 1, y + yOffset + 1, 0);
+        shader.setUniformMat4f("model", model);
+        texture.bind();
+        vao.render();
+        texture.unbind();
         model.loadTranslate(x + xOffset, y + yOffset, 0);
         shader.setUniformMat4f("model", model);
-        shader.setUniformMat4f("projection", camera.getProjection());
-        vao.render();
+        border.bind();
+        borderVAO.render();
+        border.unbind();
         shader.disable();
-        texture.unbind();
         if(state >= STATE_PRESSED)
             over.render();
         float width = font.getLength(map);
