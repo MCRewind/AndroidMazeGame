@@ -4,29 +4,25 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
-import android.util.Log;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Shader;
-import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.display.Camera;
 import com.ghs.mazegame.game.interfaces.Panel;
 
-import com.ghs.mazegame.game.map.Map;
 import com.ghs.mazegame.game.panels.EditPanel;
 import com.ghs.mazegame.game.panels.MainMenu;
 import com.ghs.mazegame.game.panels.PlayTestPanel;
 import com.ghs.mazegame.game.panels.SplashPanel;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -47,10 +43,12 @@ public class Main implements GLSurfaceView.Renderer {
 
     public static float time;
 
+    public static LaunchActivity activity;
     public static Context context;
     public static Resources resources;
     public static Shader defaultShader;
     public static ArrayList<String> maps;
+    private static Handler handler;
 
     private float pastTime, curTime;
 
@@ -59,10 +57,12 @@ public class Main implements GLSurfaceView.Renderer {
     private Panel[] panels;
     public int cur = STATE_SPLASH_SCREEN;
 
-    public Main(Resources resources, Context context) {
+    public Main(Resources resources, Context context, LaunchActivity activity) {
         this.resources = resources;
         this.context = context;
+        this.activity = activity;
         maps = new ArrayList<>();
+        handler = new Handler(Looper.getMainLooper());
         loadMaps();
     }
 
@@ -80,10 +80,11 @@ public class Main implements GLSurfaceView.Renderer {
         pastTime = System.nanoTime() / 1000000f;
 
         panels = new Panel[5];
-        panels[STATE_SPLASH_SCREEN] = new SplashPanel(camera, 4000, new Texture(R.drawable.splash_screen));
+        panels[STATE_SPLASH_SCREEN] = new SplashPanel(camera, 2500);
         panels[STATE_PLAY_TEST] = new PlayTestPanel(camera);
         panels[STATE_EDIT] = new EditPanel(camera, context);
         panels[STATE_MAIN_MENU] = new MainMenu(camera);
+        showKeyboard();
     }
 
     public void onSurfaceChanged(GL10 gl, int width, int height) {
@@ -139,25 +140,36 @@ public class Main implements GLSurfaceView.Renderer {
             cur = state;
     }
 
+    public static void showKeyboard() {
+        handler.post(new Runnable() {
+            public void run() {
+                activity.showKeyboard();
+            }
+        });
+    }
+
+    public static void hideKeyboard() {
+        handler.post(new Runnable() {
+            public void run() {
+                activity.hideKeyboard();
+            }
+        });
+    }
+
     private void loadMaps() {
         File mapsFile = new File(context.getFilesDir(), "maps.log");
-        if(!mapsFile.exists()) {
-            try {
-                mapsFile.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
+        try {
+            if(!mapsFile.exists()) {
+                    mapsFile.createNewFile();
             }
-        }
-        else {
-            try {
+            else {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(mapsFile)));
                 String line;
-                while ((line = bufferedReader.readLine()) != null) {
+                while ((line = bufferedReader.readLine()) != null)
                     maps.add(line);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -14,12 +14,13 @@ public class Image implements GameObject {
 
     private float x = 0, y = 0;
     private float width = 0, height = 0;
+    private boolean independent;
     private Camera camera;
     private VAO vao;
     private Texture texture;
     private Shader shader;
 
-    public Image(Camera camera, Texture texture, Shader shader, float x, float y, float width, float height, float depth) {
+    public Image(Camera camera, Texture texture, Shader shader, float x, float y, float depth, float width, float height, boolean independent) {
         this.texture = texture;
         this.shader = shader;
         this.camera = camera;
@@ -27,6 +28,7 @@ public class Image implements GameObject {
         this.y = y;
         this.width = width;
         this.height = height;
+        this.independent = independent;
         float[] vertices = new float[] {
             0.0f,  0.0f,   depth, //TOP LEFT
             0.0f,  height, depth, //BOTTOM LEFT
@@ -46,7 +48,7 @@ public class Image implements GameObject {
         vao = new VAO(vertices, indices, texCoords);
     }
 
-    public Image(Camera camera, Texture texture, float x, float y, float width, float height, float depth) {
+    public Image(Camera camera, Texture texture, float x, float y, float depth, float width, float height, boolean independent) {
         this.texture = texture;
         shader = defaultShader;
         this.camera = camera;
@@ -54,6 +56,7 @@ public class Image implements GameObject {
         this.y = y;
         this.width = width;
         this.height = height;
+        this.independent = independent;
         float[] vertices = new float[] {
             0.0f,  0.0f,   depth, //TOP LEFT
             0.0f,  height, depth, //BOTTOM LEFT
@@ -81,7 +84,7 @@ public class Image implements GameObject {
         Matrix4f model = new Matrix4f();
         model.loadTranslate(x, y, 0);
         shader.setUniformMat4f("model", model);
-        shader.setUniformMat4f("projection", camera.getUntransformedProjection());
+        shader.setUniformMat4f("projection", independent ? camera.getUntransformedProjection() : camera.getProjection());
         vao.render();
         shader.disable();
         texture.unbind();

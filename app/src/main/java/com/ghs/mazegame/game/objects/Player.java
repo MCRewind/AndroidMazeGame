@@ -10,6 +10,8 @@ import com.ghs.mazegame.engine.math.Vector3f;
 import com.ghs.mazegame.engine.utils.Hitbox;
 import com.ghs.mazegame.game.interfaces.GameObject;
 
+import static com.ghs.mazegame.game.Main.defaultShader;
+
 public class Player implements GameObject {
 
     private float x = 0, y = 0, width = 0, height = 0;
@@ -20,9 +22,9 @@ public class Player implements GameObject {
     private Texture texture;
     private Shader shader;
 
-    public Player(Camera camera, Texture texture, Shader shader, float x, float y, float width, float height) {
+    public Player(Camera camera, Texture texture, float x, float y, float width, float height) {
         this.texture = texture;
-        this.shader = shader;
+        this.shader = defaultShader;
         this.camera = camera;
         this.x = x;
         this.y = y;

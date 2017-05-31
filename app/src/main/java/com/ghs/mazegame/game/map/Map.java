@@ -90,7 +90,10 @@ public class Map {
                 over[i][j] = TYPE_EMPTY;
             }
         }
+<<<<<<< HEAD
         bestTimeMS = -1;
+=======
+>>>>>>> sam
         tileInit();
     }
 
@@ -106,7 +109,10 @@ public class Map {
         rHeight = (int) Math.ceil((camera.getY() + camera.getHeight()) / SCALE);
         rightBound = 0;
         bottomBound = 0;
+<<<<<<< HEAD
         bestTimeMS = newMap.bestTimeMS;
+=======
+>>>>>>> sam
         tileInit();
     }
 
@@ -232,7 +238,11 @@ public class Map {
                                 over[i][j] = TYPE_EMPTY;
                         }
                     }
+<<<<<<< HEAD
                     if (tiles[map[x][y]].isSolid() && map[x][y] != TYPE_EMPTY)
+=======
+                    if (tiles[map[x][y]].isSolid() || map[x][y] == TYPE_EMPTY)
+>>>>>>> sam
                         map[x][y] = TYPE_STONE_FLOOR;
                     over[x][y] = type;
                 } else {
@@ -354,7 +364,7 @@ public class Map {
                     under.setPixels(pixels, 0, SCALE, i * SCALE, j * SCALE, SCALE, SCALE);
                 }
             }
-            canvas.drawBitmap(under, 4, 4, null);
+            canvas.drawBitmap(under, 0, 0, null);
             under.recycle();
 
             Bitmap overlay = Bitmap.createBitmap(SCALE * WIDTH, SCALE * HEIGHT, Bitmap.Config.ARGB_8888);
@@ -367,16 +377,8 @@ public class Map {
                     }
                 }
             }
-            canvas.drawBitmap(overlay, 4, 4, null);
+            canvas.drawBitmap(overlay, 0, 0, null);
             overlay.recycle();
-
-            for (int i = 0; i < thumbnail.getWidth(); i++) {
-                for (int j = 0; j < thumbnail.getHeight(); j++) {
-                    if(i < 4 || j < 4 || i >= SCALE * WIDTH - 4 || j >= SCALE * HEIGHT - 4)
-                        thumbnail.setPixel(i, j, 0xFFFFFFFF);
-                }
-            }
-
             File thumbFile = new File(context.getFilesDir(), filename + ".png");
             if(!thumbFile.exists())
                 thumbFile.createNewFile();

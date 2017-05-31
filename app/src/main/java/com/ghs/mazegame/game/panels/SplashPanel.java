@@ -21,11 +21,11 @@ public class SplashPanel implements Panel {
     private Image image;
     private Rectangle fade;
 
-    public SplashPanel(Camera camera, float duration, Texture texture) {
+    public SplashPanel(Camera camera, float duration) {
         this.camera = camera;
         this.duration = duration;
         fadeTime = duration / 6f;
-        image = new Image(camera, randomImage(), 0, 0, cameraWidth, cameraHeight, 0.6f);
+        image = new Image(camera, randomImage(), 0, 0, 0.6f, cameraWidth, cameraHeight, true);
         fade = new Rectangle(camera, 0, 0, 0.5f, cameraWidth, cameraHeight, 0, 0, 0, 1);
         start = System.nanoTime() / 1000000f + 700;
     }

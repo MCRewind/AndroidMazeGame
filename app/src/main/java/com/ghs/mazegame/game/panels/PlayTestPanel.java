@@ -33,10 +33,11 @@ public class PlayTestPanel implements Panel {
     public long startTime;
 
 
+
     public PlayTestPanel(Camera camera) {
         this.camera = camera;
         dpad = new DPad(camera, SCALE * 0.25f, cameraHeight - SCALE * 3.25f, SCALE * 3, SCALE * 3);
-        player = new Player(camera, new Texture(R.drawable.samby), new Shader(R.raw.defaultvs, R.raw.defaultfs), 0, 0, SCALE, SCALE);
+        player = new Player(camera, new Texture(R.drawable.samby), 0, 0, SCALE, SCALE);
     }
 
     public void update() {
@@ -91,7 +92,6 @@ public class PlayTestPanel implements Panel {
         if(type == Map.TYPE_GOLD_KEY && center.lengthSquared() <= SCALE) {
             map.setTileRaw(true, Map.TYPE_EMPTY, (int) (player.getCenter().x / SCALE), (int) (player.getCenter().y / SCALE));
             items.add(Map.TYPE_GOLD_KEY);
-            Log.d("key", "Position: " + (int) (player.getCenter().x / SCALE) + (int) (player.getCenter().y / SCALE));
         }
     }
 
@@ -107,11 +107,7 @@ public class PlayTestPanel implements Panel {
         map.setState(Map.STATE_PLAY);
         player.setPosition(map.getStart().mul(SCALE, new Vector3f()));
         player.setBounds(map.getBounds());
-
         startTime = System.nanoTime();
-
-
-
     }
 
     public Map getMap() {

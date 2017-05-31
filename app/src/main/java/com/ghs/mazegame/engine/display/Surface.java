@@ -10,9 +10,6 @@ import com.ghs.mazegame.game.Main;
 
 public class Surface extends GLSurfaceView {
 
-    private volatile float pastX = -1;
-    private volatile float pastY = -1;
-
     public static float touchX = -1;
     public static float touchY = -1;
     public static Vector3f swipe = new Vector3f();
@@ -30,8 +27,6 @@ public class Surface extends GLSurfaceView {
 
     public boolean onTouchEvent(MotionEvent e) {
         int pointerCount = e.getPointerCount();
-
-        Log.e("Pointers", "Pointer Count: " + pointerCount);
 
         float tx = e.getX();
         float ty = e.getY();
