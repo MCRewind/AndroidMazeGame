@@ -144,6 +144,7 @@ public class EditPanel implements Panel {
         saveButton.update();
         if(saveButton.getState() == Button.STATE_PRESSED){
             map.save("meh");
+            state = Main.STATE_MAIN_MENU;
         }
 
         if (leftArrow.getState() == Button.STATE_RELEASED) {

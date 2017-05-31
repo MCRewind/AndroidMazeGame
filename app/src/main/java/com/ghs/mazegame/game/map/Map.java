@@ -90,10 +90,9 @@ public class Map {
                 over[i][j] = TYPE_EMPTY;
             }
         }
-<<<<<<< HEAD
+
         bestTimeMS = -1;
-=======
->>>>>>> sam
+
         tileInit();
     }
 
@@ -109,10 +108,8 @@ public class Map {
         rHeight = (int) Math.ceil((camera.getY() + camera.getHeight()) / SCALE);
         rightBound = 0;
         bottomBound = 0;
-<<<<<<< HEAD
         bestTimeMS = newMap.bestTimeMS;
-=======
->>>>>>> sam
+
         tileInit();
     }
 
@@ -238,11 +235,8 @@ public class Map {
                                 over[i][j] = TYPE_EMPTY;
                         }
                     }
-<<<<<<< HEAD
-                    if (tiles[map[x][y]].isSolid() && map[x][y] != TYPE_EMPTY)
-=======
                     if (tiles[map[x][y]].isSolid() || map[x][y] == TYPE_EMPTY)
->>>>>>> sam
+
                         map[x][y] = TYPE_STONE_FLOOR;
                     over[x][y] = type;
                 } else {

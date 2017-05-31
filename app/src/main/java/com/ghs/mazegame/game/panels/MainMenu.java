@@ -233,6 +233,7 @@ public class MainMenu implements Panel {
     }
 
     public void setActive() {
+        camera.setPosition(x * cameraWidth, y * cameraHeight, 0);
         loadThumbnails();
     }
 
