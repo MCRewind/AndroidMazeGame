@@ -29,6 +29,7 @@ import static com.ghs.mazegame.engine.display.Surface.swipe;
 import static com.ghs.mazegame.engine.display.Surface.touchX;
 import static com.ghs.mazegame.engine.display.Surface.touchY;
 import static com.ghs.mazegame.game.Main.SCALE;
+import static com.ghs.mazegame.game.Main.STATE_MAIN_MENU;
 import static com.ghs.mazegame.game.objects.Backplate.makePlate;
 
 public class EditPanel implements Panel {
@@ -46,7 +47,7 @@ public class EditPanel implements Panel {
     private Backplate top, left, corner;
     private ToggleButton[] blockSelect;
     private Image[] blockPreview;
-    private Button testPlay, leftArrow, rightArrow;
+    private Button testPlay, leftArrow, rightArrow, saveButton;
 
     private int curType, typeIter = 1, numPages;
 
@@ -99,9 +100,11 @@ public class EditPanel implements Panel {
         blockPreview[21] = new Image(camera, new Texture(R.drawable.brick_wall_green_prev),   blockSelect[5].getX() + (blockSelect[5].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
         blockPreview[22] = new Image(camera, new Texture(R.drawable.brick_wall_green_prev),   blockSelect[6].getX() + (blockSelect[6].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
         blockPreview[23] = new Image(camera, new Texture(R.drawable.brick_wall_green_prev),   blockSelect[7].getX() + (blockSelect[7].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        testPlay = new Button(camera, new Texture(R.drawable.play_unpressed), new Texture(R.drawable.play_pressed), (corner.getWidth() - SCALE) / 2, (corner.getHeight() - SCALE) / 2, 0.1f, SCALE, SCALE, true);
-        leftArrow = new Button(camera, new Texture(R.drawable.left_arrow), new Texture(R.drawable.left_arrow_down), corner.getWidth() + SCALE / 3, (corner.getHeight() - SCALE / 2) / 2, 0.1f, SCALE / 2, SCALE / 2, true);
-        rightArrow = new Button(camera, new Texture(R.drawable.right_arrow), new Texture(R.drawable.right_arrow_down), camera.getWidth() - ((SCALE / 8) * 7), (top.getHeight() - SCALE / 2) / 2, 0.1f, SCALE / 2, SCALE / 2, true);
+        testPlay = new Button(camera, new Texture(R.drawable.play_unpressed),   new Texture(R.drawable.play_pressed)    , (corner.getWidth() -   SCALE) / 2    , (corner.getHeight() - SCALE) / 2    , 0.1f, SCALE    , SCALE    , true);
+        leftArrow = new Button(camera, new Texture(R.drawable.left_arrow),      new Texture(R.drawable.left_arrow_down) , corner.getWidth() +   SCALE / 3      , (corner.getHeight() - SCALE / 2) / 2, 0.1f, SCALE / 2, SCALE / 2, true);
+        rightArrow = new Button(camera, new Texture(R.drawable.right_arrow),    new Texture(R.drawable.right_arrow_down), camera.getWidth() - ((SCALE / 8) * 7), (top.getHeight() - SCALE / 2) / 2   , 0.1f, SCALE / 2, SCALE / 2, true);
+
+        saveButton = new Button(camera, new Texture(R.drawable.right_arrow), new Texture(R.drawable.right_arrow_down), left.getWidth() - ((SCALE / 8) * 7), (left.getHeight() - SCALE / 2) / 2, 0.1f, SCALE / 2, SCALE / 2, true);
         state = -1;
     }
 
@@ -141,13 +144,18 @@ public class EditPanel implements Panel {
 
     private void updateToolbar() {
         leftArrow.update();
+        saveButton.update();
+        if(saveButton.getState() == Button.STATE_PRESSED){
+            map.save("meh");
+        }
+
         if (leftArrow.getState() == Button.STATE_RELEASED) {
             if (typeIter == 1) {
                 typeIter = numPages;
             } else {
                 typeIter--;
             }
-            map.save("meh");
+            //map.save("meh");
         }
         rightArrow.update();
         if (rightArrow.getState() == Button.STATE_RELEASED) {
@@ -198,6 +206,7 @@ public class EditPanel implements Panel {
             if(blockPreview[i] != null)
                 blockPreview[i].render();
         }
+        saveButton.render();
         testPlay.render();
         leftArrow.render();
         rightArrow.render();
