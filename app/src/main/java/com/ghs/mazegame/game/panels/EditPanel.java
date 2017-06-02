@@ -195,7 +195,8 @@ public class EditPanel implements Panel {
             lastY = y;
             if (map.getTile(x, y, false) == Map.TYPE_STONE_KEY_WALL) {
                 if (touchHeld > 40) {
-                    map.setTile(Map.TYPE_BRICK_WALL_CYAN, x, y);
+                    //map.setTile(Map.TYPE_BRICK_WALL_CYAN, x, y);
+
                 }
             } else if(touchHeld <= 40) {
                 map.setTile(curType, x, y);
