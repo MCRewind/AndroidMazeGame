@@ -3,6 +3,7 @@ package com.ghs.mazegame.engine.display;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 import com.ghs.mazegame.engine.math.Vector3f;
@@ -104,6 +105,11 @@ public class Surface extends GLSurfaceView {
                     break;
             }
         }
+        return true;
+    }
+
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+
         return true;
     }
 }

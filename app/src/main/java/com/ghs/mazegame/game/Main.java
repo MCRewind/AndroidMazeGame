@@ -156,6 +156,18 @@ public class Main implements GLSurfaceView.Renderer {
         });
     }
 
+    public static String getInput() {
+        return activity.getInput();
+    }
+
+    public static void clear() {
+        activity.clear();
+    }
+
+    public static void truncate(int length) {
+        activity.truncate(length);
+    }
+
     private void loadMaps() {
         File mapsFile = new File(context.getFilesDir(), "maps.log");
         try {

@@ -21,7 +21,7 @@ public class Font {
     private float[] widths;
     private VAO[] vaos;
     private int numRows, numColumns, height, cellWidth, cellHeight;
-    private float scale, r, g, b, a;
+    private float scale, maxWidth, r, g, b, a;
 
 
     public Font(Camera camera, int fontId, int infoId, float height, float depth, float r, float g, float b, float a) {
@@ -50,8 +50,11 @@ public class Font {
         };
         float[] texCoords = new float[8];
         float tx, ty, dx, dy = 1f / (float) numRows;
+        maxWidth = 0;
         for (int i = 0; i < numChars; i++) {
             widths[i] = Integer.parseInt(info.nextLine());
+            if(widths[i] > maxWidth)
+                maxWidth = widths[i];
             vertices[6] = widths[i];
             vertices[9] = widths[i];
             tx = (float) (i % numColumns) / (float) numColumns;
@@ -115,5 +118,9 @@ public class Font {
 
     public float getHeight() {
         return height * scale;
+    }
+
+    public float getMaxWidth() {
+        return maxWidth * scale;
     }
 }

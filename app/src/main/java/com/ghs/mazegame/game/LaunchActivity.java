@@ -16,6 +16,7 @@ public class LaunchActivity extends Activity {
 
     private Surface surface;
     private InputMethodManager imm;
+    private StringBuilder input;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +31,8 @@ public class LaunchActivity extends Activity {
         setContentView(surface);
 
         fullScreenCall();
+
+        input = new StringBuilder();
     }
 
     public void fullScreenCall() {
@@ -59,5 +62,26 @@ public class LaunchActivity extends Activity {
 
     public void hideKeyboard() {
         imm.hideSoftInputFromWindow(surface.getWindowToken(), 0);
+    }
+
+    public String getInput() {
+        return input.toString();
+    }
+
+    public void clear() {
+        input.delete(0, input.length());
+    }
+
+    public void truncate(int length) {
+        input.setLength(length);
+    }
+
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        char c = (char) event.getUnicodeChar();
+        if(c >= 32 && c <= 127)
+            input.append(c);
+        else if(keyCode == 67 && input.length() > 0)
+            input.deleteCharAt(input.length() - 1);
+        return true;
     }
 }
