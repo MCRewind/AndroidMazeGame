@@ -1,17 +1,21 @@
 package com.ghs.mazegame.game;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.ghs.mazegame.engine.display.Surface;
 
 public class LaunchActivity extends Activity {
 
     private Surface surface;
+    private InputMethodManager imm;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +24,8 @@ public class LaunchActivity extends Activity {
         surface.setEGLContextClientVersion(2);
         surface.setRenderer(new Main(surface.getResources(), this, this));
         surface.setPreserveEGLContextOnPause(true);
+
+        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         setContentView(surface);
 
@@ -48,12 +54,10 @@ public class LaunchActivity extends Activity {
     }
 
     public void showKeyboard() {
-        Log.e("Map", "Visible");
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
     public void hideKeyboard() {
-        Log.e("Map", "Hidden");
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        imm.hideSoftInputFromWindow(surface.getWindowToken(), 0);
     }
 }
