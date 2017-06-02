@@ -8,6 +8,7 @@ import com.ghs.mazegame.engine.components.Shader;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.components.VAO;
 import com.ghs.mazegame.engine.display.Camera;
+import com.ghs.mazegame.engine.math.Vector3f;
 import com.ghs.mazegame.game.interfaces.GameObject;
 
 import static com.ghs.mazegame.engine.display.Surface.touchX;
@@ -22,23 +23,31 @@ public class Selector implements GameObject {
 
     private float x = 0, y = 0, xOffset = 0, yOffset = 0, width = 0, height = 0;
     private boolean independent;
-    private int state;
-    private Image[] selections;
+    private int selected = 0, state;
+    private float scale = 3, prevScale = 4f;
+    private Image[] selections, previews;
     private int[] directions;
+    private Vector3f dir;
     private Camera camera;
     private VAO vao;
-    private Texture[] textures;
+    private int[] textures;
     private Shader shader;
 
-    //Direction array = [up, down, left, right]
-    public Selector(Camera camera, float x, float y, float depth, float width, float height, int[] directions, boolean independent) {
-        textures = new Texture[2];
-        selections[0] = new Image(camera, new Texture(R.drawable.s_left), shader, 0, 0, 0, 0, 0);
-        selections[1] = new Image(camera, new Texture(R.drawable.s_right), shader, 0, 0, 0, 0, 0);
-        selections[2] = new Image(camera, new Texture(R.drawable.s_up), shader, 0, 0, 0, 0, 0);
-        selections[3] = new Image(camera, new Texture(R.drawable.s_down ), shader, 0, 0, 0, 0, 0);
-        shader = defaultShader;
+    public Selector(Camera camera, float x, float y, float depth, float width, float height, int[] directions, int[] textures, boolean independent) {
+        this.textures = textures;
+        selections = new Image[4];
+        previews = new Image[4];
+        shader = new Shader(R.raw.defaultvs, R.raw.dpadfs);
+        selections[0] = new Image(camera, new Texture(R.drawable.s_left),  shader, x,                     y + height / scale,     width / scale, height / scale, 0.2f);
+        selections[1] = new Image(camera, new Texture(R.drawable.s_right), shader, x + 2 * width / scale, y + height / scale,     width / scale, height / scale, 0.2f);
+        selections[2] = new Image(camera, new Texture(R.drawable.s_up),    shader, x + width / scale,     y,                      width / scale, height / scale, 0.2f);
+        selections[3] = new Image(camera, new Texture(R.drawable.s_down ), shader, x + width / scale,     y + 2 * height / scale, width / scale, height / scale, 0.2f);
+        previews[0]   = new Image(camera, new Texture(textures[0]),        x,                         y + height / prevScale,     width / prevScale, height / prevScale, 0.1f);
+        previews[1]   = new Image(camera, new Texture(textures[1]),        x + 2 * width / prevScale, y + height / prevScale,     width / prevScale, height / prevScale, 0.1f);
+        previews[2]   = new Image(camera, new Texture(textures[2]),        x + width / prevScale,     y,                          width / prevScale, height / prevScale, 0.1f);
+        previews[3]   = new Image(camera, new Texture(textures[3]),        x + width / prevScale,     y + 2 * height / prevScale, width / prevScale, height / prevScale, 0.1f);
         state = STATE_UNPRESSED;
+        dir = new Vector3f();
         this.camera = camera;
         this.x = x;
         this.y = y;
@@ -66,34 +75,39 @@ public class Selector implements GameObject {
     }
 
     public void update() {
-        float tx = touchX;
-        float ty = touchY;
-        if(!independent) {
-            tx += camera.getX();
-            ty += camera.getY();
+        selected = -1;
+        for (int i = 0; i < selections.length; i++)
+            if (selections[i].contains(touchX, touchY))
+                selected = i;
+        if (selected != -1) {
+            float vecX = touchX - (x + width / 2);
+            float vecY = touchY - (y + height / 2);
+            float length = (float) Math.sqrt(vecX * vecX + vecY * vecY);
+            dir.x = vecX / length;
+            dir.y = vecY / length;
+            if(length <= width / 6.0f) {
+                dir.x *= 0.5f;
+                dir.y *= 0.5f;
+            }
         }
-        if ((tx >= x + xOffset && tx < x + xOffset + width) && (ty >= y + yOffset && ty < y + yOffset + height)) {
-            if(state != STATE_PRESSED)
-                state = STATE_PRESSED;
+        else {
+            dir.x = 0;
+            dir.y = 0;
         }
-        else if(touchX == -1 && touchY == -1 && state > STATE_UNPRESSED)
-            state = STATE_UNPRESSED;
-        if(state == STATE_PRESSED)
-            texture = 1;
-        else
-            texture = 0;
     }
 
     public void render() {
-        textures[texture].bind();
-        shader.enable();
-        Matrix4f model = new Matrix4f();
-        model.loadTranslate(x + xOffset, y + yOffset, 0);
-        shader.setUniformMat4f("model", model);
-        shader.setUniformMat4f("projection", independent ? camera.getUntransformedProjection() : camera.getProjection());
-        vao.render();
-        shader.disable();
-        textures[texture].unbind();
+        for (int i = 0; i < previews.length; i++) {
+            previews[i].render();
+        }
+        for (int i = 0; i < selections.length; i++) {
+            shader.enable();
+            if (selected == i)
+                shader.setUniform4f("color", 0.3f, 0.5f, 0.7f, 0.6f);
+            else
+                shader.setUniform4f("color", 0.4f, 0.4f, 0.4f, 0.3f);
+            selections[i].render();
+        }
     }
 
     public int getState() {
@@ -140,7 +154,7 @@ public class Selector implements GameObject {
         this.height = height;
     }
 
-    public void setTexture(int state, Texture texture) {
+    public void setTexture(int state, int texture) {
         textures[state] = texture;
     }
 

@@ -13,7 +13,9 @@ import com.ghs.mazegame.game.Main;
 import com.ghs.mazegame.game.interfaces.Panel;
 import com.ghs.mazegame.game.objects.DPad;
 import com.ghs.mazegame.game.map.Map;
+import com.ghs.mazegame.game.objects.Image;
 import com.ghs.mazegame.game.objects.Player;
+import com.ghs.mazegame.game.objects.Selector;
 
 import java.util.ArrayList;
 
@@ -25,22 +27,26 @@ public class PlayTestPanel implements Panel {
     private Player player;
     private DPad dpad;
 
-    private Camera camera;
+    private int パイロシニコル = 0;
 
+    private Selector sel;
+
+    private Camera camera;
 
     private ArrayList<Integer> items = new ArrayList<>();
 
     public Long startTime;
 
-
     public PlayTestPanel(Camera camera) {
         this.camera = camera;
         dpad = new DPad(camera, SCALE * 0.25f, cameraHeight - SCALE * 3.25f, SCALE * 3, SCALE * 3);
+        sel = new Selector(camera, SCALE * 5.25f, cameraHeight - SCALE * 5.25f, 0.1f, SCALE * 3, SCALE * 3, new int[] {1, 1, 1, 1}, new int[] {R.drawable.stone_key_wall_left, R.drawable.stone_key_wall_right, R.drawable.stone_key_wall_up, R.drawable.stone_key_wall_down}, false);
         player = new Player(camera, new Texture(R.drawable.samby), new Shader(R.raw.defaultvs, R.raw.defaultfs), 0, 0, SCALE, SCALE);
     }
 
     public void update() {
         dpad.update();
+        sel.update();
         updatePlayer();
         updateCamera();
         checkTile();
@@ -49,7 +55,8 @@ public class PlayTestPanel implements Panel {
     public void render() {
         map.render();
         player.render();
-        dpad.render();
+        //dpad.render();
+        sel.render();
     }
 
     private void updatePlayer() {
