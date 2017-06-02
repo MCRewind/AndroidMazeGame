@@ -6,10 +6,12 @@ import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.display.Camera;
 import com.ghs.mazegame.engine.math.Vector3f;
+import com.ghs.mazegame.game.Main;
 import com.ghs.mazegame.game.interfaces.Panel;
 import com.ghs.mazegame.game.objects.Button;
 import com.ghs.mazegame.game.objects.Font;
 import com.ghs.mazegame.game.objects.Image;
+import com.ghs.mazegame.game.objects.Rectangle;
 import com.ghs.mazegame.game.objects.Thumbnail;
 
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import static com.ghs.mazegame.game.Main.maps;
 import static com.ghs.mazegame.game.objects.Button.STATE_PRESSED;
 import static com.ghs.mazegame.game.objects.Thumbnail.STATE_RELEASED;
 import static com.ghs.mazegame.game.objects.Thumbnail.STATE_UNPRESSED;
+import static com.ghs.mazegame.game.objects.Thumbnail.maxChars;
 
 public class MainMenu implements Panel {
 
@@ -54,6 +57,10 @@ public class MainMenu implements Panel {
     private boolean scrolled;
 
     private Font font;
+    private boolean naming;
+    private float sx, sy;
+    private Rectangle textBorder, textMain;
+    private Button enter;
 
     public MainMenu(Camera camera) {
         this.camera = camera;
@@ -78,118 +85,126 @@ public class MainMenu implements Panel {
     }
 
     public void update() {
-        if (y == 0) {
-            if (camera.getY() > 0 && ay != -1) {
-                camera.translate(0, -cameraHeight / SPEED, 0);
-                if (camera.getY() < 0) {
-                    camera.setPosition(camera.getX(), 0, 0);
-                    ay = -1;
-                }
-            }
-            else {
-                dir[0].update();
-                dir[1].update();
-                if (dir[0].getState() == Button.STATE_RELEASED && x > 0) {
-                    ax = x;
-                    --x;
-                } else if (dir[1].getState() == Button.STATE_RELEASED && x < HOR_VIEWS - 1) {
-                    ax = x;
-                    ++x;
-                }
-                if (camera.getX() / cameraWidth > x) {
-                    camera.translate(-cameraWidth / SPEED, 0, 0);
-                    if (camera.getX() / cameraWidth < x)
-                        camera.setPosition(x * cameraWidth, camera.getY(), 0);
-                } else if (camera.getX() / cameraWidth < x) {
-                    camera.translate(cameraWidth / SPEED, 0, 0);
-                    if (camera.getX() / cameraWidth > x)
-                        camera.setPosition(x * cameraWidth, camera.getY(), 0);
-                } else
-                    ax = -1;
-                if (ax == -1) {
-                    actions[x].update();
-                    if (actions[0].getState() == Button.STATE_RELEASED) {
-                        y = 1;
-                        ay = 0;
-                    }
-                }
-                dir[0].setX(camera.getX());
-                dir[1].setX(camera.getX() + cameraWidth - dir[1].getWidth());
-                background.setX(camera.getX());
-            }
-        }
-        else if(y == 1) {
-            if (camera.getY() < cameraHeight && ay != -1) {
-                camera.translate(0, cameraHeight / SPEED, 0);
-                if (camera.getY() > cameraHeight) {
-                    camera.setPosition(camera.getX(), cameraHeight, 0);
-                    ay = -1;
-                }
-            }
-            else {
-                if (!scrolled) {
-                    up.update();
-                    if(up.getState() == STATE_RELEASED) {
-                        if(camera.getY() < cameraHeight + 8) {
-                            y = 0;
-                            ay = 1;
-                        }
-                        else
-                            goTop = true;
-                    }
-                    else if(up.getState() < STATE_PRESSED && !goTop) {
-                        for (int i = 0; i < thumbnails.size(); i++) {
-                            thumbnails.get(i).update();
-                            if (thumbnails.get(i).getState() == STATE_RELEASED) {
-                                state = STATE_EDIT;
-                                map = i;
-                            }
-                        }
-                        newMap.update();
-                        if (newMap.getState() == STATE_RELEASED) {
-                            state = STATE_EDIT;
-                            map = thumbnails.size();
-                        }
+        if(!naming) {
+            if (y == 0) {
+                if (camera.getY() > 0 && ay != -1) {
+                    camera.translate(0, -cameraHeight / SPEED, 0);
+                    if (camera.getY() < 0) {
+                        camera.setPosition(camera.getX(), 0, 0);
+                        ay = -1;
                     }
                 } else {
-                    for (int i = 0; i < thumbnails.size(); i++) {
-                        thumbnails.get(i).setState(STATE_UNPRESSED);
+                    dir[0].update();
+                    dir[1].update();
+                    if (dir[0].getState() == Button.STATE_RELEASED && x > 0) {
+                        ax = x;
+                        --x;
+                    } else if (dir[1].getState() == Button.STATE_RELEASED && x < HOR_VIEWS - 1) {
+                        ax = x;
+                        ++x;
                     }
-                    newMap.setState(STATE_UNPRESSED);
+                    if (camera.getX() / cameraWidth > x) {
+                        camera.translate(-cameraWidth / SPEED, 0, 0);
+                        if (camera.getX() / cameraWidth < x)
+                            camera.setPosition(x * cameraWidth, camera.getY(), 0);
+                    } else if (camera.getX() / cameraWidth < x) {
+                        camera.translate(cameraWidth / SPEED, 0, 0);
+                        if (camera.getX() / cameraWidth > x)
+                            camera.setPosition(x * cameraWidth, camera.getY(), 0);
+                    } else
+                        ax = -1;
+                    if (ax == -1) {
+                        actions[x].update();
+                        if (actions[0].getState() == Button.STATE_RELEASED) {
+                            y = 1;
+                            ay = 0;
+                        }
+                    }
+                    dir[0].setX(camera.getX());
+                    dir[1].setX(camera.getX() + cameraWidth - dir[1].getWidth());
+                    background.setX(camera.getX());
                 }
-                if(!goTop) {
-                    if (lastTouch.y != -1 && touchY != -1)
-                        scroll.y = lastTouch.y - touchY;
-                    else if (swipe.y != 0)
-                        scroll.y = swipe.y;
-                    camera.translate(scroll);
-                    if (camera.getY() + cameraHeight > newMap.getY() + newMap.getHeight() + 11)
-                        camera.setPosition(camera.getX(), newMap.getY() + newMap.getHeight() + 11 - cameraHeight, 0);
-                    if (camera.getY() < cameraHeight)
+            } else if (y == 1) {
+                if (camera.getY() < cameraHeight && ay != -1) {
+                    camera.translate(0, cameraHeight / SPEED, 0);
+                    if (camera.getY() > cameraHeight) {
                         camera.setPosition(camera.getX(), cameraHeight, 0);
-                    if (touchY == -1 && lastTouch.y != -1 && scroll.y < 3 && scroll.y > -3)
-                        scroll.y = 0;
-                    if (scroll.y >= 0.5f || scroll.y <= -0.5f)
-                        scrolled = true;
-                    else if (scroll.y == 0 && touchY == -1)
-                        scrolled = false;
-                    if (scroll.y != 0) {
-                        scroll.y *= 0.9f;
-                        if (scroll.y < 0.5f && scroll.y > -0.5f)
+                        ay = -1;
+                    }
+                } else {
+                    if (!scrolled) {
+                        up.update();
+                        if (up.getState() == STATE_RELEASED) {
+                            if (camera.getY() < cameraHeight + 8) {
+                                y = 0;
+                                ay = 1;
+                            } else
+                                goTop = true;
+                        } else if (up.getState() < STATE_PRESSED && !goTop) {
+                            for (int i = 0; i < thumbnails.size(); i++) {
+                                thumbnails.get(i).update();
+                                if (thumbnails.get(i).getState() == STATE_RELEASED) {
+                                    state = STATE_EDIT;
+                                    map = i;
+                                }
+                            }
+                            newMap.update();
+                            if (newMap.getState() == STATE_RELEASED) {
+                                naming = true;
+                                Main.showKeyboard();
+                            }
+                        }
+                    } else {
+                        for (int i = 0; i < thumbnails.size(); i++) {
+                            thumbnails.get(i).setState(STATE_UNPRESSED);
+                        }
+                        newMap.setState(STATE_UNPRESSED);
+                    }
+                    if (!goTop) {
+                        if (lastTouch.y != -1 && touchY != -1)
+                            scroll.y = lastTouch.y - touchY;
+                        else if (swipe.y != 0)
+                            scroll.y = swipe.y;
+                        camera.translate(scroll);
+                        if (camera.getY() + cameraHeight > newMap.getY() + newMap.getHeight() + 11)
+                            camera.setPosition(camera.getX(), newMap.getY() + newMap.getHeight() + 11 - cameraHeight, 0);
+                        if (camera.getY() < cameraHeight)
+                            camera.setPosition(camera.getX(), cameraHeight, 0);
+                        if (touchY == -1 && lastTouch.y != -1 && scroll.y < 3 && scroll.y > -3)
                             scroll.y = 0;
+                        if (scroll.y >= 0.5f || scroll.y <= -0.5f)
+                            scrolled = true;
+                        else if (scroll.y == 0 && touchY == -1)
+                            scrolled = false;
+                        if (scroll.y != 0) {
+                            scroll.y *= 0.9f;
+                            if (scroll.y < 0.5f && scroll.y > -0.5f)
+                                scroll.y = 0;
+                        }
+                        lastTouch.x = touchX;
+                        lastTouch.y = touchY;
+                    } else {
+                        camera.translate(0, -15, 0);
+                        if (camera.getY() < cameraHeight) {
+                            camera.setPosition(camera.getX(), cameraHeight, 0);
+                            goTop = false;
+                        }
                     }
-                    lastTouch.x = touchX;
-                    lastTouch.y = touchY;
                 }
-                else {
-                    camera.translate(0, -15, 0);
-                    if (camera.getY() < cameraHeight) {
-                        camera.setPosition(camera.getX(), cameraHeight, 0);
-                        goTop = false;
-                    }
-                }
+                up.setPosition(camera.getX(), camera.getY());
             }
-            up.setPosition(camera.getX(), camera.getY());
+        }
+        else if(Main.getInput().length() > maxChars) {
+            Main.truncate(maxChars);
+        }
+        if(naming) {
+            enter.update();
+            if(enter.getState() == Button.STATE_RELEASED) {
+                state = STATE_EDIT;
+                map = maps.size();
+                maps.add(Main.getInput());
+                Main.clear();
+            }
         }
     }
 
@@ -219,10 +234,18 @@ public class MainMenu implements Panel {
                     levelBackground.translate(0, -levelBackground.getHeight());
                 }
             }
-            for (int i = 0; i < thumbnails.size(); i++)
-                thumbnails.get(i).render();
-            newMap.render();
-            up.render();
+            if(!naming) {
+                for (int i = 0; i < thumbnails.size(); i++)
+                    thumbnails.get(i).render();
+                newMap.render();
+                up.render();
+            }
+            if(naming) {
+                textMain.render();
+                textBorder.render();
+                font.drawString(Main.getInput(), sx, sy);
+                enter.render();
+            }
         }
     }
 
@@ -245,6 +268,14 @@ public class MainMenu implements Panel {
         newMap = new Button(camera, new Texture(R.drawable.new_map_button), new Texture(R.drawable.new_map_button_pressed),
                 ((i % 3) * ((cameraWidth - SCALE) / 3f)) + (SCALE * (i % 3 + 1) / 4f),
                 ((i / 3) * ((cameraWidth - SCALE) * 2 / 9f + 6)) + (SCALE * (i / 3 + 1) / 4f) + cameraHeight + SCALE, 0.2f, (cameraWidth - SCALE) / 3f, (cameraWidth - SCALE) * 2 / 9f, false);
+        font = new Font(camera, R.drawable.bunky_font, R.raw.bunky, 6, 0, 1, 1, 1, 1);
+        maxChars = (int) (newMap.getWidth() / font.getMaxWidth());
+        font.setHeight(10);
+        sx = (cameraWidth - maxChars * font.getMaxWidth()) / 2f;
+        sy = cameraHeight / 6f + cameraHeight;
+        textBorder = new Rectangle(camera, sx - 2, sy - 2, 0.12f, maxChars * font.getMaxWidth() + 4, font.getHeight() + 4, 1, 1, 1, 1);
+        textMain   = new Rectangle(camera, sx - 1, sy - 1, 0.11f, maxChars * font.getMaxWidth() + 2, font.getHeight() + 2, 0, 0, 0, 1);
+        enter = new Button(camera, new Texture(R.drawable.menu_enter), new Texture(R.drawable.menu_enter_pressed), sx + maxChars * font.getMaxWidth() + 3, sy, 0.1f, font.getHeight() + 4, font.getHeight() + 4, false);
     }
 
     public int getMap() {

@@ -61,8 +61,8 @@ public class DPad implements GameObject {
     }
 
     public void render() {
-        shader.enable();
         for (int i = 0; i < dpad.length; i++) {
+            shader.enable();
             if (selected == i)
                 shader.setUniform4f("color", 0.3f, 0.5f, 0.7f, 0.6f);
             else

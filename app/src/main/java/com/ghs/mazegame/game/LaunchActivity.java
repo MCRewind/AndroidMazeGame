@@ -18,7 +18,9 @@ public class LaunchActivity extends Activity {
     private InputMethodManager imm;
     private StringBuilder input;
 
-    protected void onCreate(Bundle savedInstanceState) {
+    private boolean keyboard;
+
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         surface = new Surface(this);
@@ -35,6 +37,27 @@ public class LaunchActivity extends Activity {
         input = new StringBuilder();
     }
 
+    public void onDestroy() {
+        super.onDestroy();
+        hideKeyboard();
+    }
+
+    public void onPause() {
+        super.onPause();
+        surface.onPause();
+        if(keyboard) {
+            hideKeyboard();
+            keyboard = true;
+        }
+    }
+
+    public void onResume() {
+        super.onResume();
+        surface.onResume();
+        if(keyboard)
+            showKeyboard();
+    }
+
     public void fullScreenCall() {
         if(Build.VERSION.SDK_INT < 19){
             View v = this.getWindow().getDecorView();
@@ -46,21 +69,13 @@ public class LaunchActivity extends Activity {
         }
     }
 
-    public void onPause() {
-        super.onPause();
-        surface.onPause();
-    }
-
-    public void onResume() {
-        super.onResume();
-        surface.onResume();
-    }
-
     public void showKeyboard() {
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        keyboard = true;
+        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
     }
 
     public void hideKeyboard() {
+        keyboard = false;
         imm.hideSoftInputFromWindow(surface.getWindowToken(), 0);
     }
 

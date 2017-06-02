@@ -24,7 +24,9 @@ import static com.ghs.mazegame.game.Main.defaultShader;
 
 public class Thumbnail implements GameObject {
 
-    public static int
+    public static int maxChars;
+
+    public static final int
         STATE_RELEASED = 0,
         STATE_UNPRESSED = 1,
         STATE_PRESSED = 2,
