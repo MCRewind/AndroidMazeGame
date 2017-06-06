@@ -231,7 +231,7 @@ public class Map {
                     map[x][y] = TYPE_STONE_FLOOR;
                 over[x][y] = type;
             } else {
-                if ((over[x][y] == TYPE_START || over[x][y] == TYPE_END || type == TYPE_STONE_KEY || type == TYPE_GOLD_KEY) && (type < TYPE_STONE_FLOOR || type > TYPE_WOOD_FLOOR))
+                if (over[x][y] != TYPE_EMPTY && (type < TYPE_STONE_FLOOR || type > TYPE_WOOD_FLOOR))
                     over[x][y] = TYPE_EMPTY;
                 map[x][y] = type;
             }
