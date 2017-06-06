@@ -15,12 +15,14 @@ import com.ghs.mazegame.game.objects.Backplate;
 import com.ghs.mazegame.game.objects.Button;
 import com.ghs.mazegame.game.map.Map;
 import com.ghs.mazegame.game.objects.Image;
+import com.ghs.mazegame.game.objects.Selector;
 import com.ghs.mazegame.game.objects.ToggleButton;
 
 import static com.ghs.mazegame.engine.display.Surface.swipe;
 import static com.ghs.mazegame.engine.display.Surface.touchX;
 import static com.ghs.mazegame.engine.display.Surface.touchY;
 import static com.ghs.mazegame.game.Main.SCALE;
+import static com.ghs.mazegame.game.Main.cameraHeight;
 import static com.ghs.mazegame.game.objects.Backplate.makePlate;
 
 public class EditPanel implements Panel {
@@ -42,11 +44,15 @@ public class EditPanel implements Panel {
 
     private int curType, typeIter = 1, numPages, lastX = 0, lastY = 0;
 
+    private Selector sel;
+
     private Context context;
 
     private float touchHeld = 0f;
 
     public static int paintType = 1;
+
+    private boolean selector = false;
 
     private ObjectManager objectManager;
 
@@ -55,6 +61,7 @@ public class EditPanel implements Panel {
         numPages = NUM_BLOCKS / NUM_TOGGLES;
         this.camera = camera;
         this.map = new Map(camera, 0, 0, 20, 20);
+        sel = new Selector(camera, 0, 0, 0.1f, SCALE * 3, SCALE * 3, new int[] {1, 1, 1, 1}, new int[] {R.drawable.stone_key_wall_left, R.drawable.stone_key_wall_right, R.drawable.stone_key_wall_up, R.drawable.stone_key_wall_down}, false);
         map.setState(Map.STATE_EDIT);
         curType = -1;
         for (int i = 0; i < map.getWidth(); ++i)
@@ -110,6 +117,8 @@ public class EditPanel implements Panel {
         if (!top.contains(touchX, touchY) && !left.contains(touchX, touchY) && !corner.contains(touchX, touchY) && curType != -1 && touchX >= 0 && touchY >= 0)
             draw();
         updateToolbar();
+        if (selector)
+            sel.update();
     }
 
     private void updateCamera() {
@@ -193,13 +202,12 @@ public class EditPanel implements Panel {
             }
             lastX = x;
             lastY = y;
-            if (map.getTile(x, y, false) == Map.TYPE_STONE_KEY_WALL) {
-                if (touchHeld > 40) {
-                    //map.setTile(Map.TYPE_BRICK_WALL_CYAN, x, y);
-
-                }
+            if (map.getTile(x, y, false) == Map.TYPE_STONE_KEY_WALL && touchHeld > 40) {
+                sel.setPosition(x * SCALE, y * SCALE);
+                selector = true;
             } else if(touchHeld <= 40) {
                 map.setTile(curType, x, y);
+                selector = false;
             }
         }
         else
@@ -221,6 +229,8 @@ public class EditPanel implements Panel {
         testPlay.render();
         leftArrow.render();
         rightArrow.render();
+        if (selector)
+            sel.render();
     }
 
     public int checkState() {

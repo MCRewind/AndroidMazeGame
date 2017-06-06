@@ -42,10 +42,10 @@ public class Selector implements GameObject {
         selections[1] = new Image(camera, new Texture(R.drawable.s_right), shader, x + 2 * width / scale, y + height / scale,     width / scale, height / scale, 0.2f);
         selections[2] = new Image(camera, new Texture(R.drawable.s_up),    shader, x + width / scale,     y,                      width / scale, height / scale, 0.2f);
         selections[3] = new Image(camera, new Texture(R.drawable.s_down ), shader, x + width / scale,     y + 2 * height / scale, width / scale, height / scale, 0.2f);
-        previews[0]   = new Image(camera, new Texture(textures[0]),        x,                         y + height / prevScale,     width / prevScale, height / prevScale, 0.1f);
-        previews[1]   = new Image(camera, new Texture(textures[1]),        x + 2 * width / prevScale, y + height / prevScale,     width / prevScale, height / prevScale, 0.1f);
-        previews[2]   = new Image(camera, new Texture(textures[2]),        x + width / prevScale,     y,                          width / prevScale, height / prevScale, 0.1f);
-        previews[3]   = new Image(camera, new Texture(textures[3]),        x + width / prevScale,     y + 2 * height / prevScale, width / prevScale, height / prevScale, 0.1f);
+        previews[0]   = new Image(camera, new Texture(textures[0]),        selections[0].getX(),                         selections[0].getY(),     width / prevScale, height / prevScale, 0.1f);
+        previews[1]   = new Image(camera, new Texture(textures[1]),        selections[1].getX(), selections[1].getY(),     width / prevScale, height / prevScale, 0.1f);
+        previews[2]   = new Image(camera, new Texture(textures[2]),        selections[2].getX(),     selections[2].getY(),                          width / prevScale, height / prevScale, 0.1f);
+        previews[3]   = new Image(camera, new Texture(textures[3]),        selections[3].getX(),     selections[3].getY(), width / prevScale, height / prevScale, 0.1f);
         state = STATE_UNPRESSED;
         dir = new Vector3f();
         this.camera = camera;
@@ -164,8 +164,19 @@ public class Selector implements GameObject {
     }
 
     public void setPosition(float x, float y) {
+        Log.d("x", x + "");
+        Log.d("y", y + "");
         this.x = x;
         this.y = y;
+        selections[0].setPosition(x,                     y + height / scale);
+        selections[1].setPosition(x + 2 * width / scale, y + height / scale);
+        selections[2].setPosition(x + width / scale,     y);
+        selections[3].setPosition(x + width / scale,     y + 2 * height / scale);
+        previews[0].setPosition(selections[0].getX(),       selections[0].getY());
+        previews[1].setPosition(selections[1].getX(),       selections[1].getY());
+        previews[2].setPosition(selections[2].getX(),       selections[2].getY());
+        previews[3].setPosition(selections[3].getX(),       selections[3].getY());
+
     }
 
     public void setOffset(float x, float y) {
