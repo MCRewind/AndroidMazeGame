@@ -219,23 +219,21 @@ public class Map {
     }
 
     public void setTile(int type, int x, int y) {
-        if (map.length > 0) {
-            if ((x >= 0) && (y >= 0) && (x < map[0].length) && (x < map[0].length)) {
-                if (type == TYPE_START || type == TYPE_END || type == TYPE_STONE_KEY || type == TYPE_GOLD_KEY) {
-                    for (int i = 0; i < width; i++) {
-                        for (int j = 0; j < height; j++) {
-                            if (over[i][j] == type)
-                                over[i][j] = TYPE_EMPTY;
-                        }
+        if ((x >= 0) && (y >= 0) && (x < map[0].length) && (x < map[0].length)) {
+            if (type == TYPE_START || type == TYPE_END || type == TYPE_STONE_KEY || type == TYPE_GOLD_KEY) {
+                for (int i = 0; i < width; i++) {
+                    for (int j = 0; j < height; j++) {
+                        if (over[i][j] == type)
+                            over[i][j] = TYPE_EMPTY;
                     }
-                    if (tiles[map[x][y]].isSolid() || map[x][y] == TYPE_EMPTY)
-                        map[x][y] = TYPE_STONE_FLOOR;
-                    over[x][y] = type;
-                } else {
-                    if ((over[x][y] == TYPE_START || over[x][y] == TYPE_END || type == TYPE_STONE_KEY || type == TYPE_GOLD_KEY) && (type < TYPE_STONE_FLOOR || type > TYPE_WOOD_FLOOR))
-                        over[x][y] = TYPE_EMPTY;
-                    map[x][y] = type;
                 }
+                if (tiles[map[x][y]].isSolid() || map[x][y] == TYPE_EMPTY)
+                    map[x][y] = TYPE_STONE_FLOOR;
+                over[x][y] = type;
+            } else {
+                if ((over[x][y] == TYPE_START || over[x][y] == TYPE_END || type == TYPE_STONE_KEY || type == TYPE_GOLD_KEY) && (type < TYPE_STONE_FLOOR || type > TYPE_WOOD_FLOOR))
+                    over[x][y] = TYPE_EMPTY;
+                map[x][y] = type;
             }
         }
     }
@@ -378,24 +376,16 @@ public class Map {
     public void load(String filename) {
         File file = new File(context.getFilesDir(), filename + ".map");
         if(file.exists()) {
-            Log.e("File", "Exists!");
             int size = (int) file.length();
             byte[] bytes = new byte[size];
             try {
                 BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
                 buf.read(bytes, 0, bytes.length);
-
                 buf.close();
                 width = bytes[0] & 0xFF;
                 height = bytes[1] & 0xFF;
                 map = new int[width][height];
                 over = new int[width][height];
-                for (int i = 0; i < map.length; i++) {
-                    for (int j = 0; j < map[0].length; j++) {
-                        map[i][j] = TYPE_EMPTY;
-                        over[i][j] = TYPE_EMPTY;
-                    }
-                }
 
                 for(int y = 0; y < height; y++) {
                     for (int x = 0; x < width; x++) {

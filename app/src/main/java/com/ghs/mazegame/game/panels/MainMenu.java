@@ -16,6 +16,7 @@ import com.ghs.mazegame.game.objects.Thumbnail;
 
 import java.util.ArrayList;
 
+import static android.view.View.inflate;
 import static com.ghs.mazegame.engine.display.Surface.swipe;
 import static com.ghs.mazegame.engine.display.Surface.touchX;
 import static com.ghs.mazegame.engine.display.Surface.touchY;
@@ -34,6 +35,8 @@ public class MainMenu implements Panel {
     private final int HOR_VIEWS = 2;
 
     private final float SPEED = 10;
+
+    private final float CURSOR_FPS = 2;
 
     private int state = -1;
 
@@ -56,11 +59,17 @@ public class MainMenu implements Panel {
     private Vector3f scroll;
     private boolean scrolled;
 
+    private String name;
     private Font font;
     private boolean naming;
     private float sx, sy;
     private Rectangle textBorder, textMain;
     private Button enter;
+
+    private Rectangle cursor;
+    private float pastTime, mspb;
+    private boolean showCursor;
+    private String lastInput;
 
     public MainMenu(Camera camera) {
         this.camera = camera;
@@ -81,6 +90,10 @@ public class MainMenu implements Panel {
         lastTouch = new Vector3f(-1, -1, -1);
         scroll = new Vector3f();
         scrolled = false;
+        pastTime = 0;
+        mspb = 1000 / CURSOR_FPS;
+        showCursor = true;
+        lastInput = new String();
         loadThumbnails();
     }
 
@@ -152,6 +165,12 @@ public class MainMenu implements Panel {
                             if (newMap.getState() == STATE_RELEASED) {
                                 naming = true;
                                 Main.showKeyboard();
+                                sx = (cameraWidth - maxChars * font.getMaxWidth() - font.getHeight() - 5) / 2f;
+                                sy = cameraHeight / 6f;
+                                textBorder.setPosition(camera.getX() + sx - 2, camera.getY() + sy - 2);
+                                textMain.setPosition(camera.getX() + sx - 1, camera.getY() + sy - 1);
+                                enter.setPosition(sx + maxChars * font.getMaxWidth() + 3, camera.getY() + sy - 2);
+                                pastTime = System.nanoTime() / 100000f;
                             }
                         }
                     } else {
@@ -194,17 +213,29 @@ public class MainMenu implements Panel {
                 up.setPosition(camera.getX(), camera.getY());
             }
         }
-        else if(Main.getInput().length() > maxChars) {
-            Main.truncate(maxChars);
-        }
-        if(naming) {
+        else {
+            if(Main.getInput().length() > maxChars)
+                Main.truncate(maxChars);
+            name = Main.getInput();
+            if(!lastInput.equals(name)) {
+                pastTime = System.nanoTime() / 1000000f;
+                showCursor = true;
+            }
+            if(System.nanoTime() / 1000000f - pastTime > mspb) {
+                showCursor = !showCursor;
+                pastTime += mspb;
+            }
+            else
+                cursor.setPosition(camera.getX() + sx + font.getLength(name), camera.getY() + sy);
             enter.update();
             if(enter.getState() == Button.STATE_RELEASED) {
                 state = STATE_EDIT;
                 map = maps.size();
-                maps.add(Main.getInput());
+                maps.add(name);
                 Main.clear();
+                Main.hideKeyboard();
             }
+            lastInput = name;
         }
     }
 
@@ -240,11 +271,13 @@ public class MainMenu implements Panel {
                 newMap.render();
                 up.render();
             }
-            if(naming) {
+            else {
                 textMain.render();
                 textBorder.render();
-                font.drawString(Main.getInput(), sx, sy);
+                font.drawString(name, camera.getX() + sx, camera.getY() + sy);
                 enter.render();
+                if(showCursor)
+                    cursor.render();
             }
         }
     }
@@ -271,11 +304,13 @@ public class MainMenu implements Panel {
         font = new Font(camera, R.drawable.bunky_font, R.raw.bunky, 6, 0, 1, 1, 1, 1);
         maxChars = (int) (newMap.getWidth() / font.getMaxWidth());
         font.setHeight(10);
-        sx = (cameraWidth - maxChars * font.getMaxWidth()) / 2f;
+        sx = (cameraWidth - maxChars * font.getMaxWidth() - font.getHeight() - 5) / 2f;
         sy = cameraHeight / 6f + cameraHeight;
         textBorder = new Rectangle(camera, sx - 2, sy - 2, 0.12f, maxChars * font.getMaxWidth() + 4, font.getHeight() + 4, 1, 1, 1, 1);
         textMain   = new Rectangle(camera, sx - 1, sy - 1, 0.11f, maxChars * font.getMaxWidth() + 2, font.getHeight() + 2, 0, 0, 0, 1);
-        enter = new Button(camera, new Texture(R.drawable.menu_enter), new Texture(R.drawable.menu_enter_pressed), sx + maxChars * font.getMaxWidth() + 3, sy, 0.1f, font.getHeight() + 4, font.getHeight() + 4, false);
+        enter = new Button(camera, new Texture(R.drawable.menu_enter), new Texture(R.drawable.menu_enter_pressed), sx + maxChars * font.getMaxWidth() + 3, sy - 2, 0.1f, font.getHeight() + 4, font.getHeight() + 4, false);
+        cursor = new Rectangle(camera, sx, sy, 0.05f, 1, font.getHeight(), 1, 1, 1, 1);
+        name = "";
     }
 
     public int getMap() {

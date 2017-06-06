@@ -24,6 +24,7 @@ public class Surface extends GLSurfaceView {
 
     public Surface(Context context) {
         super(context);
+        setPreserveEGLContextOnPause(true);
     }
 
     public boolean onTouchEvent(MotionEvent e) {

@@ -26,7 +26,6 @@ public class LaunchActivity extends Activity {
         surface = new Surface(this);
         surface.setEGLContextClientVersion(2);
         surface.setRenderer(new Main(surface.getResources(), this, this));
-        surface.setPreserveEGLContextOnPause(true);
 
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -44,22 +43,15 @@ public class LaunchActivity extends Activity {
 
     public void onPause() {
         super.onPause();
-        surface.onPause();
-        if(keyboard) {
-            hideKeyboard();
-            keyboard = true;
-        }
+        hideKeyboard();
     }
 
     public void onResume() {
         super.onResume();
-        surface.onResume();
-        if(keyboard)
-            showKeyboard();
     }
 
     public void fullScreenCall() {
-        if(Build.VERSION.SDK_INT < 19){
+        if(Build.VERSION.SDK_INT < 19) {
             View v = this.getWindow().getDecorView();
             v.setSystemUiVisibility(View.GONE);
         } else {
@@ -89,6 +81,10 @@ public class LaunchActivity extends Activity {
 
     public void truncate(int length) {
         input.setLength(length);
+    }
+
+    public boolean keyboardShowing() {
+        return keyboard;
     }
 
     public boolean onKeyUp(int keyCode, KeyEvent event) {
