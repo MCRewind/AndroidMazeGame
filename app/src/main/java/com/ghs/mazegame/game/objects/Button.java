@@ -157,4 +157,8 @@ public class Button implements GameObject {
         this.xOffset = x;
         this.yOffset = y;
     }
+
+    public void setState(int state) {
+        this.state = state;
+    }
 }

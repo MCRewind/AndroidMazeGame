@@ -3,15 +3,13 @@ package com.ghs.mazegame.engine.display;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 import com.ghs.mazegame.engine.math.Vector3f;
 import com.ghs.mazegame.game.Main;
 
 public class Surface extends GLSurfaceView {
-
-    private volatile float pastX = -1;
-    private volatile float pastY = -1;
 
     public static float touchX = -1;
     public static float touchY = -1;
@@ -26,12 +24,11 @@ public class Surface extends GLSurfaceView {
 
     public Surface(Context context) {
         super(context);
+        setPreserveEGLContextOnPause(true);
     }
 
     public boolean onTouchEvent(MotionEvent e) {
         int pointerCount = e.getPointerCount();
-
-        Log.e("Pointers", "Pointer Count: " + pointerCount);
 
         float tx = e.getX();
         float ty = e.getY();
@@ -92,13 +89,6 @@ public class Surface extends GLSurfaceView {
         }
         else if(!isPanning && pointerCount == 1) {
             switch (e.getActionMasked()) {
-                case MotionEvent.ACTION_DOWN:
-                    try {
-                        Thread.sleep(5);
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
-                    break;
                 case MotionEvent.ACTION_UP:
                     touchX = -1;
                     touchY = -1;
@@ -109,6 +99,11 @@ public class Surface extends GLSurfaceView {
                     break;
             }
         }
+        return true;
+    }
+
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+
         return true;
     }
 }
