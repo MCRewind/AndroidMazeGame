@@ -81,7 +81,7 @@ public class MainMenu implements Panel {
         levelBackground = new Image(camera, new Texture(R.drawable.menu_level_background), 0, cameraHeight, 0.9f, cameraWidth, SCALE * 7, false);
         actions = new Button[HOR_VIEWS];
         actions[0] = new Button(camera, new Texture(R.drawable.menu_levels_button), new Texture(R.drawable.menu_levels_button_pressed), (cameraWidth - 82) / 2, 55, 0.2f, 82, 22, false);
-        actions[1] = new Button(camera, new Texture(R.drawable.menu_edit_button), new Texture(R.drawable.menu_edit_button_pressed), cameraWidth + ((cameraWidth - 48) / 2f), 57, 0.2f, 48, 20, false);
+        actions[1] = new Button(camera, new Texture(R.drawable.menu_help_button), new Texture(R.drawable.menu_help_button_pressed), cameraWidth + ((cameraWidth - 56) / 2f), 55, 0.2f, 56, 22 , false);
         dir = new Button[2];
         dir[0] = new Button(camera, new Texture(R.drawable.left_menu_arrow), new Texture(R.drawable.left_menu_arrow_pressed), 0, 0, 0.1f, SCALE * 2, cameraHeight, false);
         dir[1] = new Button(camera, new Texture(R.drawable.right_menu_arrow), new Texture(R.drawable.right_menu_arrow_pressed), camera.getWidth() - SCALE * 2, 0, 0.1f, SCALE * 2, cameraHeight, false);
@@ -214,9 +214,11 @@ public class MainMenu implements Panel {
             }
         }
         else {
-            if(Main.getInput().length() > maxChars)
-                Main.truncate(maxChars);
             name = Main.getInput();
+            if(font.getLength(name) > textMain.getWidth() - 2) {
+                Main.truncate(name.length() - 1);
+                name = Main.getInput();
+            }
             if(!lastInput.equals(name)) {
                 pastTime = System.nanoTime() / 1000000f;
                 showCursor = true;
