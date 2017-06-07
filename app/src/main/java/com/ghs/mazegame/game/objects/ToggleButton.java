@@ -15,22 +15,25 @@ import static com.ghs.mazegame.game.Main.defaultShader;
 public class ToggleButton implements GameObject {
 
     public static int
-        STATE_UNPRESSED = 0,
-        STATE_PRESSED = 2;
+        STATE_FIRST_UNPRESSED = 0,
+        STATE_UNPRESSED = 1,
+        STATE_FIRST_PRESSED = 2,
+        STATE_PRESSED = 3;
 
     private float x = 0, y = 0, width = 0, height = 0;
     private int state, texture;
-    private boolean reset;
+    private boolean reset, independent;
     private Camera camera;
     private VAO vao;
     private Texture[] textures;
     private Shader shader;
 
-    public ToggleButton(Camera camera, Texture unpressed, Texture pressed, float x, float y, float width, float height) {
+    public ToggleButton(Camera camera, Texture unpressed, Texture pressed, float x, float y, float depth, float width, float height, boolean independent) {
         textures = new Texture[2];
         textures[0] = unpressed;
         textures[1] = pressed;
         shader = defaultShader;
+        this.independent = independent;
         this.camera = camera;
         this.x = x;
         this.y = y;
@@ -38,10 +41,10 @@ public class ToggleButton implements GameObject {
         this.height = height;
         reset = true;
         float[] vertices = new float[] {
-            0.0f,  0.0f,   0.1f, //TOP LEFT
-            0.0f,  height, 0.1f, //BOTTOM LEFT
-            width, height, 0.1f, //BOTTOM RIGHT
-            width, 0.0f,   0.1f  //TOP RIGHT
+            0.0f,  0.0f,   depth, //TOP LEFT
+            0.0f,  height, depth, //BOTTOM LEFT
+            width, height, depth, //BOTTOM RIGHT
+            width, 0.0f,   depth  //TOP RIGHT
         };
         int[] indices = new int[] {
             0, 1, 3,
@@ -61,10 +64,10 @@ public class ToggleButton implements GameObject {
         float y = touchY;
         if (contains(x, y) && reset) {
             reset = false;
-            if (state > STATE_UNPRESSED + 1)
-                state = STATE_UNPRESSED;
+            if (state > STATE_UNPRESSED)
+                state = STATE_FIRST_UNPRESSED;
             else
-                state = STATE_PRESSED;
+                state = STATE_FIRST_PRESSED;
         }
         else if(state % 2 == 0)
             ++state;
