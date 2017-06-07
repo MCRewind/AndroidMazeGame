@@ -89,6 +89,13 @@ public class Surface extends GLSurfaceView {
         }
         else if(!isPanning && pointerCount == 1) {
             switch (e.getActionMasked()) {
+                case MotionEvent.ACTION_DOWN:
+                    try {
+                        Thread.sleep(5);
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
+                    break;
                 case MotionEvent.ACTION_UP:
                     touchX = -1;
                     touchY = -1;
