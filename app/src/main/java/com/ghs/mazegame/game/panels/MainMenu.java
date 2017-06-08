@@ -214,20 +214,20 @@ public class MainMenu implements Panel {
             }
         }
         else {
+            if(!Main.keyboardShowing())
+                Main.showKeyboard();
             name = Main.getInput();
             if(font.getLength(name) > textMain.getWidth() - 2) {
                 Main.truncate(name.length() - 1);
                 name = Main.getInput();
             }
-            if(!lastInput.equals(name)) {
-                pastTime = System.nanoTime() / 1000000f;
+            if(!lastInput.equals(name))
                 showCursor = true;
-            }
-            if(System.nanoTime() / 1000000f - pastTime > mspb) {
+            else if(System.nanoTime() / 1000000f - pastTime > mspb) {
                 showCursor = !showCursor;
                 pastTime += mspb;
             }
-            else
+            if(showCursor)
                 cursor.setPosition(camera.getX() + sx + font.getLength(name), camera.getY() + sy);
             enter.update();
             if(enter.getState() == Button.STATE_RELEASED) {
