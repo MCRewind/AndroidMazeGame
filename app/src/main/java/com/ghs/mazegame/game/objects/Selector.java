@@ -9,6 +9,7 @@ import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.components.VAO;
 import com.ghs.mazegame.engine.display.Camera;
 import com.ghs.mazegame.engine.math.Vector3f;
+import com.ghs.mazegame.game.Main;
 import com.ghs.mazegame.game.interfaces.GameObject;
 
 import static com.ghs.mazegame.engine.display.Surface.touchX;
@@ -32,20 +33,23 @@ public class Selector implements GameObject {
     private VAO vao;
     private int[] textures;
     private Shader shader;
+    float size = 0;
 
     public Selector(Camera camera, float x, float y, float depth, float width, float height, int[] directions, int[] textures, boolean independent) {
+        size = width/3;
         this.textures = textures;
         selections = new Image[4];
         previews = new Image[4];
         shader = new Shader(R.raw.defaultvs, R.raw.dpadfs);
-        selections[0] = new Image(camera, new Texture(R.drawable.s_left),  shader, x,                     y + height / scale,     width / scale, height / scale, 0.2f);
-        selections[1] = new Image(camera, new Texture(R.drawable.s_right), shader, x + 2 * width / scale, y + height / scale,     width / scale, height / scale, 0.2f);
-        selections[2] = new Image(camera, new Texture(R.drawable.s_up),    shader, x + width / scale,     y,                      width / scale, height / scale, 0.2f);
-        selections[3] = new Image(camera, new Texture(R.drawable.s_down ), shader, x + width / scale,     y + 2 * height / scale, width / scale, height / scale, 0.2f);
-        previews[0]   = new Image(camera, new Texture(textures[0]),        selections[0].getX(),                         selections[0].getY(),     width / prevScale, height / prevScale, 0.1f);
-        previews[1]   = new Image(camera, new Texture(textures[1]),        selections[1].getX(), selections[1].getY(),     width / prevScale, height / prevScale, 0.1f);
-        previews[2]   = new Image(camera, new Texture(textures[2]),        selections[2].getX(),     selections[2].getY(),                          width / prevScale, height / prevScale, 0.1f);
-        previews[3]   = new Image(camera, new Texture(textures[3]),        selections[3].getX(),     selections[3].getY(), width / prevScale, height / prevScale, 0.1f);
+        selections[0] = new Image(camera, new Texture(R.drawable.s_left),  shader, 0,0,     width / scale, height / scale, 0.2f);
+        selections[1] = new Image(camera, new Texture(R.drawable.s_right), shader, 0,0,     width / scale, height / scale, 0.2f);
+        selections[2] = new Image(camera, new Texture(R.drawable.s_up),    shader, 0,0,     width / scale, height / scale, 0.2f);
+        selections[3] = new Image(camera, new Texture(R.drawable.s_down ), shader, 0,0,     width / scale, height / scale, 0.2f);
+        previews[0]   = new Image(camera, new Texture(textures[0]),                0,0,     width / prevScale, height / prevScale, 0.1f);
+        previews[1]   = new Image(camera, new Texture(textures[1]),                0,0,     width / prevScale, height / prevScale, 0.1f);
+        previews[2]   = new Image(camera, new Texture(textures[2]),                0,0,     width / prevScale, height / prevScale, 0.1f);
+        previews[3]   = new Image(camera, new Texture(textures[3]),                0,0,     width / prevScale, height / prevScale, 0.1f);
+        setPosition(x, y);
         state = STATE_UNPRESSED;
         dir = new Vector3f();
         this.camera = camera;
@@ -164,18 +168,16 @@ public class Selector implements GameObject {
     }
 
     public void setPosition(float x, float y) {
-        Log.d("x", x + "");
-        Log.d("y", y + "");
         this.x = x;
         this.y = y;
-        selections[0].setPosition(x,                     y + height / scale);
-        selections[1].setPosition(x + 2 * width / scale, y + height / scale);
-        selections[2].setPosition(x + width / scale,     y);
-        selections[3].setPosition(x + width / scale,     y + 2 * height / scale);
-        previews[0].setPosition(selections[0].getX(),       selections[0].getY());
-        previews[1].setPosition(selections[1].getX(),       selections[1].getY());
-        previews[2].setPosition(selections[2].getX(),       selections[2].getY());
-        previews[3].setPosition(selections[3].getX(),       selections[3].getY());
+        selections[0].setPosition(x + size,                     y + height / scale + size / 2);
+        selections[1].setPosition(x + 2 * width / scale + size, y + height / scale + size / 2);
+        selections[2].setPosition(x + width / scale + size,     y + size / 2);
+        selections[3].setPosition(x + width / scale + size,     y + 2 * height / scale + size / 2);
+        previews[0].setPosition(selections[0].getX(),              selections[0].getY() + size/8);
+        previews[1].setPosition(selections[1].getX() + size/4,     selections[1].getY() + size/8);
+        previews[2].setPosition(selections[2].getX() + size/8,     selections[2].getY());
+        previews[3].setPosition(selections[3].getX() + size/8,     selections[3].getY() + size/4);
 
     }
 

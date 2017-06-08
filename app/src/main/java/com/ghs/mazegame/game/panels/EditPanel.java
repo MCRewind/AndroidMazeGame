@@ -205,7 +205,7 @@ public class EditPanel implements Panel {
             if (map.getTile(x, y, false) == Map.TYPE_STONE_KEY_WALL && touchHeld > 40) {
                 sel.setPosition(x * SCALE, y * SCALE);
                 selector = true;
-            } else if(touchHeld <= 40) {
+            } else if(touchHeld <= 40 && !selector) {
                 map.setTile(curType, x, y);
                 selector = false;
             }
