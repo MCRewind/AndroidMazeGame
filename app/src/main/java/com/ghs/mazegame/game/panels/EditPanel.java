@@ -6,12 +6,14 @@ import android.util.Log;
 import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.display.Camera;
+<<<<<<< HEAD
 import com.ghs.mazegame.engine.display.Surface;
 import com.ghs.mazegame.engine.math.Vector3f;
 import com.ghs.mazegame.engine.utils.ObjectManager;
+=======
+>>>>>>> 6fa6cce8af494253dffc7a5ab617378610775ebe
 import com.ghs.mazegame.game.Main;
 import com.ghs.mazegame.game.interfaces.Panel;
-import com.ghs.mazegame.game.objects.Backplate;
 import com.ghs.mazegame.game.objects.Button;
 import com.ghs.mazegame.game.map.Map;
 import com.ghs.mazegame.game.objects.Image;
@@ -21,7 +23,8 @@ import static com.ghs.mazegame.engine.display.Surface.swipe;
 import static com.ghs.mazegame.engine.display.Surface.touchX;
 import static com.ghs.mazegame.engine.display.Surface.touchY;
 import static com.ghs.mazegame.game.Main.SCALE;
-import static com.ghs.mazegame.game.objects.Backplate.makePlate;
+import static com.ghs.mazegame.game.Main.cameraHeight;
+import static com.ghs.mazegame.game.objects.Image.makePlateTexture;
 
 public class EditPanel implements Panel {
 
@@ -35,13 +38,15 @@ public class EditPanel implements Panel {
 
     private Camera camera;
 
-    private Backplate top, left, corner;
+    private Image top, left, corner;
     private ToggleButton[] blockSelect;
     private Image[] blockPreview;
-    private Button testPlay, leftArrow, rightArrow;
+    private Button testPlay, leftArrow, rightArrow, save, saveAs;
+    private ToggleButton eraser;
 
     private int curType, typeIter = 1, numPages, lastX = 0, lastY = 0;
 
+<<<<<<< HEAD
     private Context context;
 
     private float touchHeld = 0f;
@@ -52,6 +57,9 @@ public class EditPanel implements Panel {
 
     public EditPanel(Camera camera, Context context) {
         this.context = context;
+=======
+    public EditPanel(Camera camera) {
+>>>>>>> 6fa6cce8af494253dffc7a5ab617378610775ebe
         numPages = NUM_BLOCKS / NUM_TOGGLES;
         this.camera = camera;
         this.map = new Map(camera, 0, 0, 20, 20);
@@ -60,46 +68,50 @@ public class EditPanel implements Panel {
         for (int i = 0; i < map.getWidth(); ++i)
             for (int j = 0; j < map.getHeight(); ++j)
                 map.setTile(Map.TYPE_EMPTY, i, j);
-        corner = new Backplate(camera, 0, 0, SCALE * 2, (int) (SCALE * 1.5f), 2);
-        top = new Backplate(camera, SCALE * 2, 0, camera.getWidth() - SCALE * 2, (int) (SCALE * 1.5f), 2);
-        left = new Backplate(camera, 0, SCALE * 1.5f, SCALE * 2, (int) (camera.getHeight() - SCALE * 1.5f), 2);
+        corner = Image.makePlate(camera, 0, 0, 0.5f, SCALE * 2, (int) (SCALE * 1.5f), 2, false, true);
+        top = Image.makePlate(camera, SCALE * 2, 0, 0.5f, camera.getWidth() - SCALE * 2, (int) (SCALE * 1.5f), 2, false, true);
+        left = Image.makePlate(camera, 0, SCALE * 1.5f, 0.5f, SCALE * 2, (int) (camera.getHeight() - SCALE * 1.5f), 2, false, true);
         blockSelect = new ToggleButton[NUM_TOGGLES];
         blockPreview = new Image[NUM_BLOCKS];
         int dim = SCALE - 1;
         for (int i = 0; i < NUM_TOGGLES; i++)
-            blockSelect[i] = new ToggleButton(camera, makePlate(SCALE, SCALE, 1, false), makePlate(SCALE, SCALE, 1, true), corner.getWidth() + ((top.getWidth() - NUM_TOGGLES * (dim + 1)) / 2) + i * (dim + 1), (top.getHeight() - dim) / 2, dim, dim);
+            blockSelect[i] = new ToggleButton(camera, makePlateTexture(SCALE, SCALE, 1, false), makePlateTexture(SCALE, SCALE, 1, true), corner.getWidth() + ((top.getWidth() - NUM_TOGGLES * (dim + 1)) / 2) + i * (dim + 1), (top.getHeight() - dim) / 2, 0.2f, dim, dim, true);
         dim = SCALE - 6;
-        blockPreview[0]  = new Image(camera, new Texture(R.drawable.brick_wall_prev),         blockSelect[0].getX() + (blockSelect[0].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[1]  = new Image(camera, new Texture(R.drawable.square_wall_prev),        blockSelect[1].getX() + (blockSelect[1].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[2]  = new Image(camera, new Texture(R.drawable.s_wall_prev),             blockSelect[2].getX() + (blockSelect[2].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[3]  = new Image(camera, new Texture(R.drawable.stone_floor_prev),        blockSelect[3].getX() + (blockSelect[3].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[4]  = new Image(camera, new Texture(R.drawable.limestone_floor_prev),    blockSelect[4].getX() + (blockSelect[4].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[5]  = new Image(camera, new Texture(R.drawable.wood_floor_prev),         blockSelect[5].getX() + (blockSelect[5].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[6]  = new Image(camera, new Texture(R.drawable.start_prev),              blockSelect[6].getX() + (blockSelect[6].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[7]  = new Image(camera, new Texture(R.drawable.end_prev),                blockSelect[7].getX() + (blockSelect[7].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[8]  = new Image(camera, new Texture(R.drawable.brick_wall_red_prev),    blockSelect[0].getX() + (blockSelect[0].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[9]  = new Image(camera, new Texture(R.drawable.brick_wall_orange_prev),    blockSelect[1].getX() + (blockSelect[1].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[10] = new Image(camera, new Texture(R.drawable.brick_wall_yellow_prev),   blockSelect[2].getX() + (blockSelect[2].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[11] = new Image(camera, new Texture(R.drawable.brick_wall_green_prev), blockSelect[3].getX() + (blockSelect[3].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[12] = new Image(camera, new Texture(R.drawable.brick_wall_cyan_prev),  blockSelect[4].getX() + (blockSelect[4].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[13] = new Image(camera, new Texture(R.drawable.brick_wall_blue_prev),  blockSelect[5].getX() + (blockSelect[5].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[14] = new Image(camera, new Texture(R.drawable.brick_wall_purple_prev),     blockSelect[6].getX() + (blockSelect[6].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[15] = new Image(camera, new Texture(R.drawable.brick_wall_magenta_prev),  blockSelect[7].getX() + (blockSelect[7].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[16] = new Image(camera, new Texture(R.drawable.sandstone_wall_prev),     blockSelect[0].getX() + (blockSelect[0].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[17] = new Image(camera, new Texture(R.drawable.sandstone_floor_prev),    blockSelect[1].getX() + (blockSelect[1].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[18] = new Image(camera, new Texture(R.drawable.stone_key_wall_prev),     blockSelect[2].getX() + (blockSelect[2].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[19] = new Image(camera, new Texture(R.drawable.stone_key_prev),          blockSelect[3].getX() + (blockSelect[3].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[20] = new Image(camera, new Texture(R.drawable.gold_key_prev),           blockSelect[4].getX() + (blockSelect[4].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[21] = new Image(camera, new Texture(R.drawable.brick_wall_green_prev),   blockSelect[5].getX() + (blockSelect[5].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[22] = new Image(camera, new Texture(R.drawable.brick_wall_green_prev),   blockSelect[6].getX() + (blockSelect[6].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
-        blockPreview[23] = new Image(camera, new Texture(R.drawable.brick_wall_green_prev),   blockSelect[7].getX() + (blockSelect[7].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, dim, dim, 0.0f);
+        blockPreview[0]  = new Image(camera, new Texture(R.drawable.brick_wall_prev),         blockSelect[0].getX() + (blockSelect[0].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[1]  = new Image(camera, new Texture(R.drawable.square_wall_prev),        blockSelect[1].getX() + (blockSelect[1].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[2]  = new Image(camera, new Texture(R.drawable.s_wall_prev),             blockSelect[2].getX() + (blockSelect[2].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[3]  = new Image(camera, new Texture(R.drawable.stone_floor_prev),        blockSelect[3].getX() + (blockSelect[3].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[4]  = new Image(camera, new Texture(R.drawable.limestone_floor_prev),    blockSelect[4].getX() + (blockSelect[4].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[5]  = new Image(camera, new Texture(R.drawable.wood_floor_prev),         blockSelect[5].getX() + (blockSelect[5].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[6]  = new Image(camera, new Texture(R.drawable.start_prev),              blockSelect[6].getX() + (blockSelect[6].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[7]  = new Image(camera, new Texture(R.drawable.end_prev),                blockSelect[7].getX() + (blockSelect[7].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[8]  = new Image(camera, new Texture(R.drawable.brick_wall_red_prev),     blockSelect[0].getX() + (blockSelect[0].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[9]  = new Image(camera, new Texture(R.drawable.brick_wall_orange_prev),  blockSelect[1].getX() + (blockSelect[1].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[10] = new Image(camera, new Texture(R.drawable.brick_wall_yellow_prev),  blockSelect[2].getX() + (blockSelect[2].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[11] = new Image(camera, new Texture(R.drawable.brick_wall_green_prev),   blockSelect[3].getX() + (blockSelect[3].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[12] = new Image(camera, new Texture(R.drawable.brick_wall_cyan_prev),    blockSelect[4].getX() + (blockSelect[4].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[13] = new Image(camera, new Texture(R.drawable.brick_wall_blue_prev),    blockSelect[5].getX() + (blockSelect[5].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[14] = new Image(camera, new Texture(R.drawable.brick_wall_purple_prev),  blockSelect[6].getX() + (blockSelect[6].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[15] = new Image(camera, new Texture(R.drawable.brick_wall_magenta_prev), blockSelect[7].getX() + (blockSelect[7].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[16] = new Image(camera, new Texture(R.drawable.sandstone_wall_prev),     blockSelect[0].getX() + (blockSelect[0].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[17] = new Image(camera, new Texture(R.drawable.sandstone_floor_prev),    blockSelect[1].getX() + (blockSelect[1].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[18] = new Image(camera, new Texture(R.drawable.stone_key_wall_prev),     blockSelect[2].getX() + (blockSelect[2].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[19] = new Image(camera, new Texture(R.drawable.stone_key_prev),          blockSelect[3].getX() + (blockSelect[3].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[20] = new Image(camera, new Texture(R.drawable.gold_key_prev),           blockSelect[4].getX() + (blockSelect[4].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[21] = new Image(camera, new Texture(R.drawable.brick_wall_green_prev),   blockSelect[5].getX() + (blockSelect[5].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[22] = new Image(camera, new Texture(R.drawable.brick_wall_green_prev),   blockSelect[6].getX() + (blockSelect[6].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
+        blockPreview[23] = new Image(camera, new Texture(R.drawable.brick_wall_green_prev),   blockSelect[7].getX() + (blockSelect[7].getWidth() - dim) / 2, (top.getHeight() - dim) / 2, 0.0f, dim, dim, true);
         testPlay = new Button(camera, new Texture(R.drawable.play_unpressed), new Texture(R.drawable.play_pressed), (corner.getWidth() - SCALE) / 2, (corner.getHeight() - SCALE) / 2, 0.1f, SCALE, SCALE, true);
-        leftArrow = new Button(camera, new Texture(R.drawable.left_arrow), new Texture(R.drawable.left_arrow_down), corner.getWidth() + SCALE / 3, (corner.getHeight() - SCALE / 2) / 2, 0.1f, SCALE / 2, SCALE / 2, true);
-        rightArrow = new Button(camera, new Texture(R.drawable.right_arrow), new Texture(R.drawable.right_arrow_down), camera.getWidth() - ((SCALE / 8) * 7), (top.getHeight() - SCALE / 2) / 2, 0.1f, SCALE / 2, SCALE / 2, true);
+        leftArrow = new Button(camera, new Texture(R.drawable.left_arrow), new Texture(R.drawable.left_arrow_pressed), left.getWidth() + 4, (corner.getHeight() - SCALE / 2 - 2) / 2, 0.1f, SCALE / 2 + 2, SCALE / 2 + 2, true);
+        rightArrow = new Button(camera, new Texture(R.drawable.right_arrow), new Texture(R.drawable.right_arrow_pressed), camera.getWidth() - SCALE / 2 - 6, (top.getHeight() - SCALE / 2 - 2) / 2, 0.1f, SCALE / 2 + 2, SCALE / 2 + 2, true);
+        eraser = new ToggleButton(camera, new Texture(R.drawable.eraser_button), new Texture(R.drawable.eraser_button_pressed), (left.getWidth() - SCALE) / 2f, cameraHeight - (left.getWidth() - SCALE) / 2f - SCALE * 3f - 1, 0.1f, SCALE, SCALE, true);
+        save = new Button(camera, new Texture(R.drawable.save_button), new Texture(R.drawable.save_button_pressed), (left.getWidth() - SCALE) / 2f, cameraHeight - (left.getWidth() - SCALE) / 2f - SCALE * 2, 0.1f, SCALE, SCALE, true);
+        saveAs = new Button(camera, new Texture(R.drawable.save_as_button), new Texture(R.drawable.save_as_button_pressed), (left.getWidth() - SCALE) / 2f, cameraHeight - (left.getWidth() - SCALE) / 2f - SCALE, 0.1f, SCALE, SCALE, true);
         state = -1;
     }
 
     public void update() {
+<<<<<<< HEAD
         Log.d("time held", touchHeld + "");
         if (Surface.down) {
             touchHeld++;
@@ -108,18 +120,19 @@ public class EditPanel implements Panel {
         }
         updateCamera();
         if (!top.contains(touchX, touchY) && !left.contains(touchX, touchY) && !corner.contains(touchX, touchY) && curType != -1 && touchX >= 0 && touchY >= 0)
+=======
+        if (!top.contains(touchX, touchY) && !left.contains(touchX, touchY) && !corner.contains(touchX, touchY) && curType != -1)
+>>>>>>> 6fa6cce8af494253dffc7a5ab617378610775ebe
             draw();
         updateToolbar();
+        updateCamera();
     }
 
     private void updateCamera() {
-        Vector3f dir = new Vector3f(swipe);
-        swipe.x = 0;
-        swipe.y = 0;
-        if(dir.x != 0 || dir.y != 0) {
+        if(swipe.x != 0 || swipe.y != 0) {
             int width = map.getWidth();
             int height = map.getHeight();
-            camera.translate(dir);
+            camera.translate(swipe);
             if (camera.getWidth() - left.getWidth() > map.getWidth() * SCALE)
                 camera.setPosition(-left.getWidth(), camera.getY(), 0);
             else {
@@ -147,7 +160,6 @@ public class EditPanel implements Panel {
             } else {
                 typeIter--;
             }
-            map.save("meh");
         }
         rightArrow.update();
         if (rightArrow.getState() == Button.STATE_RELEASED) {
@@ -159,32 +171,48 @@ public class EditPanel implements Panel {
         }
         for (int i = 0; i < NUM_TOGGLES; i++) {
             blockSelect[i].update();
-            if(blockSelect[i].getState() == ToggleButton.STATE_PRESSED)
-                curType = (i + 1)+((typeIter - 1) * NUM_TOGGLES);
+            if(blockSelect[i].getState() == ToggleButton.STATE_FIRST_PRESSED) {
+                curType = (i + 1) + ((typeIter - 1) * NUM_TOGGLES);
+                eraser.setState(ToggleButton.STATE_UNPRESSED);
+            }
         }
         for (int i = 0; i < NUM_TOGGLES; i++) {
-            if((i + 1)+((typeIter - 1) * NUM_TOGGLES) == curType)
-                blockSelect[i].setState(ToggleButton.STATE_PRESSED);
-            else
+            if ((i + 1) + ((typeIter - 1) * NUM_TOGGLES) != curType)
                 blockSelect[i].setState(ToggleButton.STATE_UNPRESSED);
+            else
+                blockSelect[i].setState(ToggleButton.STATE_PRESSED);
         }
         testPlay.update();
         if(testPlay.getState() == Button.STATE_RELEASED && map.getStart().x != -1) {
-            paintType = curType;
             curType = -1;
+<<<<<<< HEAD
             map.save("meh");
             map.save("meh1");
+=======
+>>>>>>> 6fa6cce8af494253dffc7a5ab617378610775ebe
             state = Main.STATE_PLAY_TEST;
         }
+        save.update();
+        if(save.getState() == Button.STATE_RELEASED)
+            map.save(name);
+        saveAs.update();
+        if(saveAs.getState() == Button.STATE_RELEASED) {
+
+        }
+        eraser.update();
     }
 
     private void draw() {
+<<<<<<< HEAD
         Log.e("Map", "entered");
+=======
+>>>>>>> 6fa6cce8af494253dffc7a5ab617378610775ebe
         try {
             Thread.sleep(10);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+<<<<<<< HEAD
         if(touchX > -1 && touchY > -1) {
             int x = (int) (touchX + camera.getX()) / SCALE;
             int y = (int) (touchY + camera.getY()) / SCALE;
@@ -200,6 +228,15 @@ public class EditPanel implements Panel {
             } else if(touchHeld <= 40) {
                 map.setTile(curType, x, y);
             }
+=======
+        if(touchX + camera.getX() > -1 && touchY + camera.getY() > -1) {
+            int x = (int) (touchX + camera.getX()) / SCALE;
+            int y = (int) (touchY + camera.getY()) / SCALE;
+            if(eraser.getState() == ToggleButton.STATE_PRESSED)
+                map.setTile(Map.TYPE_EMPTY, x, y);
+            else
+                map.setTile(curType, x, y);
+>>>>>>> 6fa6cce8af494253dffc7a5ab617378610775ebe
         }
         else
             updateCamera();
@@ -210,9 +247,8 @@ public class EditPanel implements Panel {
         top.render();
         left.render();
         corner.render();
-        for (int i = 0; i < NUM_TOGGLES; i++) {
+        for (int i = 0; i < NUM_TOGGLES; i++)
             blockSelect[i].render();
-        }
         for (int i = (typeIter * NUM_TOGGLES) - NUM_TOGGLES; i < typeIter * NUM_TOGGLES; i++) {
             if(blockPreview[i] != null)
                 blockPreview[i].render();
@@ -220,6 +256,9 @@ public class EditPanel implements Panel {
         testPlay.render();
         leftArrow.render();
         rightArrow.render();
+        eraser.render();
+        save.render();
+        saveAs.render();
     }
 
     public int checkState() {
@@ -244,6 +283,7 @@ public class EditPanel implements Panel {
     }
 
     public void setActive(String name) {
+        this.name = name;
         map.load(name);
         camera.setPosition(-left.getWidth(), -top.getHeight(), 0);
         map.setState(Map.STATE_EDIT);

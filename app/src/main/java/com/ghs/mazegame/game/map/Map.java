@@ -70,8 +70,6 @@ public class Map {
     private int[][] over;
     private static Tile[] tiles;
 
-    private float bestTimeMS;       // time in milliseconds
-
     public Map(Camera camera, float x, float y, int width, int height) {
         this.camera = camera;
         this.x = x;
@@ -90,7 +88,6 @@ public class Map {
                 over[i][j] = TYPE_EMPTY;
             }
         }
-        bestTimeMS = -1;
         tileInit();
     }
 
@@ -106,7 +103,6 @@ public class Map {
         rHeight = (int) Math.ceil((camera.getY() + camera.getHeight()) / SCALE);
         rightBound = 0;
         bottomBound = 0;
-        bestTimeMS = newMap.bestTimeMS;
         tileInit();
     }
 
@@ -223,23 +219,21 @@ public class Map {
     }
 
     public void setTile(int type, int x, int y) {
-        if (map.length > 0) {
-            if ((x >= 0) && (y >= 0) && (x < map[0].length) && (x < map[0].length)) {
-                if (type == TYPE_START || type == TYPE_END || type == TYPE_STONE_KEY || type == TYPE_GOLD_KEY) {
-                    for (int i = 0; i < width; i++) {
-                        for (int j = 0; j < height; j++) {
-                            if (over[i][j] == type)
-                                over[i][j] = TYPE_EMPTY;
-                        }
+        if ((x >= 0) && (y >= 0) && (x < map[0].length) && (x < map[0].length)) {
+            if (type == TYPE_START || type == TYPE_END || type == TYPE_STONE_KEY || type == TYPE_GOLD_KEY) {
+                for (int i = 0; i < width; i++) {
+                    for (int j = 0; j < height; j++) {
+                        if (over[i][j] == type)
+                            over[i][j] = TYPE_EMPTY;
                     }
-                    if (tiles[map[x][y]].isSolid() && map[x][y] != TYPE_EMPTY)
-                        map[x][y] = TYPE_STONE_FLOOR;
-                    over[x][y] = type;
-                } else {
-                    if ((over[x][y] == TYPE_START || over[x][y] == TYPE_END || type == TYPE_STONE_KEY || type == TYPE_GOLD_KEY) && (type < TYPE_STONE_FLOOR || type > TYPE_WOOD_FLOOR))
-                        over[x][y] = TYPE_EMPTY;
-                    map[x][y] = type;
                 }
+                if (tiles[map[x][y]].isSolid() || map[x][y] == TYPE_EMPTY)
+                    map[x][y] = TYPE_STONE_FLOOR;
+                over[x][y] = type;
+            } else {
+                if ((over[x][y] == TYPE_START || over[x][y] == TYPE_END || type == TYPE_STONE_KEY || type == TYPE_GOLD_KEY) && (type < TYPE_STONE_FLOOR || type > TYPE_WOOD_FLOOR))
+                    over[x][y] = TYPE_EMPTY;
+                map[x][y] = type;
             }
         }
     }
@@ -265,10 +259,6 @@ public class Map {
     public int getHeight() {
         return height;
     }
-
-    public float getBestTimeMS() {return bestTimeMS;}
-
-    public void setBestTimeMS(float bestTimeMS) {this.bestTimeMS = bestTimeMS;}
 
     public Vector3f getBounds() {
         return new Vector3f(width * SCALE, height * SCALE, 0);
@@ -317,13 +307,11 @@ public class Map {
         byte[] map1 = new byte[width * height];
         byte[] map2 = new byte[width * height];
 
-        ByteBuffer saveData = ByteBuffer.allocate(6 + 2 * width * height);
+        ByteBuffer saveData = ByteBuffer.allocate(2 + 2 * width * height);
         try {
             BufferedOutputStream buf = new BufferedOutputStream(new FileOutputStream(file));
-
             saveData.put((byte) (width & 0xFF));
             saveData.put((byte) (height & 0xFF));
-            saveData.putFloat(bestTimeMS).array();
 
             for(int y = 0; y < height; y++){
                 for(int x = 0; x < width; x++){
@@ -354,7 +342,7 @@ public class Map {
                     under.setPixels(pixels, 0, SCALE, i * SCALE, j * SCALE, SCALE, SCALE);
                 }
             }
-            canvas.drawBitmap(under, 4, 4, null);
+            canvas.drawBitmap(under, 0, 0, null);
             under.recycle();
 
             Bitmap overlay = Bitmap.createBitmap(SCALE * WIDTH, SCALE * HEIGHT, Bitmap.Config.ARGB_8888);
@@ -367,15 +355,8 @@ public class Map {
                     }
                 }
             }
-            canvas.drawBitmap(overlay, 4, 4, null);
+            canvas.drawBitmap(overlay, 0, 0, null);
             overlay.recycle();
-
-            for (int i = 0; i < thumbnail.getWidth(); i++) {
-                for (int j = 0; j < thumbnail.getHeight(); j++) {
-                    if(i < 4 || j < 4 || i >= SCALE * WIDTH - 4 || j >= SCALE * HEIGHT - 4)
-                        thumbnail.setPixel(i, j, 0xFFFFFFFF);
-                }
-            }
 
             File thumbFile = new File(context.getFilesDir(), filename + ".png");
             if(!thumbFile.exists())
@@ -391,46 +372,25 @@ public class Map {
         }
 
     }
-    /*
-    byte[] b = new byte[]{12, 24, 19, 17};
-float f =  ByteBuffer.wrap(b).getFloat();
-float -> byte[]
-
-Reverse operation (knowing the result of above):
-
-float f =  1.1715392E-31f;
-byte[] b = ByteBuffer.allocate(4).putFloat(f).array();  //[12, 24, 19, 17]
-     */
 
     public void load(String filename) {
         File file = new File(context.getFilesDir(), filename + ".map");
         if(file.exists()) {
-            Log.e("File", "Exists!");
             int size = (int) file.length();
             byte[] bytes = new byte[size];
             try {
                 BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
                 buf.read(bytes, 0, bytes.length);
-
                 buf.close();
                 width = bytes[0] & 0xFF;
                 height = bytes[1] & 0xFF;
-                byte[] time = {bytes[2],bytes[3],bytes[4],bytes[5]};
-                bestTimeMS = ByteBuffer.wrap(time).getFloat();
-
                 map = new int[width][height];
                 over = new int[width][height];
-                for (int i = 0; i < map.length; i++) {
-                    for (int j = 0; j < map[0].length; j++) {
-                        map[i][j] = TYPE_EMPTY;
-                        over[i][j] = TYPE_EMPTY;
-                    }
-                }
 
                 for(int y = 0; y < height; y++) {
                     for (int x = 0; x < width; x++) {
-                        setTileRaw(false, (bytes[6 + y * width + x] & 0xFF), x, y);
-                        setTileRaw(true, (bytes[6 + width * height + y * width + x] & 0xFF), x, y);
+                        setTileRaw(false, (bytes[2 + y * width + x] & 0xFF), x, y);
+                        setTileRaw(true, (bytes[2 + width * height + y * width + x] & 0xFF), x, y);
                     }
                 }
             } catch (FileNotFoundException e) {
