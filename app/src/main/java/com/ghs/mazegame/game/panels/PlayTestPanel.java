@@ -1,7 +1,5 @@
 package com.ghs.mazegame.game.panels;
 
-import android.util.Log;
-
 import static com.ghs.mazegame.game.Main.*;
 
 import com.ghs.mazegame.R;
@@ -19,8 +17,6 @@ import com.ghs.mazegame.game.objects.Selector;
 
 import java.util.ArrayList;
 
-import java.util.ArrayList;
-
 public class PlayTestPanel implements Panel {
 
     private int state = -1;
@@ -35,11 +31,8 @@ public class PlayTestPanel implements Panel {
 
     private ArrayList<Integer> items = new ArrayList<>();
 
-<<<<<<< HEAD
     public Long startTime;
 
-=======
->>>>>>> 068d39c6b5d4adcdb5f431ce7e5469635ca4f20a
     public PlayTestPanel(Camera camera) {
         this.camera = camera;
         dpad = new DPad(camera, SCALE * 0.25f, cameraHeight - SCALE * 3.25f, SCALE * 3, SCALE * 3);
@@ -88,18 +81,11 @@ public class PlayTestPanel implements Panel {
         center.sub((int) (center.x / SCALE) * SCALE + SCALE / 2, (int) (center.y / SCALE) * SCALE + SCALE / 2, 0);
         if(type == Map.TYPE_END && center.lengthSquared() <= SCALE) {
             state = Main.STATE_EDIT;
-<<<<<<< HEAD
             float totalTime = (System.nanoTime() - startTime) / 1000000f;
         }
         if(type == Map.TYPE_GOLD_KEY && center.lengthSquared() <= SCALE) {
             map.setTileRaw(true, Map.TYPE_EMPTY, (int) (player.getCenter().x / SCALE), (int) (player.getCenter().y / SCALE));
             items.add(Map.TYPE_GOLD_KEY);
-=======
-        if(type == Map.TYPE_GOLD_KEY && center.lengthSquared() <= SCALE) {
-            map.setTileRaw(true, Map.TYPE_EMPTY, (int) (player.getCenter().x / SCALE), (int) (player.getCenter().y / SCALE));
-            items.add(Map.TYPE_GOLD_KEY);
-            Log.d("key", "Position: " + (int) (player.getCenter().x / SCALE) + (int) (player.getCenter().y / SCALE));
->>>>>>> 068d39c6b5d4adcdb5f431ce7e5469635ca4f20a
         }
     }
 
