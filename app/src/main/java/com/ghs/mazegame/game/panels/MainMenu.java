@@ -16,7 +16,6 @@ import com.ghs.mazegame.game.objects.Thumbnail;
 
 import java.util.ArrayList;
 
-import static android.view.View.inflate;
 import static com.ghs.mazegame.engine.display.Surface.swipe;
 import static com.ghs.mazegame.engine.display.Surface.touchX;
 import static com.ghs.mazegame.engine.display.Surface.touchY;
@@ -24,6 +23,7 @@ import static com.ghs.mazegame.game.Main.SCALE;
 import static com.ghs.mazegame.game.Main.STATE_EDIT;
 import static com.ghs.mazegame.game.Main.cameraHeight;
 import static com.ghs.mazegame.game.Main.cameraWidth;
+import static com.ghs.mazegame.game.Main.keyboardShowing;
 import static com.ghs.mazegame.game.Main.maps;
 import static com.ghs.mazegame.game.objects.Button.STATE_PRESSED;
 import static com.ghs.mazegame.game.objects.Thumbnail.STATE_RELEASED;
@@ -64,7 +64,7 @@ public class MainMenu implements Panel {
     private boolean naming;
     private float sx, sy;
     private Rectangle textBorder, textMain;
-    private Button enter;
+    private Button enter, back;
 
     private Rectangle cursor;
     private float pastTime, mspb;
@@ -170,7 +170,7 @@ public class MainMenu implements Panel {
                                 textBorder.setPosition(camera.getX() + sx - 2, camera.getY() + sy - 2);
                                 textMain.setPosition(camera.getX() + sx - 1, camera.getY() + sy - 1);
                                 enter.setPosition(sx + maxChars * font.getMaxWidth() + 3, camera.getY() + sy - 2);
-                                pastTime = System.nanoTime() / 100000f;
+                                pastTime = System.nanoTime() / 1000000f;
                             }
                         }
                     } else {
@@ -214,15 +214,18 @@ public class MainMenu implements Panel {
             }
         }
         else {
-            if(!Main.keyboardShowing())
+            Log.e("Map", "Showing: " + keyboardShowing());
+            if(textBorder.contains(touchX, touchY))
                 Main.showKeyboard();
             name = Main.getInput();
             if(font.getLength(name) > textMain.getWidth() - 2) {
                 Main.truncate(name.length() - 1);
                 name = Main.getInput();
             }
-            if(!lastInput.equals(name))
+            if(!lastInput.equals(name)) {
                 showCursor = true;
+                pastTime = System.nanoTime() / 1000000f;
+            }
             else if(System.nanoTime() / 1000000f - pastTime > mspb) {
                 showCursor = !showCursor;
                 pastTime += mspb;
@@ -230,12 +233,18 @@ public class MainMenu implements Panel {
             if(showCursor)
                 cursor.setPosition(camera.getX() + sx + font.getLength(name), camera.getY() + sy);
             enter.update();
+            back.update();
             if(enter.getState() == Button.STATE_RELEASED) {
                 state = STATE_EDIT;
                 map = maps.size();
                 maps.add(name);
                 Main.clear();
                 Main.hideKeyboard();
+            }
+            else if(back.getState() == Button.STATE_RELEASED) {
+                Main.hideKeyboard();
+                Main.clear();
+                naming = false;
             }
             lastInput = name;
         }
@@ -278,8 +287,9 @@ public class MainMenu implements Panel {
                 textBorder.render();
                 font.drawString(name, camera.getX() + sx, camera.getY() + sy);
                 enter.render();
-                if(showCursor)
+                if(showCursor && Main.keyboardShowing())
                     cursor.render();
+                back.render();
             }
         }
     }
@@ -312,6 +322,7 @@ public class MainMenu implements Panel {
         textMain   = new Rectangle(camera, sx - 1, sy - 1, 0.11f, maxChars * font.getMaxWidth() + 2, font.getHeight() + 2, 0, 0, 0, 1);
         enter = new Button(camera, new Texture(R.drawable.menu_enter), new Texture(R.drawable.menu_enter_pressed), sx + maxChars * font.getMaxWidth() + 3, sy - 2, 0.1f, font.getHeight() + 4, font.getHeight() + 4, false);
         cursor = new Rectangle(camera, sx, sy, 0.05f, 1, font.getHeight(), 1, 1, 1, 1);
+        back = new Button(camera, new Texture(R.drawable.menu_back_arrow), new Texture(R.drawable.menu_back_arrow_pressed), 1, 1, 0.1f, font.getHeight() + 4, font.getHeight() + 4, true);
         name = "";
     }
 

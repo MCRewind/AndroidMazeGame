@@ -92,7 +92,7 @@ public class EditPanel implements Panel {
     }
 
     public void update() {
-        if (!top.contains(touchX, touchY) && !left.contains(touchX, touchY) && !corner.contains(touchX, touchY) && curType != -1)
+        if (!top.contains(touchX, touchY) && !left.contains(touchX, touchY) && !corner.contains(touchX, touchY) && touchX >= 0 && touchY >= 0)
             draw();
         updateToolbar();
         updateCamera();
@@ -169,11 +169,11 @@ public class EditPanel implements Panel {
 
     private void draw() {
         try {
-            Thread.sleep(10);
+            Thread.sleep(20);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        if(touchX + camera.getX() > -1 && touchY + camera.getY() > -1) {
+        if(touchX > -1 && touchY > -1) {
             int x = (int) (touchX + camera.getX()) / SCALE;
             int y = (int) (touchY + camera.getY()) / SCALE;
             if(eraser.getState() == ToggleButton.STATE_PRESSED)
@@ -181,7 +181,7 @@ public class EditPanel implements Panel {
             else
                 map.setTile(curType, x, y);
         }
-        else
+        else if(swipe.x > 0 || swipe.y > 0)
             updateCamera();
     }
 

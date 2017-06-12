@@ -2,12 +2,14 @@ package com.ghs.mazegame.game;
 
 import android.app.Activity;
 import android.content.Context;
+import android.inputmethodservice.InputMethodService;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 
 import com.ghs.mazegame.engine.display.Surface;
@@ -17,8 +19,6 @@ public class LaunchActivity extends Activity {
     private Surface surface;
     private InputMethodManager imm;
     private StringBuilder input;
-
-    private boolean keyboard;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,12 +62,10 @@ public class LaunchActivity extends Activity {
     }
 
     public void showKeyboard() {
-        keyboard = true;
         imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
     }
 
     public void hideKeyboard() {
-        keyboard = false;
         imm.hideSoftInputFromWindow(surface.getWindowToken(), 0);
     }
 
@@ -84,7 +82,7 @@ public class LaunchActivity extends Activity {
     }
 
     public boolean keyboardShowing() {
-        return keyboard;
+        return true;
     }
 
     public boolean onKeyUp(int keyCode, KeyEvent event) {

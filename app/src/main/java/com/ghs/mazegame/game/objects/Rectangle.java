@@ -55,6 +55,15 @@ public class Rectangle {
         shader.disable();
     }
 
+    public boolean contains(float x, float y) {
+        if ((x >= this.x && x < this.x + this.width) && (y >= this.y && y < this.y + this.height)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
     public float getX() {
         return x;
     }
