@@ -29,6 +29,7 @@ public class Map {
     public static final int NUM_TILES = 25;
 
     public static final int
+<<<<<<< HEAD
             TYPE_EMPTY = 0,
             TYPE_BRICK_WALL = 1,
             TYPE_SQUARE_WALL = 2,
@@ -54,6 +55,34 @@ public class Map {
             TYPE_22 = 22,
             TYPE_23 = 23,
             TYPE_24 = 24;
+=======
+        TYPE_EMPTY = 0,
+        TYPE_BRICK_WALL = 1,
+        TYPE_SQUARE_WALL = 2,
+        TYPE_S_WALL = 3,
+        TYPE_STONE_FLOOR = 4,
+        TYPE_LIMESTONE_FLOOR = 5,
+        TYPE_WOOD_FLOOR = 6,
+        TYPE_START = 7,
+        TYPE_END = 8,
+        TYPE_BRICK_WALL_RED = 9,
+        TYPE_BRICK_WALL_ORANGE = 10,
+        TYPE_BRICK_WALL_YELLOW = 11,
+        TYPE_BRICK_WALL_GREEN = 12,
+        TYPE_BRICK_WALL_CYAN = 13,
+        TYPE_BRICK_WALL_BLUE = 14,
+        TYPE_BRICK_WALL_PURPLE = 15,
+        TYPE_BRICK_WALL_MAGENTA = 16,
+        TYPE_SANDSTONE_WALL = 17,
+        TYPE_SANDSTONE_FLOOR = 18,
+        TYPE_STONE_KEY_WALL = 19,
+        TYPE_20 = 20,
+        TYPE_21 = 21,
+        TYPE_22 = 22,
+        TYPE_23 = 23,
+        TYPE_24 = 24,
+        TYPE_E_STONE_KEY = -1;
+>>>>>>> 068d39c6b5d4adcdb5f431ce7e5469635ca4f20a
 
     public static final boolean
             STATE_EDIT = false,
@@ -226,6 +255,16 @@ public class Map {
                         if (over[i][j] == type)
                             over[i][j] = TYPE_EMPTY;
                     }
+<<<<<<< HEAD
+=======
+                    if (tiles[map[x][y]].isSolid() && map[x][y] != TYPE_EMPTY)
+                        map[x][y] = TYPE_STONE_FLOOR;
+                    over[x][y] = type;
+                } else {
+                    if ((over[x][y] == TYPE_START || over[x][y] == TYPE_END) && (type < TYPE_STONE_FLOOR || type > TYPE_WOOD_FLOOR))
+                        over[x][y] = TYPE_EMPTY;
+                    map[x][y] = type;
+>>>>>>> 068d39c6b5d4adcdb5f431ce7e5469635ca4f20a
                 }
                 if (tiles[map[x][y]].isSolid() || map[x][y] == TYPE_EMPTY)
                     map[x][y] = TYPE_STONE_FLOOR;
@@ -387,12 +426,13 @@ public class Map {
                 map = new int[width][height];
                 over = new int[width][height];
 
-                for(int y = 0; y < height; y++) {
-                    for (int x = 0; x < width; x++) {
+                for(int y = 0; y < height; y++)
+                    for(int x = 0; x < width; x++)
                         setTileRaw(false, (bytes[2 + y * width + x] & 0xFF), x, y);
+
+                for(int y = 0; y < height; y++)
+                    for(int x = 0; x < width; x++)
                         setTileRaw(true, (bytes[2 + width * height + y * width + x] & 0xFF), x, y);
-                    }
-                }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
