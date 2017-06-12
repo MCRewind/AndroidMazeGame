@@ -6,11 +6,14 @@ import android.util.Log;
 import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.display.Camera;
+import com.ghs.mazegame.engine.display.Surface;
+import com.ghs.mazegame.engine.utils.ObjectManager;
 import com.ghs.mazegame.game.Main;
 import com.ghs.mazegame.game.interfaces.Panel;
 import com.ghs.mazegame.game.objects.Button;
 import com.ghs.mazegame.game.map.Map;
 import com.ghs.mazegame.game.objects.Image;
+import com.ghs.mazegame.game.objects.Selector;
 import com.ghs.mazegame.game.objects.ToggleButton;
 
 import static com.ghs.mazegame.engine.display.Surface.swipe;
@@ -38,12 +41,26 @@ public class EditPanel implements Panel {
     private Button testPlay, leftArrow, rightArrow, save, saveAs;
     private ToggleButton eraser;
 
-    private int curType, typeIter = 1, numPages;
+    private int curType, typeIter = 1, numPages, lastX = 0, lastY = 0;
 
-    public EditPanel(Camera camera) {
+    private Selector sel;
+
+    private Context context;
+
+    private float touchHeld = 0f;
+
+    public static int paintType = 1;
+
+    private boolean selector = false;
+
+    private ObjectManager objectManager;
+
+    public EditPanel(Camera camera, Context context) {
+        this.context = context;
         numPages = NUM_BLOCKS / NUM_TOGGLES;
         this.camera = camera;
         this.map = new Map(camera, 0, 0, 20, 20);
+        sel = new Selector(camera, 0, 0, 0.1f, SCALE * 3, SCALE * 3, new int[] {1, 1, 1, 1}, new int[] {R.drawable.stone_key_wall_left, R.drawable.stone_key_wall_right, R.drawable.stone_key_wall_up, R.drawable.stone_key_wall_down}, false);
         map.setState(Map.STATE_EDIT);
         curType = -1;
         for (int i = 0; i < map.getWidth(); ++i)
@@ -92,10 +109,18 @@ public class EditPanel implements Panel {
     }
 
     public void update() {
-        if (!top.contains(touchX, touchY) && !left.contains(touchX, touchY) && !corner.contains(touchX, touchY) && curType != -1)
+        Log.d("time held", touchHeld + "");
+        if (Surface.down) {
+            touchHeld++;
+        } else {
+            touchHeld = 0f;
+        }
+        updateCamera();
+        if (!top.contains(touchX, touchY) && !left.contains(touchX, touchY) && !corner.contains(touchX, touchY) && curType != -1 && touchX >= 0 && touchY >= 0)
             draw();
         updateToolbar();
-        updateCamera();
+        if (selector)
+            sel.update();
     }
 
     private void updateCamera() {
@@ -173,13 +198,25 @@ public class EditPanel implements Panel {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        if(touchX + camera.getX() > -1 && touchY + camera.getY() > -1) {
+        if(touchX > -1 && touchY > -1) {
             int x = (int) (touchX + camera.getX()) / SCALE;
             int y = (int) (touchY + camera.getY()) / SCALE;
             if(eraser.getState() == ToggleButton.STATE_PRESSED)
                 map.setTile(Map.TYPE_EMPTY, x, y);
-            else
-                map.setTile(curType, x, y);
+            else {
+                if (lastX != x || lastY != y) {
+                    touchHeld = 0;
+                }
+                lastX = x;
+                lastY = y;
+                if (map.getTile(x, y, false) == Map.TYPE_STONE_KEY_WALL && touchHeld > 40) {
+                    sel.setPosition(x * SCALE, y * SCALE);
+                    selector = true;
+                } else if (touchHeld <= 40 && !selector) {
+                    map.setTile(curType, x, y);
+                    selector = false;
+                }
+            }
         }
         else
             updateCamera();
@@ -202,6 +239,8 @@ public class EditPanel implements Panel {
         eraser.render();
         save.render();
         saveAs.render();
+        if (selector)
+            sel.render();
     }
 
     public int checkState() {

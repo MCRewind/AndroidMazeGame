@@ -10,6 +10,7 @@ import android.os.Looper;
 import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Shader;
 import com.ghs.mazegame.engine.display.Camera;
+import com.ghs.mazegame.engine.display.Surface;
 import com.ghs.mazegame.game.interfaces.Panel;
 
 import com.ghs.mazegame.game.panels.EditPanel;

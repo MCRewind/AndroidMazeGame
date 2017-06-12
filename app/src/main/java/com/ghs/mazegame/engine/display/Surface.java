@@ -21,6 +21,7 @@ public class Surface extends GLSurfaceView {
     float globalTouchCurrentPositionY = 0;
 
     private boolean isPanning = false;
+    public static boolean down = false;
 
     public Surface(Context context) {
         super(context);
@@ -90,13 +91,10 @@ public class Surface extends GLSurfaceView {
         else if(!isPanning && pointerCount == 1) {
             switch (e.getActionMasked()) {
                 case MotionEvent.ACTION_DOWN:
-                    try {
-                        Thread.sleep(5);
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
+                    down = true;
                     break;
                 case MotionEvent.ACTION_UP:
+                    down = false;
                     touchX = -1;
                     touchY = -1;
                     break;

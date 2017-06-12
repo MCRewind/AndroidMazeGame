@@ -11,7 +11,9 @@ import com.ghs.mazegame.game.Main;
 import com.ghs.mazegame.game.interfaces.Panel;
 import com.ghs.mazegame.game.objects.DPad;
 import com.ghs.mazegame.game.map.Map;
+import com.ghs.mazegame.game.objects.Image;
 import com.ghs.mazegame.game.objects.Player;
+import com.ghs.mazegame.game.objects.Selector;
 
 import java.util.ArrayList;
 
@@ -23,13 +25,13 @@ public class PlayTestPanel implements Panel {
     private Player player;
     private DPad dpad;
 
-    private Camera camera;
+    private int パイロシニコル = 0;
 
+    private Camera camera;
 
     private ArrayList<Integer> items = new ArrayList<>();
 
     public Long startTime;
-
 
     public PlayTestPanel(Camera camera) {
         this.camera = camera;
