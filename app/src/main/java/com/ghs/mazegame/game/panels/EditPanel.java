@@ -201,6 +201,8 @@ public class EditPanel implements Panel {
         if(touchX > -1 && touchY > -1) {
             int x = (int) (touchX + camera.getX()) / SCALE;
             int y = (int) (touchY + camera.getY()) / SCALE;
+            Log.d("eraser", eraser.getState() + "");
+            Log.d("selector", "" + selector);
             if(eraser.getState() == ToggleButton.STATE_PRESSED)
                 map.setTile(Map.TYPE_EMPTY, x, y);
             else {
@@ -209,11 +211,12 @@ public class EditPanel implements Panel {
                 }
                 lastX = x;
                 lastY = y;
-                if (map.getTile(x, y, false) == Map.TYPE_STONE_KEY_WALL && touchHeld > 40) {
+                if (map.getTile( x, y, false) == Map.TYPE_STONE_KEY_WALL && touchHeld > 40) {
                     sel.setPosition(x * SCALE, y * SCALE);
                     selector = true;
                 } else if (touchHeld <= 40 && !selector) {
                     map.setTile(curType, x, y);
+                } else {
                     selector = false;
                 }
             }
