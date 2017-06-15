@@ -87,6 +87,10 @@ public class PlayTestPanel implements Panel {
             map.setTileRaw(true, Map.TYPE_EMPTY, (int) (player.getCenter().x / SCALE), (int) (player.getCenter().y / SCALE));
             items.add(Map.TYPE_GOLD_KEY);
         }
+        if(type == Map.TYPE_STONE_KEY && center.lengthSquared() <= SCALE) {
+            map.setTileRaw(true, Map.TYPE_EMPTY, (int) (player.getCenter().x / SCALE), (int) (player.getCenter().y / SCALE));
+            items.add(Map.TYPE_STONE_KEY);
+        }
     }
 
     public int checkState() {
