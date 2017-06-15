@@ -119,8 +119,13 @@ public class EditPanel implements Panel {
         if (!top.contains(touchX, touchY) && !left.contains(touchX, touchY) && !corner.contains(touchX, touchY) && curType != -1 && touchX >= 0 && touchY >= 0)
             draw();
         updateToolbar();
-        if (selector)
-            sel.update();
+        if (selector) {
+            if (touchX == -1 || touchY == -1)
+                selector = false;
+            else
+                sel.update();
+            Log.d("selected", sel.getSelected() + "");
+        }
     }
 
     private void updateCamera() {
@@ -217,8 +222,6 @@ public class EditPanel implements Panel {
                     selector = true;
                 } else if (touchHeld <= 40 && !selector) {
                     map.setTile(curType, x, y);
-                } else {
-                    selector = false;
                 }
             }
         }

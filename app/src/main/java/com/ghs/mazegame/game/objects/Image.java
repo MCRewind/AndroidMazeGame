@@ -92,6 +92,10 @@ public class Image implements GameObject {
     }
 
     public boolean contains(float x, float y) {
+        if(!independent) {
+            x += camera.getX();
+            y += camera.getY();
+        }
         if ((x >= this.x && x < this.x + this.width) && (y >= this.y && y < this.y + this.height)) {
             return true;
         } else {
