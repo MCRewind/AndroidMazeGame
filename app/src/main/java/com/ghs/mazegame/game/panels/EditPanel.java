@@ -179,6 +179,7 @@ public class EditPanel implements Panel {
         }
         testPlay.update();
         if(testPlay.getState() == Button.STATE_RELEASED && map.getStart().x != -1) {
+            map.save(name);
             curType = -1;
             state = Main.STATE_PLAY_TEST;
         }
@@ -212,7 +213,7 @@ public class EditPanel implements Panel {
                 lastX = x;
                 lastY = y;
                 if (map.getTile( x, y, false) == Map.TYPE_STONE_KEY_WALL && touchHeld > 40) {
-                    sel.setPosition(x * SCALE, y * SCALE);
+                    sel.setPosition(x * SCALE-left.getWidth(), y * SCALE-top.getHeight());
                     selector = true;
                 } else if (touchHeld <= 40 && !selector) {
                     map.setTile(curType, x, y);
