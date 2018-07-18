@@ -138,12 +138,12 @@ public class Map {
     }
 
     public void render() {
-        int minX = (int) ((camera.getX() - x) / SCALE);
+        int minX = Math.max((int) ((camera.getX() - x) / SCALE), 0);
         int maxX = minX + rWidth;
-        int minY = (int) ((camera.getY() - y) / SCALE);
+        int minY = Math.max((int) ((camera.getY() - y) / SCALE), 0);
         int maxY = minY + rHeight;
-        for (int i = Math.max(minX, 0); i <= maxX && i < map.length; i++) {
-            for (int j = Math.max(minY, 0); j <= maxY && j < map[0].length; j++) {
+        for (int i = minX; i <= maxX && i < map.length; i++) {
+            for (int j = minY; j <= maxY && j < map[0].length; j++) {
                 if (map[i][j] < NUM_TILES) {
                     if (map[i][j] != TYPE_EMPTY || state != STATE_PLAY) {
                         tiles[map[i][j]].setPosition(i * SCALE + x, j * SCALE + y);
@@ -210,7 +210,7 @@ public class Map {
             return map[x][y];
     }
 
-    public void setTileRaw(boolean isOver, int type, int x, int y){
+    public void setTileRaw(boolean isOver, int type, int x, int y) {
         if(isOver){
             over[x][y] = type;
         } else {
@@ -370,7 +370,6 @@ public class Map {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public void load(String filename) {

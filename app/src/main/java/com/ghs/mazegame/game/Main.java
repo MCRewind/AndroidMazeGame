@@ -112,28 +112,34 @@ public class Main implements GLSurfaceView.Renderer {
     private void checkState() {
         int state = panels[cur].checkState();
         switch(state) {
-            case STATE_EDIT:
-                if(cur == STATE_MAIN_MENU) {
+            case STATE_EDIT: {
+                if (cur == STATE_MAIN_MENU) {
                     EditPanel edit = (EditPanel) panels[STATE_EDIT];
                     MainMenu menu = (MainMenu) panels[STATE_MAIN_MENU];
                     int map = menu.getMap();
-                    if(map == maps.size())
-                        edit.setActive(true);
+                    if (map == maps.size() - 1)
+                        edit.setActive(true, maps.get(maps.size() - 1));
                     else
                         edit.setActive(maps.get(map));
-                }
-                else if(cur == STATE_PLAY_TEST){
+                } else if (cur == STATE_PLAY_TEST) {
                     EditPanel edit = (EditPanel) panels[STATE_EDIT];
                     MainMenu menu = (MainMenu) panels[STATE_MAIN_MENU];
                     int map = menu.getMap();
                     edit.setActive(maps.get(map));
                 }
                 break;
-            case STATE_PLAY_TEST:
+            }
+            case STATE_PLAY_TEST: {
                 PlayTestPanel play = (PlayTestPanel) panels[STATE_PLAY_TEST];
                 EditPanel edit = (EditPanel) panels[STATE_EDIT];
                 play.setActive(edit.getMap());
                 break;
+            }
+            case STATE_MAIN_MENU: {
+                MainMenu menu = (MainMenu) panels[STATE_MAIN_MENU];
+                menu.setActive();
+                break;
+            }
         };
         if(state != -1)
             cur = state;

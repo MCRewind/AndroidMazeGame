@@ -35,7 +35,7 @@ public class EditPanel implements Panel {
     private Image top, left, corner;
     private ToggleButton[] blockSelect;
     private Image[] blockPreview;
-    private Button testPlay, leftArrow, rightArrow, save, saveAs;
+    private Button testPlay, leftArrow, rightArrow, save, saveAs, exit;
     private ToggleButton eraser;
 
     private int curType, typeIter = 1, numPages;
@@ -85,6 +85,7 @@ public class EditPanel implements Panel {
         testPlay = new Button(camera, new Texture(R.drawable.play_unpressed), new Texture(R.drawable.play_pressed), (corner.getWidth() - SCALE) / 2, (corner.getHeight() - SCALE) / 2, 0.1f, SCALE, SCALE, true);
         leftArrow = new Button(camera, new Texture(R.drawable.left_arrow), new Texture(R.drawable.left_arrow_pressed), left.getWidth() + 4, (corner.getHeight() - SCALE / 2 - 2) / 2, 0.1f, SCALE / 2 + 2, SCALE / 2 + 2, true);
         rightArrow = new Button(camera, new Texture(R.drawable.right_arrow), new Texture(R.drawable.right_arrow_pressed), camera.getWidth() - SCALE / 2 - 6, (top.getHeight() - SCALE / 2 - 2) / 2, 0.1f, SCALE / 2 + 2, SCALE / 2 + 2, true);
+        exit = new Button(camera, new Texture(R.drawable.exit_button), new Texture(R.drawable.exit_button_pressed), (left.getWidth() - SCALE) / 2f, cameraHeight - (left.getWidth() - SCALE) / 2f - SCALE * 4f - 2, 0.1f, SCALE, SCALE, true);
         eraser = new ToggleButton(camera, new Texture(R.drawable.eraser_button), new Texture(R.drawable.eraser_button_pressed), (left.getWidth() - SCALE) / 2f, cameraHeight - (left.getWidth() - SCALE) / 2f - SCALE * 3f - 1, 0.1f, SCALE, SCALE, true);
         save = new Button(camera, new Texture(R.drawable.save_button), new Texture(R.drawable.save_button_pressed), (left.getWidth() - SCALE) / 2f, cameraHeight - (left.getWidth() - SCALE) / 2f - SCALE * 2, 0.1f, SCALE, SCALE, true);
         saveAs = new Button(camera, new Texture(R.drawable.save_as_button), new Texture(R.drawable.save_as_button_pressed), (left.getWidth() - SCALE) / 2f, cameraHeight - (left.getWidth() - SCALE) / 2f - SCALE, 0.1f, SCALE, SCALE, true);
@@ -157,6 +158,11 @@ public class EditPanel implements Panel {
             curType = -1;
             state = Main.STATE_PLAY_TEST;
         }
+        exit.update();
+        if(exit.getState() == Button.STATE_RELEASED) {
+            camera.setPosition(0, 0, 0);
+            state = Main.STATE_MAIN_MENU;
+        }
         save.update();
         if(save.getState() == Button.STATE_RELEASED)
             map.save(name);
@@ -178,7 +184,7 @@ public class EditPanel implements Panel {
             int y = (int) (touchY + camera.getY()) / SCALE;
             if(eraser.getState() == ToggleButton.STATE_PRESSED)
                 map.setTile(Map.TYPE_EMPTY, x, y);
-            else
+            else if(curType != -1)
                 map.setTile(curType, x, y);
         }
         else if(swipe.x > 0 || swipe.y > 0)
@@ -199,6 +205,7 @@ public class EditPanel implements Panel {
         testPlay.render();
         leftArrow.render();
         rightArrow.render();
+        exit.render();
         eraser.render();
         save.render();
         saveAs.render();
@@ -218,9 +225,12 @@ public class EditPanel implements Panel {
         this.map = map;
     }
 
-    public void setActive(boolean newMap) {
-        if(newMap)
+    public void setActive(boolean newMap, String name) {
+        if(newMap) {
             map = new Map(camera, 0, 0, 20, 20);
+            this.name = name;
+            map.save(name);
+        }
         camera.setPosition(-left.getWidth(), -top.getHeight(), 0);
         map.setState(Map.STATE_EDIT);
     }

@@ -1,7 +1,5 @@
 package com.ghs.mazegame.game.panels;
 
-import android.util.Log;
-
 import com.ghs.mazegame.R;
 import com.ghs.mazegame.engine.components.Texture;
 import com.ghs.mazegame.engine.display.Camera;
@@ -23,7 +21,6 @@ import static com.ghs.mazegame.game.Main.SCALE;
 import static com.ghs.mazegame.game.Main.STATE_EDIT;
 import static com.ghs.mazegame.game.Main.cameraHeight;
 import static com.ghs.mazegame.game.Main.cameraWidth;
-import static com.ghs.mazegame.game.Main.keyboardShowing;
 import static com.ghs.mazegame.game.Main.maps;
 import static com.ghs.mazegame.game.objects.Button.STATE_PRESSED;
 import static com.ghs.mazegame.game.objects.Thumbnail.STATE_RELEASED;
@@ -71,6 +68,9 @@ public class MainMenu implements Panel {
     private boolean showCursor;
     private String lastInput;
 
+    private boolean overwrite;
+    private Button yes;
+
     public MainMenu(Camera camera) {
         this.camera = camera;
         x = 0;
@@ -94,6 +94,7 @@ public class MainMenu implements Panel {
         mspb = 1000 / CURSOR_FPS;
         showCursor = true;
         lastInput = new String();
+        overwrite = false;
         loadThumbnails();
     }
 
@@ -214,7 +215,6 @@ public class MainMenu implements Panel {
             }
         }
         else {
-            Log.e("Map", "Showing: " + keyboardShowing());
             if(textBorder.contains(touchX, touchY))
                 Main.showKeyboard();
             name = Main.getInput();
@@ -235,16 +235,34 @@ public class MainMenu implements Panel {
             enter.update();
             back.update();
             if(enter.getState() == Button.STATE_RELEASED) {
-                state = STATE_EDIT;
-                map = maps.size();
-                maps.add(name);
-                Main.clear();
-                Main.hideKeyboard();
+                if(maps.contains(name))
+                    overwrite = true;
+                else {
+                    naming = false;
+                    state = STATE_EDIT;
+                    map = maps.size();
+                    maps.add(name);
+                    Main.clear();
+                    Main.hideKeyboard();
+                }
             }
             else if(back.getState() == Button.STATE_RELEASED) {
                 Main.hideKeyboard();
                 Main.clear();
                 naming = false;
+            }
+            if(overwrite) {
+                yes.update();
+                if(yes.getState() == Button.STATE_RELEASED) {
+                    maps.remove(name);
+                    overwrite = false;
+                    naming = false;
+                    state = STATE_EDIT;
+                    map = maps.size();
+                    maps.add(name);
+                    Main.clear();
+                    Main.hideKeyboard();
+                }
             }
             lastInput = name;
         }
@@ -290,6 +308,14 @@ public class MainMenu implements Panel {
                 if(showCursor && Main.keyboardShowing())
                     cursor.render();
                 back.render();
+                if(overwrite) {
+                    font.setColor(1, 0, 0, 1);
+                    font.drawString("[WARNING]", camera.getX() + (camera.getWidth() - font.getLength("[WARNING] Map already exists!")) / 2, camera.getY() + sy + font.getHeight() + 3);
+                    font.setColor(1, 1, 1, 1);
+                    font.drawString("Map already exists!", camera.getX() + font.getLength("[WARNING] ") + (camera.getWidth() - font.getLength("[WARNING] Map already exists!")) / 2, camera.getY() + sy + font.getHeight() + 3);
+                    font.drawString("Overwrite?", camera.getX() + (camera.getWidth() - font.getLength("Overwrite?")) / 2, camera.getY() + sy + font.getHeight() * 2 + 4);
+                    yes.render();
+                }
             }
         }
     }
@@ -301,6 +327,7 @@ public class MainMenu implements Panel {
     }
 
     public void setActive() {
+        map = -1;
         loadThumbnails();
     }
 
@@ -320,9 +347,10 @@ public class MainMenu implements Panel {
         sy = cameraHeight / 6f + cameraHeight;
         textBorder = new Rectangle(camera, sx - 2, sy - 2, 0.12f, maxChars * font.getMaxWidth() + 4, font.getHeight() + 4, 1, 1, 1, 1);
         textMain   = new Rectangle(camera, sx - 1, sy - 1, 0.11f, maxChars * font.getMaxWidth() + 2, font.getHeight() + 2, 0, 0, 0, 1);
-        enter = new Button(camera, new Texture(R.drawable.menu_enter), new Texture(R.drawable.menu_enter_pressed), sx + maxChars * font.getMaxWidth() + 3, sy - 2, 0.1f, font.getHeight() + 4, font.getHeight() + 4, false);
-        cursor = new Rectangle(camera, sx, sy, 0.05f, 1, font.getHeight(), 1, 1, 1, 1);
+        enter = new Button(camera, new Texture(R.drawable.menu_enter), new Texture(R.drawable.menu_enter_pressed), sx + maxChars * font.getMaxWidth() + 4, sy - 2, 0.1f, font.getHeight() + 4, font.getHeight() + 4, false);
+        cursor = new Rectangle(camera, 0, 0, 0.05f, 1, font.getHeight(), 1, 1, 1, 1);
         back = new Button(camera, new Texture(R.drawable.menu_back_arrow), new Texture(R.drawable.menu_back_arrow_pressed), 1, 1, 0.1f, font.getHeight() + 4, font.getHeight() + 4, true);
+        yes = new Button(camera, new Texture(R.drawable.yes_button), new Texture(R.drawable.yes_button_pressed), camera.getWidth() / 2.0f - (font.getHeight() + 4) * 2, camera.getHeight() / 2f, 0, (font.getHeight() + 4) * 4, (font.getHeight() + 4) * 2, true);
         name = "";
     }
 
