@@ -95,6 +95,19 @@ public class MainMenu implements Panel {
         showCursor = true;
         lastInput = new String();
         overwrite = false;
+        newMap = new Button(camera, new Texture(R.drawable.new_map_button), new Texture(R.drawable.new_map_button_pressed), 0, 0, 0.2f, (cameraWidth - SCALE) / 3f, (cameraWidth - SCALE) * 2 / 9f, false);
+        font = new Font(camera, R.drawable.bunky_font, R.raw.bunky, 6, 0, 1, 1, 1, 1);
+        maxChars = (int) (newMap.getWidth() / font.getMaxWidth());
+        font.setHeight(10);
+        sx = (cameraWidth - maxChars * font.getMaxWidth() - font.getHeight() - 5) / 2f;
+        sy = cameraHeight / 6f + cameraHeight;
+        textBorder = new Rectangle(camera, sx - 2, sy - 2, 0.12f, maxChars * font.getMaxWidth() + 4, font.getHeight() + 4, 1, 1, 1, 1);
+        textMain   = new Rectangle(camera, sx - 1, sy - 1, 0.11f, maxChars * font.getMaxWidth() + 2, font.getHeight() + 2, 0, 0, 0, 1);
+        enter = new Button(camera, new Texture(R.drawable.menu_enter), new Texture(R.drawable.menu_enter_pressed), sx + maxChars * font.getMaxWidth() + 4, sy - 2, 0.1f, font.getHeight() + 4, font.getHeight() + 4, false);
+        cursor = new Rectangle(camera, 0, 0, 0.05f, 1, font.getHeight(), 1, 1, 1, 1);
+        back = new Button(camera, new Texture(R.drawable.menu_back_arrow), new Texture(R.drawable.menu_back_arrow_pressed), 1, 1, 0.1f, font.getHeight() + 4, font.getHeight() + 4, true);
+        yes = new Button(camera, new Texture(R.drawable.yes_button), new Texture(R.drawable.yes_button_pressed), camera.getWidth() / 2.0f - (font.getHeight() + 4) * 2, camera.getHeight() / 2f, 0, (font.getHeight() + 4) * 4, (font.getHeight() + 4) * 2, true);
+        name = "";
         loadThumbnails();
     }
 
@@ -238,6 +251,7 @@ public class MainMenu implements Panel {
                 if(maps.contains(name))
                     overwrite = true;
                 else {
+                    overwrite = false;
                     naming = false;
                     state = STATE_EDIT;
                     map = maps.size();
@@ -250,6 +264,7 @@ public class MainMenu implements Panel {
                 Main.hideKeyboard();
                 Main.clear();
                 naming = false;
+                overwrite = false;
             }
             if(overwrite) {
                 yes.update();
@@ -337,21 +352,8 @@ public class MainMenu implements Panel {
         for (i = 0; i < maps.size(); i++)
             thumbnails.add(new Thumbnail(camera, maps.get(i), ((i % 3) * ((cameraWidth - SCALE) / 3f)) + (SCALE * (i % 3 + 1) / 4f),
                     ((i / 3) * ((cameraWidth - SCALE) * 2 / 9f + 6)) + (SCALE * (i / 3 + 1) / 4f) + cameraHeight + SCALE, 0.2f));
-        newMap = new Button(camera, new Texture(R.drawable.new_map_button), new Texture(R.drawable.new_map_button_pressed),
-                ((i % 3) * ((cameraWidth - SCALE) / 3f)) + (SCALE * (i % 3 + 1) / 4f),
-                ((i / 3) * ((cameraWidth - SCALE) * 2 / 9f + 6)) + (SCALE * (i / 3 + 1) / 4f) + cameraHeight + SCALE, 0.2f, (cameraWidth - SCALE) / 3f, (cameraWidth - SCALE) * 2 / 9f, false);
-        font = new Font(camera, R.drawable.bunky_font, R.raw.bunky, 6, 0, 1, 1, 1, 1);
-        maxChars = (int) (newMap.getWidth() / font.getMaxWidth());
-        font.setHeight(10);
-        sx = (cameraWidth - maxChars * font.getMaxWidth() - font.getHeight() - 5) / 2f;
-        sy = cameraHeight / 6f + cameraHeight;
-        textBorder = new Rectangle(camera, sx - 2, sy - 2, 0.12f, maxChars * font.getMaxWidth() + 4, font.getHeight() + 4, 1, 1, 1, 1);
-        textMain   = new Rectangle(camera, sx - 1, sy - 1, 0.11f, maxChars * font.getMaxWidth() + 2, font.getHeight() + 2, 0, 0, 0, 1);
-        enter = new Button(camera, new Texture(R.drawable.menu_enter), new Texture(R.drawable.menu_enter_pressed), sx + maxChars * font.getMaxWidth() + 4, sy - 2, 0.1f, font.getHeight() + 4, font.getHeight() + 4, false);
-        cursor = new Rectangle(camera, 0, 0, 0.05f, 1, font.getHeight(), 1, 1, 1, 1);
-        back = new Button(camera, new Texture(R.drawable.menu_back_arrow), new Texture(R.drawable.menu_back_arrow_pressed), 1, 1, 0.1f, font.getHeight() + 4, font.getHeight() + 4, true);
-        yes = new Button(camera, new Texture(R.drawable.yes_button), new Texture(R.drawable.yes_button_pressed), camera.getWidth() / 2.0f - (font.getHeight() + 4) * 2, camera.getHeight() / 2f, 0, (font.getHeight() + 4) * 4, (font.getHeight() + 4) * 2, true);
-        name = "";
+        newMap.setPosition(((i % 3) * ((cameraWidth - SCALE) / 3f)) + (SCALE * (i % 3 + 1) / 4f),
+                ((i / 3) * ((cameraWidth - SCALE) * 2 / 9f + 6)) + (SCALE * (i / 3 + 1) / 4f) + cameraHeight + SCALE);
     }
 
     public int getMap() {
